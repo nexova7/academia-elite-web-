@@ -27,7 +27,6 @@
             padding: 20px;
         }
 
-        /* BOTÓN REGRESAR AL INICIO */
         .btn-back-home {
             position: absolute;
             top: 20px;
@@ -41,13 +40,7 @@
             transition: 0.3s;
         }
 
-        .btn-back-home:hover {
-            color: var(--gold);
-        }
-
-        .btn-back-home:active {
-            transform: scale(0.95);
-        }
+        .btn-back-home:hover { color: var(--gold); }
 
         .container-master {
             display: grid;
@@ -55,7 +48,6 @@
             gap: 30px;
             max-width: 1000px;
             width: 100%;
-            position: relative;
         }
 
         .auth-card {
@@ -87,8 +79,7 @@
             text-transform: uppercase;
         }
 
-        input,
-        select {
+        input, select {
             width: 100%;
             padding: 10px 12px;
             background: #0d0d0d;
@@ -100,9 +91,7 @@
             transition: 0.3s;
         }
 
-        input:focus {
-            border-color: var(--gold);
-        }
+        input:focus { border-color: var(--gold); }
 
         .toggle-pass {
             position: absolute;
@@ -110,7 +99,6 @@
             top: 32px;
             cursor: pointer;
             color: #555;
-            font-size: 14px;
         }
 
         .btn-wa {
@@ -122,22 +110,12 @@
             width: 100%;
             font-weight: bold;
             cursor: pointer;
-            margin: 10px 0;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
             text-decoration: none;
-            transition: 0.3s;
-        }
-
-        .btn-wa:hover {
-            background: #128c7e;
-            transform: scale(1.02);
-        }
-
-        .btn-wa:active {
-            transform: scale(0.98);
+            margin: 10px 0;
         }
 
         .btn-submit {
@@ -151,53 +129,18 @@
             transition: 0.2s;
         }
 
-        .btn-submit:active {
-            transform: scale(0.96);
-            filter: brightness(0.8);
-        }
-
-        .btn-red {
-            background: var(--red);
-            color: white;
-        }
-
-        .btn-gold {
-            background: var(--gold);
-            color: black;
-        }
+        .btn-red { background: var(--red); color: white; }
+        .btn-gold { background: var(--gold); color: black; }
 
         .pin-style {
             border: 1px dashed var(--gold);
             text-align: center;
             letter-spacing: 5px;
             font-weight: bold;
-            font-size: 18px;
-        }
-
-        .pass-requirements {
-            grid-column: span 2;
-            font-size: 10px;
-            color: #666;
-            margin-top: -10px;
-            margin-bottom: 10px;
-            padding-left: 5px;
-        }
-
-        .pass-requirements b {
-            color: var(--gold);
         }
 
         @media (max-width: 850px) {
-            .container-master {
-                grid-template-columns: 1fr;
-                margin-top: 50px;
-            }
-
-            .btn-back-home {
-                position: static;
-                margin-bottom: 20px;
-                align-self: flex-start;
-            }
+            .container-master { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -213,37 +156,27 @@
             <h2><i class="fa-solid fa-user-plus"></i> Registro Nuevo Alumno</h2>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                 <div class="form-group" style="grid-column: span 2;">
-                    <label>Nombre de Usuario (Máx 20)</label>
-                    <input type="text" id="regUser" maxlength="20" placeholder="Ej: AlumnoElite">
+                    <label>Nombre de Usuario</label>
+                    <input type="text" id="regUser" placeholder="Ej: AlumnoElite">
                 </div>
                 <div class="form-group" style="grid-column: span 2;">
-                    <label>Nombre Completo (Máx 60)</label>
-                    <input type="text" id="regFullName" maxlength="60" placeholder="Nombre y Apellidos">
+                    <label>Nombre Completo</label>
+                    <input type="text" id="regFullName" placeholder="Nombre y Apellidos">
                 </div>
                 <div class="form-group">
-                    <label>Contraseña (5 - 70)</label>
-                    <input type="password" id="regPass" minlength="5" maxlength="70">
+                    <label>Contraseña</label>
+                    <input type="password" id="regPass">
                     <i class="fa-solid fa-eye toggle-pass" onclick="toggleView('regPass')"></i>
                 </div>
                 <div class="form-group">
                     <label>Repetir Contraseña</label>
-                    <input type="password" id="regPassConfirm" minlength="5" maxlength="70">
-                    <i class="fa-solid fa-eye toggle-pass" onclick="toggleView('regPassConfirm')"></i>
+                    <input type="password" id="regPassConfirm">
                 </div>
-
-                <div class="pass-requirements">
-                    Tu contraseña debe incluir: <b>1 Mayúscula, 1 Carácter Especial, Letras y Números.</b>
-                </div>
-
                 <div class="form-group" style="grid-column: span 2;">
                     <label>Categoría de Licencia</label>
                     <select id="regCat">
                         <option value="A2">A2 - Motocicletas</option>
-                        <option value="B1">B1 - Automóviles Particulares</option>
-                        <option value="B2">B2 - Camiones Particulares</option>
-                        <option value="C1">C1 - Automóviles Públicos</option>
-                        <option value="C2">C2 - Camiones Rígidos Públicos</option>
-                        <option value="C3">C3 - Vehículos Articulados Públicos</option>
+                        <option value="B1">B1 - Automóviles</option>
                     </select>
                 </div>
             </div>
@@ -253,7 +186,7 @@
             </a>
 
             <div class="form-group">
-                <label>Ingresa el PIN recibido (Ej: A123)</label>
+                <label>Ingresa el PIN recibido</label>
                 <input type="text" id="regPin" class="pin-style" maxlength="4">
             </div>
 
@@ -263,11 +196,10 @@
         <div class="auth-card" style="display: flex; flex-direction: column; justify-content: center;">
             <div style="text-align: center; margin-bottom: 20px;">
                 <i class="fa-solid fa-shield-halved" style="font-size: 3rem; color: var(--gold);"></i>
-                <h2 style="border: none; margin-top: 10px;">Ingreso Alumnos</h2>
-                <p style="color: #666; font-size: 13px;">Inicia sesión para gestionar tus clases.</p>
+                <h2 style="border: none;">Ingreso Alumnos</h2>
             </div>
             <div class="form-group">
-                <label>Usuario o Correo</label>
+                <label>Usuario</label>
                 <input type="text" id="loginUser" placeholder="Tu nombre de usuario">
             </div>
             <div class="form-group">
@@ -287,42 +219,43 @@
 
         function enviarWha() {
             const nombre = document.getElementById('regFullName').value;
-            const cat = document.getElementById('regCat').value;
-            const whaNumber = "573133482932";
-            if (nombre.trim().length < 5) return alert("Por favor, ingresa tu nombre completo.");
-            const msg = `Hola Academia de conducción Élite, soy estudiante registrado con ustedes y necesito acceso a la plataforma para agendar mis clases prácticas, ya que terminé mis clases teóricas. Mi nombre es ${nombre}, inscrito para la licencia categoría ${cat}.`;
-            window.open(`https://wa.me/${whaNumber}?text=${encodeURIComponent(msg)}`, '_blank');
+            if (nombre.length < 5) return alert("Ingresa tu nombre completo.");
+            const msg = `Hola Academia Élite, necesito el PIN de acceso. Mi nombre es ${nombre}.`;
+            window.open(`https://wa.me/573133482932?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
         function registrar() {
+            const user = document.getElementById('regUser').value.trim();
             const pass = document.getElementById('regPass').value;
             const confirm = document.getElementById('regPassConfirm').value;
             const pin = document.getElementById('regPin').value.toUpperCase();
 
-            const tieneMayuscula = /[A-Z]/.test(pass);
-            const tieneEspecial = /[!@#$%^&*(),.?":{}|<>]/.test(pass);
-            const tieneNumero = /[0-9]/.test(pass);
-            const tieneLetra = /[a-zA-Z]/.test(pass);
-
+            if (!user || !pass) return alert("Completa todos los campos.");
             if (pass !== confirm) return alert("Las contraseñas no coinciden.");
-            if (pass.length < 5 || pass.length > 70) return alert("La contraseña debe tener entre 5 y 70 caracteres.");
-
-            if (!tieneMayuscula || !tieneEspecial || !tieneNumero || !tieneLetra) {
-                return alert("Requisitos incumplidos: Debe contener 1 Mayúscula, 1 Carácter Especial, letras y números.");
-            }
-
+            
+            // Validación de PIN y Guardado
             if (["A123", "B123", "C123"].includes(pin)) {
-                alert("¡Cuenta registrada con éxito!");
-                window.location.href = "dashboard-alumno.html";
+                localStorage.setItem('elite_user', user);
+                localStorage.setItem('elite_pass', pass);
+                alert("✅ Cuenta registrada. Ahora puedes iniciar sesión.");
             } else {
-                alert("PIN incorrecto.");
+                alert("❌ PIN incorrecto.");
             }
         }
 
         function login() { 
-            window.location.href = "dashboard-alumno.html"; 
+            const userIn = document.getElementById('loginUser').value.trim();
+            const passIn = document.getElementById('loginPass').value;
+
+            const storedUser = localStorage.getItem('elite_user');
+            const storedPass = localStorage.getItem('elite_pass');
+
+            if (userIn === storedUser && passIn === storedPass && storedUser !== null) {
+                window.location.href = "dashboard-alumno.html";
+            } else {
+                alert("❌ Error: Usuario o contraseña incorrectos.");
+            }
         }
     </script>
 </body>
-
 </html>

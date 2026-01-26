@@ -313,12 +313,15 @@
 
             if (["A123", "B123", "C123"].includes(pin)) {
                 alert("¡Cuenta registrada con éxito!");
+                window.location.href = "dashboard-alumno.html";
             } else {
                 alert("PIN incorrecto.");
             }
         }
 
-        function login() { window.location.href = "dashboard_estudiante.html"; }
+        function login() { 
+            window.location.href = "dashboard-alumno.html"; 
+        }
     </script>
 </body>
 

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Élite Drive | Sistema Integral</title>
+    <style>
+        :root { --red: #b71c1c; --gold: #c5a059; --dark: #0a0a0a; --card: #141414; }
+        body { background: var(--dark); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; overflow-x: hidden; }
+
+        /* --- SIDEBAR --- */
+        .sidebar { width: 260px; background: #000; height: 100vh; position: fixed; padding: 20px; border-right: 1px solid #222; z-index: 2000; display: flex; flex-direction: column; box-sizing: border-box; transition: 0.3s; }
+        .nav-btn { width: 100%; padding: 15px; background: none; border: none; color: #666; text-align: left; cursor: pointer; border-radius: 8px; margin-bottom: 5px; transition: 0.3s; font-weight: 500; }
+        .nav-btn.active { color: white; background: #1a1a1a; border-left: 4px solid var(--gold); }
+        .logout { margin-top: auto; padding: 12px; border: 1px solid var(--red); color: var(--red); text-align: center; text-decoration: none; font-weight: bold; border-radius: 6px; font-size: 14px; }
+
+        /* --- CONTENIDO --- */
+        .content { margin-left: 260px; padding: 40px; width: 100%; box-sizing: border-box; }
+        .section { display: none; }
+        .section.active { display: block; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* --- PERFIL Y AVATARES --- */
+        .avatar-main { width: 110px; height: 110px; border-radius: 15px; border: 2px solid var(--gold); object-fit: cover; margin-bottom: 15px; }
+        .avatar-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+        .avatar-item { width: 100%; aspect-ratio: 1/1; border-radius: 6px; cursor: pointer; border: 1px solid transparent; object-fit: cover; transition: 0.2s; }
+        .avatar-item:hover { border-color: var(--gold); }
+
+        /* --- DASHBOARD --- */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .stat-card { background: var(--card); padding: 20px; border-radius: 12px; border: 1px solid #222; }
+        .stat-value { font-size: 1.8rem; font-weight: bold; color: var(--gold); }
+        .progress-mini-bg { width: 100%; height: 8px; background: #222; border-radius: 10px; margin-top: 10px; }
+        .progress-mini-fill { height: 100%; width: 0%; background: var(--gold); border-radius: 10px; transition: 1s; }
+
+        /* --- NOTAS INSTRUCTOR --- */
+        .feedback-container { background: var(--card); border: 1px solid #222; border-radius: 12px; padding: 15px; margin-top: 20px; }
+        .feedback-scroll { max-height: 100px; overflow-y: auto; padding-right: 5px; }
+        .feedback-card { background: rgba(255, 255, 255, 0.03); border-left: 3px solid var(--gold); padding: 10px; font-size: 13px; color: #ccc; }
+
+        /* --- CALENDARIO --- */
+        .calendar-box { background: #000; border-radius: 12px; padding: 15px; border: 1px solid #222; }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; }
+        .day { padding: 10px; border-radius: 5px; cursor: pointer; font-size: 12px; color: #fff; }
+        .day:hover:not(.empty) { background: #1a1a1a; }
+        .day.selected { background: var(--gold) !important; color: black !important; font-weight: bold; }
+        .day-name { color: var(--gold); font-size: 11px; font-weight: bold; padding-bottom: 5px; }
+
+        /* --- MOBILE --- */
+        .mobile-topbar { display: none; background: #000; padding: 15px 20px; position: fixed; top: 0; width: 100%; z-index: 2100; border-bottom: 1px solid #222; box-sizing: border-box; }
+        @media (max-width: 1024px) {
+            .sidebar { left: -260px; } .sidebar.active { left: 0; }
+            .content { margin-left: 0; padding: 80px 15px 20px; }
+            .mobile-topbar { display: flex; justify-content: space-between; align-items: center; }
+            .grid-clases { grid-template-columns: 1fr !important; }
+        }
+
+        input, select { width: 100%; padding: 12px; margin: 8px 0; background: #111; border: 1px solid #333; color: white; border-radius: 6px; box-sizing: border-box; }
+        .btn-gold { width: 100%; background: var(--gold); color: black; padding: 15px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+        .locked { opacity: 0.5; filter: grayscale(1); cursor: not-allowed; }
+        .time-slot { background: #111; border: 1px solid #333; color: white; padding: 10px; border-radius: 6px; cursor: pointer; font-size: 12px; }
+        .time-slot.active { background: var(--gold); color: black; border-color: var(--gold); }
+    </style>
+</head>
+<body>
+
+    <div class="mobile-topbar">
+        <h2 style="color: var(--gold); margin: 0; font-size: 1.1rem;">ÉLITE DRIVE</h2>
+        <div onclick="toggleMenu()" style="color: var(--gold); font-size: 28px; cursor: pointer;">☰</div>
+    </div>
+
+    <div class="sidebar" id="sidebar">
+        <h2 style="color: var(--gold); text-align: center; font-size: 1.3rem; margin-bottom: 30px;">ÉLITE DRIVE</h2>
+        <button class="nav-btn active" onclick="nav('perfil')">👤 Mi Perfil</button>
+        <button class="nav-btn" onclick="nav('progreso')">📊 Mi Progreso</button>
+        <button class="nav-btn" onclick="nav('clases')">🚗 Mis Clases</button>
+        <button class="nav-btn" onclick="nav('trivia')">🏆 Trivia Élite</button>
+        <a href="#" class="logout">CERRAR SESIÓN</a>
+    </div>
+
+    <div class="content">
+        
+        <div id="perfil" class="section active">
+            <h1 style="color: var(--gold);">Configuración de Perfil</h1>
+            <div style="display: flex; flex-wrap: wrap; gap: 30px; background: var(--card); padding: 25px; border-radius: 15px; border: 1px solid #222;">
+                <div style="text-align: center; flex: 1; min-width: 200px;">
+                    <img src="mascota masculina.png" id="pfpMain" class="avatar-main">
+                    <div class="avatar-grid">
+                        <img src="1.jpeg" class="avatar-item" onclick="changePfp(this.src)">
+                        <img src="2.jpeg" class="avatar-item" onclick="changePfp(this.src)">
+                        <img src="mascota femenina.png" class="avatar-item" onclick="changePfp(this.src)">
+                        <img src="mascota masculina.png" class="avatar-item" onclick="changePfp(this.src)">
+                    </div>
+                </div>
+                <div style="flex: 2; min-width: 280px;">
+                    <label>Nombre Completo</label><input type="text" placeholder="Ej: Juan Pérez">
+                    <label>WhatsApp</label><input type="text" placeholder="+57 300...">
+                    <button class="btn-gold">GUARDAR CAMBIOS</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="progreso" class="section">
+            <h1 style="color: var(--gold);">Mi Avance Académico</h1>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <label style="font-size: 11px; color: #888; letter-spacing: 1px;">TEORÍA</label>
+                    <div class="stat-value">0<small style="font-size: 14px; color: #555;"> / 30h</small></div>
+                    <div class="progress-mini-bg"><div class="progress-mini-fill" style="width: 0%;"></div></div>
+                </div>
+                <div class="stat-card">
+                    <label style="font-size: 11px; color: #888; letter-spacing: 1px;">PRÁCTICA</label>
+                    <div class="stat-value">0<small style="font-size: 14px; color: #555;"> / 20h</small></div>
+                    <div class="progress-mini-bg"><div class="progress-mini-fill" style="width: 0%; background: var(--red);"></div></div>
+                </div>
+            </div>
+            
+            <div class="feedback-container">
+                <h3 style="margin: 0 0 10px 0; font-size: 0.9rem; color: var(--gold);">📝 Recomendaciones del Instructor</h3>
+                <div class="feedback-scroll" id="instructorFeedback">
+                    <div class="feedback-card">Aún no hay observaciones de tus clases prácticas.</div>
+                </div>
+            </div>
+
+            <button id="btnMedico" class="btn-gold locked" style="background: #222; color: #555; margin-top: 20px;">
+                SOLICITAR EXAMEN MÉDICO 🔒
+            </button>
+        </div>
+
+        <div id="clases" class="section">
+            <h1 style="color: var(--gold);">Agenda tu Clase</h1>
+            <div class="grid-clases" style="display: grid; grid-template-columns: 320px 1fr; gap: 20px;">
+                <div class="calendar-box">
+                    <div style="display:flex; justify-content: space-between; margin-bottom: 15px; font-weight: bold;">
+                        <button onclick="changeMonth(-1)" style="background:none; color:white; border:none; cursor:pointer;">◀</button>
+                        <span id="monthName"></span>
+                        <button onclick="changeMonth(1)" style="background:none; color:white; border:none; cursor:pointer;">▶</button>
+                    </div>
+                    <div class="calendar-grid" id="calendarGrid"></div>
+                </div>
+                <div style="background: var(--card); padding: 25px; border-radius: 15px; border: 1px solid #222;">
+                    <label>Selecciona Instructor:</label>
+                    <select id="insSelect">
+                        <option value="Liliana">Instructora Liliana</option>
+                        <option value="Camilo">Instructor Camilo</option>
+                    </select>
+                    <label>Horarios Disponibles (Bloques de 2h):</label>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 10px 0;">
+                        <div class="time-slot" onclick="selectTime(this, '06:00 AM')">06:00 AM - 08:00 AM</div>
+                        <div class="time-slot" onclick="selectTime(this, '08:00 AM')">08:00 AM - 10:00 AM</div>
+                        <div class="time-slot" onclick="selectTime(this, '10:00 AM')">10:00 AM - 12:00 PM</div>
+                        <div class="time-slot" onclick="selectTime(this, '02:00 PM')">02:00 PM - 04:00 PM</div>
+                    </div>
+                    <p id="infoReserva" style="color: var(--gold); font-size: 13px; font-weight: bold;"></p>
+                    <button class="btn-gold" onclick="confirmarCita()">CONFIRMAR RESERVA</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="trivia" class="section">
+            <h1 style="color: var(--gold);">Trivia Élite</h1>
+            <div style="background: var(--card); padding: 40px; border-radius: 15px; text-align: center; border: 1px solid var(--gold);">
+                <h3>¿Listo para el reto vial?</h3>
+                <p style="color: #888;">Responde correctamente para sumar puntos a tu perfil.</p>
+                <button class="btn-gold" style="max-width: 250px;" onclick="alert('Cargando preguntas...')">EMPEZAR AHORA</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- BASE DE DATOS LOCAL ---
+        let citasOcupadas = ["Liliana-2026-0-28-06:00 AM"];
+        let selectedDate = "";
+        let selectedTimeValue = "";
+        let curMonth = new Date();
+
+        // --- NAVEGACIÓN ---
+        function nav(id) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            const btnActivo = Array.from(document.querySelectorAll('.nav-btn')).find(b => b.innerText.toLowerCase().includes(id.substring(0,3)));
+            if(btnActivo) btnActivo.classList.add('active');
+            if (window.innerWidth <= 1024) toggleMenu();
+        }
+
+        function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); }
+        function changePfp(src) { document.getElementById('pfpMain').src = src; }
+
+        function selectTime(btn, time) {
+            document.querySelectorAll('.time-slot').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            selectedTimeValue = time;
+        }
+
+        // --- CALENDARIO ---
+        function renderCalendar() {
+            const grid = document.getElementById('calendarGrid');
+            const monthName = document.getElementById('monthName');
+            grid.innerHTML = '';
+            const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+            monthName.innerText = `${months[curMonth.getMonth()]} ${curMonth.getFullYear()}`;
+            
+            ["D","L","M","M","J","V","S"].forEach(d => grid.innerHTML += `<div class="day-name">${d}</div>`);
+            
+            const firstDay = new Date(curMonth.getFullYear(), curMonth.getMonth(), 1).getDay();
+            const daysInMonth = new Date(curMonth.getFullYear(), curMonth.getMonth() + 1, 0).getDate();
+
+            for(let i=0; i<firstDay; i++) grid.innerHTML += `<div class="day empty"></div>`;
+            for(let i=1; i<=daysInMonth; i++) {
+                grid.innerHTML += `<div class="day" onclick="selectDay(this, ${i})">${i}</div>`;
+            }
+        }
+
+        function selectDay(el, day) {
+            document.querySelectorAll('.day').forEach(d => d.classList.remove('selected'));
+            el.classList.add('selected');
+            selectedDate = `${curMonth.getFullYear()}-${curMonth.getMonth()}-${day}`;
+            document.getElementById('infoReserva').innerText = `Día: ${day} de ${document.getElementById('monthName').innerText}`;
+        }
+
+        function changeMonth(dir) { curMonth.setMonth(curMonth.getMonth() + dir); renderCalendar(); }
+
+        // --- LÓGICA DE RESERVAS (BLOQUEO TRIPLE) ---
+        function confirmarCita() {
+            const ins = document.getElementById('insSelect').value;
+            if(!selectedDate || !selectedTimeValue) { alert("⚠️ Elige fecha y hora."); return; }
+
+            // 1. VALIDACIÓN FECHA PASADA
+            const ahora = new Date();
+            const partes = selectedDate.split('-');
+            let horaNum = parseInt(selectedTimeValue.split(':')[0]);
+            const ampm = selectedTimeValue.split(' ')[1];
+            if(ampm === "PM" && horaNum < 12) horaNum += 12;
+            if(ampm === "AM" && horaNum === 12) horaNum = 0;
+
+            const fechaSelObj = new Date(partes[0], partes[1], partes[2], horaNum, 0);
+
+            if(fechaSelObj < ahora) {
+                alert("❌ No puedes agendar en el pasado. Elige una fecha/hora futura.");
+                return;
+            }
+
+            // 2. VALIDACIÓN CRUCE DE INSTRUCTOR
+            const ID_CITA = `${ins}-${selectedDate}-${selectedTimeValue}`;
+            if(citasOcupadas.includes(ID_CITA)) {
+                alert(`❌ El ${ins} ya está ocupado en ese horario. Por favor cambia de instructor o de hora.`);
+                return;
+            }
+
+            // 3. ÉXITO
+            citasOcupadas.push(ID_CITA);
+            alert(`✅ Clase agendada exitosamente con ${ins}. ¡Te esperamos!`);
+        }
+
+        window.onload = renderCalendar;
+    </script>
+</body>
+</html>

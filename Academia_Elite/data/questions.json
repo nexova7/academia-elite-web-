@@ -1,0 +1,11 @@
+[
+    {
+        "question": "¿Cuál es la técnica correcta para frenar en una superficie con hielo?",
+        "options": [
+            {"id": "a", "text": "Frenar a fondo de golpe", "isCorrect": false},
+            {"id": "b", "text": "Frenado intermitente o dejar que el ABS trabaje", "isCorrect": true},
+            {"id": "c", "text": "Poner el auto en neutro", "isCorrect": false}
+        ],
+        "explanation": "El frenado intermitente evita el bloqueo de las ruedas."
+    }
+]

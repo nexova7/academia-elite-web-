@@ -1,0 +1,135 @@
+/* 
+  Academia Élite - Layout Styles
+  Estructura, Alineación y Espaciado
+*/
+
+/* --- HERO SECTION (Pantalla Completa) --- */
+.hero {
+    height: 100vh;
+    /* Ocupa toda la altura */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    /* Imagen de fondo con overlay oscuro */
+    background: linear-gradient(135deg, rgba(5, 5, 5, 0.7) 0%, rgba(5, 5, 5, 0.9) 100%),
+        url('https://images.unsplash.com/photo-1552176625-e47ff529b595?q=80&w=2069&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    /* Efecto Parallax sutil */
+
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+
+/* Efecto Vignette */
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, transparent 30%, var(--color-rich-black) 100%);
+    pointer-events: none;
+}
+
+.hero-content {
+    z-index: 2;
+    max-width: 900px;
+    padding: 0 var(--spacing-sm);
+    animation: fadeInUp 1s ease-out;
+}
+
+/* --- ANIMACIONES --- */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- SECCIONES (Espaciado Premium) --- */
+section {
+    padding: var(--spacing-xl) 0;
+    /* Espaciado vertical amplio */
+    position: relative;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.section-title {
+    margin-bottom: var(--spacing-lg);
+    text-align: center;
+}
+
+.section-title h2 {
+    position: relative;
+    display: inline-block;
+    border-bottom: 2px solid transparent;
+}
+
+/* Línea decorativa roja bajo títulos */
+.section-title h2::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: var(--gradient-passion-red);
+    margin: 1rem auto 0;
+    box-shadow: var(--shadow-glow-red);
+    border-radius: 2px;
+}
+
+/* --- GRID SYSTEMS --- */
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+}
+
+#services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    /* Adaptable */
+    gap: var(--spacing-md);
+    padding: var(--spacing-sm);
+}
+
+@media (min-width: 768px) {
+    .grid-2 {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* --- FOOTER --- */
+footer {
+    padding: var(--spacing-xl) 0 var(--spacing-md);
+    background-color: var(--color-rich-black);
+    border-top: 1px solid var(--color-gunmetal);
+    text-align: center;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.4);
+    margin-top: auto;
+}
+
+/* Ajuste móvil */
+@media (max-width: 768px) {
+    :root {
+        --spacing-xl: 4rem;
+        /* Reducir un poco en móvil */
+    }
+
+    .hero {
+        background-attachment: scroll;
+        /* Mejor performance móvil */
+    }
+}

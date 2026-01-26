@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nosotros | Academia de Conducción Élite</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@400;700&"
+        rel="preload">
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <style>
+        body {
+            background-color: #050505;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+
+        .text-gold {
+            color: #c5a059;
+        }
+
+        /* --- SECCIÓN CONTENIDO --- */
+        .img-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            border: 1px solid rgba(197, 160, 89, 0.2);
+            background: #111;
+            min-height: 450px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: all 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .img-container:hover img {
+            transform: scale(1.05);
+        }
+
+        .overlay-text {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(5, 5, 5, 0.95));
+            padding: 30px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar" id="navbar">
+        <div class="nav-logo">ACADEMIA DE CONDUCCIÓN <span class="text-gold">ÉLITE</span></div>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">INICIO</a>
+            <a href="nosotros.html" class="nav-link active">NOSOTROS</a>
+            <a href="cursos.html" class="nav-link">CURSOS</a>
+            <a href="evaluacion.html" class="nav-link">TRIVIA</a>
+            <a href="contacto.html" class="nav-link">CONTACTO</a>
+            <!-- Enlaces de acceso solo en móvil -->
+            <a href="acceso-alumnos.html" class="nav-link mobile-only red">ALUMNOS</a>
+            <a href="acceso-instructores.html" class="nav-link mobile-only gold">PROFES</a>
+        </div>
+        <div class="nav-access desktop-only">
+            <a href="acceso-alumnos.html" class="btn-alumno">ALUMNOS</a>
+            <a href="acceso-instructores.html" class="btn-profe">PROFES</a>
+        </div>
+        <div class="nav-toggle" id="mobile-menu-btn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <section style="padding: 160px 0 100px 0;">
+        <div class="container">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;">
+
+                <div class="img-container">
+                    <img src="nosotros-elite.jpg" alt="Instructores Academia Élite">
+                    <div class="overlay-text">
+                        <p
+                            style="font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase; color: #c5a059; font-weight: 600; margin: 0;">
+                            Equipo de Instructores Certificados
+                        </p>
+                    </div>
+                </div>
+
+                <div>
+                    <h1
+                        style="font-family: 'Playfair Display', serif; font-size: 3.5rem; margin-bottom: 25px; line-height: 1.1;">
+                        MÁS QUE UNA <span class="text-gold">ESCUELA</span>
+                    </h1>
+                    <p style="font-size: 1.15rem; line-height: 1.8; color: #ccc; margin-bottom: 25px;">
+                        Con <strong>más de 5 años</strong> de trayectoria en Bosa, hemos perfeccionado un sistema de
+                        enseñanza que combina la paciencia de instructores expertos con vehículos de última generación.
+                    </p>
+                    <p style="color: #888; margin-bottom: 40px; line-height: 1.6;">
+                        Nuestra misión es clara: formar conductores que no solo obtengan una licencia, sino que dominen
+                        la máquina con total responsabilidad y seguridad vial.
+                    </p>
+
+                    <div
+                        style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; border-top: 1px solid #1a1a1a; padding-top: 35px;">
+                        <div>
+                            <h3 class="text-gold"
+                                style="font-size: 2.8rem; margin: 0; font-family: 'Playfair Display';">+1,500</h3>
+                            <p
+                                style="font-size: 0.75rem; text-transform: uppercase; color: #555; letter-spacing: 1px; margin-top: 5px;">
+                                Graduados con éxito</p>
+                        </div>
+                        <div>
+                            <h3 class="text-gold"
+                                style="font-size: 2.8rem; margin: 0; font-family: 'Playfair Display';">98%</h3>
+                            <p
+                                style="font-size: 0.75rem; text-transform: uppercase; color: #555; letter-spacing: 1px; margin-top: 5px;">
+                                Aprobación en primer examen</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer style="padding: 60px 0; text-align: center; border-top: 1px solid #1a1a1a; background: #050505;">
+        <div class="container">
+            <p style="color: #444; font-size: 0.85rem; letter-spacing: 1px; margin-bottom: 15px;">
+                CALLE 65 SUR N° 78L – 64 BOSA | VENTAS.GAOBEL@GMAIL.COM
+            </p>
+            <p style="color: #222; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px;">
+                © 2026 Academia de Conducción Élite | DISEÑO POR
+                <span style="color: #555; font-weight: 700;">NEXOVA (+57) 302 722 1223</span>
+            </p>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+</body>
+
+</html>

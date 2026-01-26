@@ -1,0 +1,29 @@
+[
+    {
+        "id": 1,
+        "name": "Drift Basics: Control del Caos",
+        "description": "Aprende a dominar el sobreviraje controlado. Teoría de transferencia de peso y práctica en círculo húmedo.",
+        "price": 250000,
+        "duration": "4 Horas",
+        "level": "Principiante",
+        "image": "https://images.unsplash.com/photo-1621217637376-749e7943d67f?q=80&w=2070&auto=format&fit=crop"
+    },
+    {
+        "id": 2,
+        "name": "Defensive Driving Pro",
+        "description": "Técnicas evasivas para situaciones reales. Frenado de emergencia, esquiva de obstáculos y anticipación.",
+        "price": 320000,
+        "duration": "6 Horas",
+        "level": "Intermedio",
+        "image": "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?q=80&w=2070&auto=format&fit=crop"
+    },
+    {
+        "id": 3,
+        "name": "Track Master: Apex Hunter",
+        "description": "Curso avanzado de circuito. Trazada ideal, punta tacón y telemetría personalizada con Porsche 911 GT3.",
+        "price": 850000,
+        "duration": "12 Horas (2 Días)",
+        "level": "Avanzado",
+        "image": "https://images.unsplash.com/photo-1596489398867-d86161678122?q=80&w=2070&auto=format&fit=crop"
+    }
+]

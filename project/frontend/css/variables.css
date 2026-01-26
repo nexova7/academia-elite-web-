@@ -1,0 +1,60 @@
+/* 
+  Academia Élite - Design Tokens
+  Estética: Prestige / Lujo Nocturno
+*/
+
+:root {
+  /* --- COLORES CORPORATIVOS --- */
+
+  /* Negro Luxury (#050505) - Base profunda */
+  --color-rich-black: #050505;
+  --color-charcoal-grey: #1F1F1F;
+  --color-gunmetal: #2D2D2D;
+
+  /* Gradiente de Lujo: De Carbón a Negro Profundo */
+  --gradient-luxury-black: linear-gradient(135deg, #1A1A1A 0%, #050505 100%);
+
+  /* Rojo Pasión (#C41E3A) - Acentos vibrantes */
+  --color-elite-red: #C41E3A;
+  --color-elite-red-rgb: 196, 30, 58;
+
+  /* Gradiente Pasión: Para botones y llamadas a la acción */
+  --gradient-passion-red: linear-gradient(90deg, #A01025 0%, #C41E3A 100%);
+
+  /* Dorado Mate (#C5A059) - Detalles de elegancia */
+  --color-matte-gold: #C5A059;
+  --color-prestige-gold: var(--color-matte-gold);
+  /* Alias para compatibilidad */
+
+  --color-pure-white: #FFFFFF;
+
+  /* --- SEMÁNTICA --- */
+  --color-success: #10B981;
+  --color-error: #EF4444;
+  --color-warning: #F59E0B;
+
+  /* --- TIPOGRAFÍA --- */
+  --font-heading: 'Playfair Display', serif;
+  /* Títulos elegantes */
+  --font-body: 'Inter', sans-serif;
+  /* Lectura técnica */
+
+  /* --- ESPACIADO Y BORDES --- */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 2rem;
+  --spacing-lg: 4rem;
+  --spacing-xl: 6rem;
+
+  --border-radius-sm: 2px;
+  /* Estilo técnico cuadrado */
+  --border-radius-md: 4px;
+
+  /* --- EFECTOS --- */
+  --shadow-glow-red: 0 0 20px rgba(196, 30, 58, 0.4);
+  --shadow-glow-gold: 0 0 15px rgba(197, 160, 89, 0.3);
+  --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.5);
+
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease-in-out;
+}

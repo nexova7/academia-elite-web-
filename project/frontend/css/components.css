@@ -1,0 +1,219 @@
+/* 
+  Academia Élite - Components Styles
+  Elementos de UI Reutilizables: Botones, Cards, Navegación
+*/
+
+/* --- BOTONES (Passion Red) --- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 2.5rem;
+    font-family: var(--font-body);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-decoration: none;
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    border: none;
+}
+
+.btn-primary {
+    background: var(--gradient-passion-red);
+    /* DEGRADADO ROJO */
+    color: var(--color-pure-white);
+    box-shadow: 0 4px 15px rgba(196, 30, 58, 0.3);
+}
+
+.btn-primary:hover {
+    box-shadow: 0 6px 25px rgba(196, 30, 58, 0.6);
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--color-matte-gold);
+    border: 1px solid var(--color-matte-gold);
+}
+
+.btn-secondary:hover {
+    background-color: rgba(197, 160, 89, 0.1);
+    box-shadow: var(--shadow-glow-gold);
+}
+
+.btn-sm {
+    padding: 0.5rem 1.5rem;
+    font-size: 0.8rem;
+}
+
+/* --- TARJETAS (Glassmorphism Imponente) --- */
+.card {
+    /* Fondo semi-transparente para efecto cristal oscuro */
+    background: rgba(20, 20, 20, 0.6);
+    border: 1px solid var(--color-gunmetal);
+    backdrop-filter: blur(12px);
+    /* Efecto Blur */
+    -webkit-backdrop-filter: blur(12px);
+
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-md);
+    transition: var(--transition-normal);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.card:hover {
+    border-color: var(--color-matte-gold);
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-card);
+    background: rgba(30, 30, 30, 0.8);
+}
+
+/* --- NAVEGACIÓN (Sticky Glass) --- */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 1.5rem var(--spacing-md);
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background: rgba(5, 5, 5, 0.85);
+    /* Fondo negro con transparencia */
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: padding 0.3s ease;
+}
+
+.nav-scrolled {
+    padding: 1rem var(--spacing-md);
+    background: rgba(5, 5, 5, 0.95);
+}
+
+.nav-logo {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--color-pure-white);
+    letter-spacing: 1px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.nav-link {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: color 0.2s;
+}
+
+.nav-link:hover {
+    color: var(--color-matte-gold);
+}
+
+.nav-link.highlight {
+    color: var(--color-matte-gold);
+    border: 1px solid var(--color-matte-gold);
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius-sm);
+}
+
+.nav-link.highlight:hover {
+    background: rgba(197, 160, 89, 0.1);
+    box-shadow: var(--shadow-glow-gold);
+}
+
+/* --- TRIVIA UI --- */
+.trivia-container {
+    /* Hereda estilos de card pero específico para layout */
+    background: rgba(20, 20, 20, 0.8);
+    border: 1px solid var(--color-gunmetal);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-md);
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 2px;
+    background: var(--color-gunmetal);
+    width: 100%;
+    margin-bottom: var(--spacing-md);
+    position: relative;
+}
+
+.progress-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background: var(--gradient-passion-red);
+    width: 0%;
+    transition: width 0.5s ease;
+    box-shadow: var(--shadow-glow-red);
+}
+
+.option-card {
+    padding: 1.25rem;
+    margin-bottom: var(--spacing-sm);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--color-gunmetal);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    font-size: 1.1rem;
+}
+
+.option-card:hover:not(.locked) {
+    border-color: var(--color-matte-gold);
+    background: rgba(197, 160, 89, 0.05);
+}
+
+.option-card.selected {
+    border-color: var(--color-matte-gold);
+    background: rgba(197, 160, 89, 0.1);
+}
+
+.option-card.correct {
+    border-color: var(--color-success);
+    background: rgba(16, 185, 129, 0.1);
+}
+
+.option-card.incorrect {
+    border-color: var(--color-error);
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.feedback-msg {
+    padding: 1rem;
+    margin-top: 1rem;
+    border-left: 4px solid;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.feedback-msg.correct {
+    border-color: var(--color-success);
+}
+
+.feedback-msg.incorrect {
+    border-color: var(--color-error);
+}

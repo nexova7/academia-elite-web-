@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@400;700&"
+        rel="preload">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Acceso Personal Autorizado | Élite Drive</title>
+    <style>
+        :root {
+            --red: #b71c1c;
+            --gold: #c5a059;
+            --dark: #0a0a0a;
+        }
+
+        body {
+            background: var(--dark);
+            color: white;
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .login-box {
+            background: #141414;
+            padding: 40px;
+            border-radius: 15px;
+            border: 1px solid #333;
+            width: 380px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+
+        .logo-title {
+            color: var(--red);
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            color: var(--gold);
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            background: #0a0a0a;
+            border: 1px solid #444;
+            color: white;
+            border-radius: 6px;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: var(--red);
+        }
+
+        .btn-access {
+            width: 100%;
+            padding: 15px;
+            background: var(--red);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+
+        .btn-access:hover {
+            background: #e53935;
+            transform: translateY(-2px);
+        }
+
+        .btn-access:active {
+            transform: scale(0.96);
+            filter: brightness(0.8);
+        }
+
+        .error-msg {
+            color: #ff5252;
+            font-size: 0.8rem;
+            margin-top: 15px;
+            display: none;
+        }
+
+        /* BOTÓN REGRESAR */
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 25px;
+            color: #666;
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: 0.3s;
+        }
+
+        .btn-back:hover {
+            color: var(--gold);
+        }
+
+        .btn-back:active {
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-box">
+        <h1 class="logo-title">ÉLITE DRIVE</h1>
+        <div class="subtitle">Panel de Control Académico</div>
+
+        <div class="form-group">
+            <label>Nombre de Usuario</label>
+            <input type="text" id="userInput" placeholder="Ej: pepa">
+        </div>
+
+        <div class="form-group">
+            <label>Nombre de Instructor / Administrador</label>
+            <input type="text" id="nameInput" placeholder="Nombre autorizado">
+        </div>
+
+        <div class="form-group">
+            <label>Contraseña</label>
+            <input type="password" id="passInput" placeholder="••••••••">
+        </div>
+
+        <button class="btn-access" onclick="validarIngreso()">INGRESAR AL SISTEMA</button>
+        <p id="error" class="error-msg">Credenciales incorrectas. Verifique los datos.</p>
+
+        <a href="index.html" class="btn-back">
+            <i class="fa-solid fa-arrow-left"></i> REGRESAR AL INICIO
+        </a>
+    </div>
+
+    <script>
+        function validarIngreso() {
+            // Captura de datos y normalización a minúsculas para usuario y nombre
+            const user = document.getElementById('userInput').value.toLowerCase().trim();
+            const name = document.getElementById('nameInput').value.toLowerCase().trim();
+            const pass = document.getElementById('passInput').value; // La contraseña es sensible
+            const error = document.getElementById('error');
+
+            // Datos autorizados
+            const usuarioValido = "gaobelcar";
+            const nombresAutorizados = ["camilo", "liliana", "claudia"];
+            const passValida = "Familia7220515*";
+
+            // Validación Lógica
+            if (user === usuarioValido && nombresAutorizados.includes(name) && pass === passValida) {
+                // Éxito: Guardamos quién ingresó para el Dashboard
+                sessionStorage.setItem("instructorActivo", name);
+
+                // Redirección al Dashboard de Instructores
+                // Nota: Asegúrate de que el nombre del archivo coincida con tu dashboard de academia
+                window.location.href = "dashboard_academia.html";
+            } else {
+                // Fallo
+                error.style.display = 'block';
+                // Efecto visual de sacudida
+                document.querySelector('.login-box').style.animation = "shake 0.2s ease-in-out 0s 2";
+            }
+        }
+    </script>
+
+    <style>
+        @keyframes shake {
+            0% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(5px);
+            }
+
+            50% {
+                transform: translateX(-5px);
+            }
+
+            75% {
+                transform: translateX(5px);
+            }
+
+            100% {
+                transform: translateX(0);
+            }
+        }
+    </style>
+</body>
+
+</html>

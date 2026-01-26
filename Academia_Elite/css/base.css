@@ -1,0 +1,126 @@
+/* 
+  Academia Élite - Base Styles
+  Configuración Global y Tipografía
+*/
+
+/* --- RESET & DEFAULTS --- */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--color-rich-black);
+    /* Fondo Negro Luxury */
+    color: var(--color-pure-white);
+    font-family: var(--font-body);
+    /* Inter */
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* --- TIPOGRAFÍA IMPONENTE --- */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-heading);
+    /* Playfair Display */
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--color-pure-white);
+    line-height: 1.2;
+}
+
+h1 {
+    font-size: 3.5rem;
+    text-transform: uppercase;
+}
+
+h2 {
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+h3 {
+    font-size: 1.75rem;
+    color: var(--color-prestige-gold);
+}
+
+p {
+    margin-bottom: var(--spacing-sm);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* --- UTILITIES --- */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-sm);
+}
+
+.text-gold {
+    color: var(--color-matte-gold);
+}
+
+.text-red {
+    color: var(--color-elite-red);
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* Spacing */
+.mt-sm {
+    margin-top: var(--spacing-sm);
+}
+
+.mt-md {
+    margin-top: var(--spacing-md);
+}
+
+/* Backgrounds */
+.bg-charcoal {
+    background-color: var(--color-charcoal-grey);
+}
+
+/* Brand Mark (TM) */
+.brand-tm {
+    font-size: 0.5em;
+    vertical-align: super;
+    color: var(--color-matte-gold);
+}
+
+.hidden {
+    display: none !important;
+}
+
+.fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

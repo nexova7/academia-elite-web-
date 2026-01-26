@@ -1,0 +1,137 @@
+[
+    {
+        "id": 1,
+        "question": "¿Qué efecto físico permite que un coche tome una curva a alta velocidad sin derrapar?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Fuerza Centrífuga",
+                "isCorrect": false
+            },
+            {
+                "id": "b",
+                "text": "Downforce (Carga Aerodinámica)",
+                "isCorrect": true
+            },
+            {
+                "id": "c",
+                "text": "Suspensión Magnética",
+                "isCorrect": false
+            },
+            {
+                "id": "d",
+                "text": "Control de Tracción",
+                "isCorrect": false
+            }
+        ],
+        "explanation": "El Downforce empuja el coche contra el asfalto, aumentando el agarre de los neumáticos."
+    },
+    {
+        "id": 2,
+        "question": "En un vehículo de tracción trasera, ¿cómo se corrige el sobreviraje (drift)?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Frenando a fondo",
+                "isCorrect": false
+            },
+            {
+                "id": "b",
+                "text": "Girando el volante en sentido contrario a la curva",
+                "isCorrect": true
+            },
+            {
+                "id": "c",
+                "text": "Acelerando al máximo",
+                "isCorrect": false
+            },
+            {
+                "id": "d",
+                "text": "Soltando el volante",
+                "isCorrect": false
+            }
+        ],
+        "explanation": "El contravolante alinea las ruedas delanteras con la dirección del desplazamiento real."
+    },
+    {
+        "id": 3,
+        "question": "¿Cuál es la función principal de un diferencial de deslizamiento limitado (LSD)?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Ahorrar combustible",
+                "isCorrect": false
+            },
+            {
+                "id": "b",
+                "text": "Evitar que una rueda pierda toda la potencia si patina",
+                "isCorrect": true
+            },
+            {
+                "id": "c",
+                "text": "Aumentar la velocidad punta",
+                "isCorrect": false
+            },
+            {
+                "id": "d",
+                "text": "Reducir el ruido del motor",
+                "isCorrect": false
+            }
+        ],
+        "explanation": "El LSD distribuye el par motor a la rueda con más tracción."
+    },
+    {
+        "id": 4,
+        "question": "¿Qué significa las siglas del sistema ABS?",
+        "options": [
+            {
+                "id": "a",
+                "text": "Auto Brake System",
+                "isCorrect": false
+            },
+            {
+                "id": "b",
+                "text": "Anti-lock Braking System",
+                "isCorrect": true
+            },
+            {
+                "id": "c",
+                "text": "Advanced Braking Stabilization",
+                "isCorrect": false
+            },
+            {
+                "id": "d",
+                "text": "Automatic Balance System",
+                "isCorrect": false
+            }
+        ],
+        "explanation": "Evita que las ruedas se bloqueen durante una frenada de emergencia."
+    },
+    {
+        "id": 5,
+        "question": "Identifica el coche: Motor bóxer trasero de 6 cilindros.",
+        "options": [
+            {
+                "id": "a",
+                "text": "Ferrari 488",
+                "isCorrect": false
+            },
+            {
+                "id": "b",
+                "text": "Porsche 911",
+                "isCorrect": true
+            },
+            {
+                "id": "c",
+                "text": "Lamborghini Huracán",
+                "isCorrect": false
+            },
+            {
+                "id": "d",
+                "text": "Audi R8",
+                "isCorrect": false
+            }
+        ],
+        "explanation": "El Porsche 911 es icónico por su configuración de motor trasero y cilindros opuestos."
+    }
+]

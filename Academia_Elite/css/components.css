@@ -1,0 +1,99 @@
+/* Academia de Conducción - Components Styles
+  Elementos de UI Reutilizables: Botones, Cards, Navegación
+*/
+
+/* --- BOTONES (Passion Red) --- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 2.5rem;
+    font-family: var(--font-body);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-decoration: none;
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    border: none;
+}
+
+.btn-primary {
+    background: var(--gradient-passion-red);
+    color: var(--color-pure-white);
+    box-shadow: 0 4px 15px rgba(196, 30, 58, 0.3);
+}
+
+.btn-primary:hover {
+    box-shadow: 0 6px 25px rgba(196, 30, 58, 0.6);
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
+.btn:active {
+    transform: scale(0.96) translateY(2px);
+    filter: brightness(0.8);
+}
+
+/* --- TARJETAS (Glassmorphism) --- */
+.card {
+    background: rgba(20, 20, 20, 0.6);
+    border: 1px solid var(--color-gunmetal);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-md);
+    transition: var(--transition-normal);
+}
+
+.card:hover {
+    border-color: var(--color-matte-gold);
+    transform: translateY(-5px);
+    background: rgba(30, 30, 30, 0.8);
+}
+
+/* --- NAVEGACIÓN --- */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 1.5rem var(--spacing-md);
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(5, 5, 5, 0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.nav-logo {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--color-pure-white);
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-link {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+.nav-link.highlight-red {
+    color: #C41E3A !important;
+    /* Rojo Pasión */
+    border: 1px solid #C41E3A;
+    padding: 0.5rem 1rem;
+    border-radius: 2px;
+    margin-right: 10px;
+}

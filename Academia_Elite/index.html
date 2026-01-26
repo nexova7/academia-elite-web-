@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academia de Conducción Élite | Home</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@400;700&"
+        rel="preload">
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <style>
+        /* --- HERO & CONTENIDO --- */
+        .hero {
+            padding-top: 160px;
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .trivia-preview {
+            padding: 80px 0;
+            background: linear-gradient(to bottom, #050505, #0a0a0a);
+            border-top: 1px solid #1a1a1a;
+        }
+    </style>
+</head>
+
+<body style="background: #050505;">
+
+    <nav class="navbar" id="navbar">
+        <div class="nav-logo">
+            ACADEMIA DE CONDUCCIÓN <span style="color: #c5a059;">ÉLITE</span>
+        </div>
+
+        <div class="nav-links">
+            <a href="index.html" class="nav-link active">Inicio</a>
+            <a href="nosotros.html" class="nav-link">Nosotros</a>
+            <a href="cursos.html" class="nav-link">Cursos</a>
+            <a href="evaluacion.html" class="nav-link">Trivia</a>
+            <a href="contacto.html" class="nav-link">Contacto</a>
+            <!-- Enlaces de acceso solo visibles en móvil (limpio, sin duplicados en desktop) -->
+            <a href="acceso-alumnos.html" class="nav-link mobile-only red">Alumnos</a>
+            <a href="acceso-instructores.html" class="nav-link mobile-only gold">Profes</a>
+        </div>
+
+        <div class="nav-access desktop-only">
+            <a href="acceso-alumnos.html" class="btn-alumno">Alumnos</a>
+            <a href="acceso-instructores.html" class="btn-profe">Profes</a>
+        </div>
+
+        <div class="nav-toggle" id="mobile-menu-btn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-content">
+            <h1 style="font-size: 3.5rem; letter-spacing: 2px; font-family: 'Playfair Display', serif; color: white;">
+                DOMINA LA MÁQUINA</h1>
+            <p style="color: #ccc; max-width: 600px; margin: 20px auto;">Porque no se trata solo de aprender, sino de
+                hacerlo bien. Ofrecemos formación responsable impartida por instructores certificados, con un
+                acompañamiento real antes, durante y después del proceso. Te guiamos paso a paso para que adquieras
+                conocimientos sólidos, confianza y seguridad, con el respaldo de profesionales que se implican de verdad
+                en tu aprendizaje.</p>
+
+            <a href="contacto.html" class="btn btn-primary"
+                style="background: #b71c1c; margin-top: 40px; padding: 18px 45px; border-radius: 4px; font-weight: 700; text-decoration: none; color: white; display: inline-block; letter-spacing: 2px;">
+                COTIZAR
+            </a>
+        </div>
+    </header>
+
+    <section class="trivia-preview">
+        <div class="container text-center">
+            <div style="max-width: 700px; margin: 0 auto;">
+                <h2 style="color: #c5a059; font-family: 'Playfair Display', serif; font-size: 2.5rem;">¿ESTÁS LISTO PARA
+                    EL VOLANTE?</h2>
+                <p style="margin: 20px 0; color: #888; line-height: 1.6;">
+                    Antes de inscribirte, mide tus conocimientos con nuestro simulador de aptitud vial. Desbloquea
+                    beneficios exclusivos al obtener un puntaje Élite.
+                </p>
+                <a href="evaluacion.html"
+                    style="color: #b71c1c; text-decoration: none; font-weight: bold; letter-spacing: 1px; text-transform: uppercase;">
+                    IR A LA TRIVIA →
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer style="padding: 60px 0; border-top: 1px solid #1a1a1a; text-align: center; font-size: 0.8rem; color: #444;">
+        <p>Calle 65 Sur N° 78L – 64 Bosa | 313 348 2932</p>
+        <p style="margin-top: 20px; color: #333; font-size: 0.65rem; letter-spacing: 2px;">
+            PÁGINA DISEÑADA POR <span style="color: #555; font-weight: 600;">NEXOVA (+57) 302 722 1223</span>
+        </p>
+    </footer>
+
+    <script src="js/app.js"></script>
+</body>
+
+</html>

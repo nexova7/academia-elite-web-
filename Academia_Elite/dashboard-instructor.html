@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Master Panel | Élite Drive</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        :root {
+            --red: #b71c1c; --gold: #c5a059; --dark: #050505; --card: #111;
+            --blue: #2196f3; --green: #4caf50;
+        }
+
+        body { 
+            background: var(--dark); color: white; font-family: 'Segoe UI', sans-serif; 
+            margin: 0; display: flex; min-height: 100vh; overflow-x: hidden;
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar { 
+            width: 260px; background: #000; height: 100vh; position: fixed; 
+            left: 0; top: 0; padding: 25px; border-right: 1px solid #222; 
+            display: flex; flex-direction: column; z-index: 1000; box-sizing: border-box; 
+            transition: 0.3s transform ease;
+        }
+
+        .nav-btn { 
+            width: 100%; padding: 15px; background: none; border: none; color: #666; 
+            text-align: left; cursor: pointer; border-radius: 8px; margin-bottom: 5px; 
+            transition: 0.3s; font-size: 14px;
+        }
+
+        .nav-btn.active { color: white; background: #1a1a1a; border-left: 4px solid var(--red); }
+
+        .hamburger {
+            display: none; position: fixed; top: 15px; left: 15px; z-index: 1100;
+            background: var(--red); color: white; border: none; padding: 10px 15px;
+            border-radius: 5px; cursor: pointer; font-size: 20px;
+        }
+
+        /* --- CONTENIDO PRINCIPAL --- */
+        .main { margin-left: 260px; padding: 40px; width: calc(100% - 260px); box-sizing: border-box; min-width: 0; }
+        .section { display: none; width: 100%; }
+        .section.active { display: block; }
+
+        /* --- TABLAS RESPONSIVAS --- */
+        .table-container { width: 100%; background: var(--card); border-radius: 12px; border: 1px solid #222; overflow: hidden; margin-top: 15px;}
+        table { width: 100%; border-collapse: collapse; }
+        th { background: #1a1a1a; color: var(--gold); text-align: left; padding: 12px; font-size: 11px; text-transform: uppercase; }
+        td { padding: 12px; border-bottom: 1px solid #222; font-size: 14px; }
+
+        .grid-instructores { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 20px; }
+        .instructor-card { background: var(--card); border: 1px solid #222; border-radius: 15px; padding: 15px; }
+
+        /* --- TRIVIA GAME FORMAT --- */
+        .trivia-container {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+            background: var(--card); padding: 20px; border-radius: 15px; border: 1px solid #333; margin-top: 20px;
+        }
+
+        .trivia-image-box {
+            width: 100%; height: 300px; background: #222; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center; border: 2px dashed #444;
+        }
+
+        .trivia-image-box img { max-width: 100%; max-height: 100%; border-radius: 8px; }
+        .answers-grid { display: flex; flex-direction: column; gap: 10px; }
+
+        .answer-btn {
+            background: #1a1a1a; color: white; border: 1px solid #333; padding: 15px;
+            border-radius: 8px; cursor: pointer; text-align: left; transition: 0.3s;
+        }
+        .answer-btn:hover { border-color: var(--gold); background: #222; }
+
+        /* --- BOTONES Y FORMULARIOS --- */
+        .btn-gold { background: var(--gold); color: black; font-weight: bold; padding: 12px; border-radius: 6px; border: none; cursor: pointer; width: 100%; margin-top: 10px; }
+        .btn-outline { background: transparent; color: white; border: 1px solid #444; padding: 10px; border-radius: 6px; cursor: pointer; width: 100%; }
+        .btn-small { padding: 8px 12px; border-radius: 5px; border: none; cursor: pointer; font-size: 12px; font-weight: bold; }
+        
+        textarea, input, select { width: 100%; background: #000; border: 1px solid #333; color: white; padding: 12px; border-radius: 5px; margin-top: 10px; box-sizing: border-box; }
+
+        /* --- MODAL --- */
+        .modal-overlay { 
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0, 0, 0, 0.85); z-index: 5000; justify-content: center; align-items: center; 
+        }
+
+        .modal-content { 
+            background: #111; padding: 30px; border-radius: 15px; border: 1px solid var(--gold); 
+            width: 90%; max-width: 400px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        @media (max-width: 1024px) {
+            .hamburger { display: block; }
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .main { margin-left: 0; width: 100%; padding: 70px 15px 20px; }
+            
+            table, thead, tbody, th, td, tr { display: block; }
+            thead { display: none; }
+            tr { border: 1px solid #333; margin-bottom: 10px; border-radius: 8px; padding: 10px; background: #0a0a0a; }
+            td { border: none; padding-left: 45%; position: relative; text-align: right; }
+            td:before { content: attr(data-label); position: absolute; left: 10px; font-weight: bold; color: var(--gold); }
+            
+            .grid-instructores { grid-template-columns: 1fr; }
+            .trivia-container { grid-template-columns: 1fr; }
+            .trivia-image-box { height: 200px; }
+        }
+    </style>
+</head>
+<body>
+
+    <button class="hamburger" onclick="toggleSidebar()">☰</button>
+    
+    <div class="sidebar" id="sidebar">
+        <h2 style="color: var(--red); text-align: center;">ÉLITE DRIVE</h2>
+        <button class="nav-btn active" onclick="showSection('agenda', this)">🚗 Agenda Instructores</button>
+        <button class="nav-btn" onclick="showSection('alumnos', this)">👥 Base de Alumnos</button>
+        <button class="nav-btn" onclick="showSection('reportes', this)">📊 Reportes y PDF</button>
+        <button class="nav-btn" onclick="showSection('trivia', this)">🏆 Trivia Game</button>
+        <a href="#" class="logout" style="margin-top:auto; color:var(--red); text-align:center; text-decoration:none; padding:10px; border:1px solid var(--red); border-radius:5px;">SALIR</a>
+    </div>
+
+    <div class="main">
+        
+        <div id="agenda" class="section active">
+            <h1>Agenda <span style="color: var(--gold);">de Clases</span></h1>
+            <div class="grid-instructores">
+                <div class="instructor-card">
+                    <h3 style="color: var(--gold); margin:0;">👩‍🏫 Instructora Liliana</h3>
+                    <div class="table-container" style="border:none;">
+                        <table>
+                            <thead><tr><th>Hora</th><th>Alumno</th><th>Acción</th></tr></thead>
+                            <tbody>
+                                <tr>
+                                    <td data-label="Hora">08:00 AM</td>
+                                    <td data-label="Alumno">Mariana R.</td>
+                                    <td data-label="Acción"><button class="btn-small" style="background:var(--red); color:white;" onclick="validarCancelacion('08:00 AM', 'Mariana R.')">Gestionar</button></td>
+                                </tr>
+                                <tr>
+                                    <td data-label="Hora">10:00 AM</td>
+                                    <td data-label="Alumno">Carlos Vera</td>
+                                    <td data-label="Acción"><button class="btn-small" style="background:var(--red); color:white;" onclick="validarCancelacion('10:00 AM', 'Carlos Vera')">Gestionar</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="instructor-card">
+                    <h3 style="color: var(--gold); margin:0;">👨‍🏫 Instructor Camilo</h3>
+                    <div class="table-container" style="border:none;">
+                        <table>
+                            <thead><tr><th>Hora</th><th>Alumno</th><th>Acción</th></tr></thead>
+                            <tbody>
+                                <tr>
+                                    <td data-label="Hora">09:00 AM</td>
+                                    <td data-label="Alumno">Juan Duarte</td>
+                                    <td data-label="Acción"><button class="btn-small" style="background:var(--red); color:white;" onclick="validarCancelacion('09:00 AM', 'Juan Duarte')">Gestionar</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="alumnos" class="section">
+            <h1>Base de <span style="color: var(--gold);">Alumnos</span></h1>
+            <input type="text" id="busqueda" placeholder="🔍 Buscar por nombre o ID...">
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr><th>ID</th><th>Nombre Completo</th><th>Estado</th><th>Acciones</th></tr>
+                    </thead>
+                    <tbody id="tablaCuerpo">
+                        <tr>
+                            <td data-label="ID">#ED-990</td>
+                            <td data-label="Nombre">Mariana Rodríguez</td>
+                            <td data-label="Estado"><span style="color: var(--green); font-weight: bold;">● Activo</span></td>
+                            <td data-label="Acciones">
+                                <button class="btn-small" style="background: var(--blue); color:white;" onclick="abrirGestionAlumno('Mariana Rodríguez')">Notas / Pass</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td data-label="ID">#ED-850</td>
+                            <td data-label="Nombre">Juan Duarte</td>
+                            <td data-label="Estado"><span style="color: var(--green); font-weight: bold;">● Activo</span></td>
+                            <td data-label="Acciones">
+                                <button class="btn-small" style="background: var(--blue); color:white;" onclick="abrirGestionAlumno('Juan Duarte')">Notas / Pass</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="reportes" class="section">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h1>Reporte <span style="color: var(--gold);">PDF</span></h1>
+                <button class="btn-small" style="background: var(--gold); color: black;" onclick="exportarPDF()">DESCARGAR</button>
+            </div>
+            <div id="areaImpresion" style="background: white; color: black; padding: 20px; border-radius: 10px;">
+                <h3 style="color: var(--red); margin: 0;">ÉLITE DRIVE - CONTROL DIARIO</h3>
+                <p>Generado: 2024</p>
+            </div>
+        </div>
+
+        <div id="trivia" class="section">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h1>Trivia <span style="color: var(--gold);">Game</span></h1>
+                <button class="btn-small" style="background:var(--gold); border:none; padding:10px;" onclick="abrirAdminTrivia()">⚙️ AGREGAR PREGUNTA</button>
+            </div>
+            <div id="game-view">
+                <p style="font-size: 1.1rem; margin-bottom: 20px;">¿Qué indica esta señal de tránsito?</p>
+                <div class="trivia-container">
+                    <div class="trivia-image-box">
+                        <img src="https://cdn-icons-png.flaticon.com/512/100/100342.png" alt="Señal">
+                    </div>
+                    <div class="answers-grid">
+                        <button class="answer-btn" onclick="checkAnswer(this)">A) Girar a la izquierda</button>
+                        <button class="answer-btn" onclick="checkAnswer(this)">B) Prohibido girar</button>
+                        <button class="answer-btn" onclick="checkAnswer(this)">C) Solo buses</button>
+                        <button class="answer-btn" onclick="checkAnswer(this)">D) Velocidad máxima 30km</button>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button class="btn-outline" onclick="alert('Cargando siguiente...')">CONTINUAR</button>
+                    <button class="btn-outline" style="border-color: var(--red); color: var(--red);" onclick="showSection('agenda')">VOLVER AL INICIO</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modalGeneral" onclick="if(event.target == this) cerrarModal()">
+        <div class="modal-content">
+            <h2 id="modalTitle" style="color: var(--gold); margin-top: 0;">Gestionar</h2>
+            
+            <div id="formAlumno" style="display:none;">
+                <label style="color:#888; font-size: 13px;">Notas de progreso:</label>
+                <textarea id="nota" rows="3" placeholder="Escriba aquí..."></textarea>
+                <button class="btn-gold" onclick="alert('Nota guardada'); cerrarModal();">GUARDAR NOTA</button>
+
+                <div style="margin-top:20px; border-top: 1px solid #333; padding-top: 15px;">
+                    <label style="color:#888; font-size: 13px;">Contraseña provisional:</label>
+                    <input type="password" id="newPass" placeholder="Nueva clave">
+                    <button class="btn-gold" style="background:#333; color:white;" onclick="alert('Password actualizado'); cerrarModal();">ACTUALIZAR PASS</button>
+                </div>
+            </div>
+
+            <div id="formReprogramar" style="display:none;">
+                <p id="infoReprogramar"></p>
+                <input type="date">
+                <select><option>08:00 AM</option><option>10:00 AM</option></select>
+                <button class="btn-gold" onclick="cerrarModal()">CONFIRMAR REPROGRAMACIÓN</button>
+            </div>
+
+            <div id="formTriviaAdmin" style="display:none;">
+                <label>Pregunta:</label><input type="text">
+                <label>URL Imagen:</label><input type="text">
+                <label>Opciones:</label>
+                <input type="text" placeholder="Correcta"><input type="text" placeholder="Incorrecta 1">
+                <button class="btn-gold" onclick="cerrarModal()">GUARDAR EN EL BANCO</button>
+            </div>
+
+            <button onclick="cerrarModal()" style="background:none; border:none; color:#555; width:100%; margin-top:15px; cursor:pointer; font-weight:bold;">CERRAR</button>
+        </div>
+    </div>
+
+    <script>
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
+
+        function showSection(id, btn) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            if(btn) btn.classList.add('active');
+            if(window.innerWidth <= 1024) document.getElementById('sidebar').classList.remove('open');
+        }
+
+        function abrirGestionAlumno(nombre) {
+            document.getElementById('modalTitle').innerText = nombre;
+            document.getElementById('formAlumno').style.display = "block";
+            document.getElementById('formReprogramar').style.display = "none";
+            document.getElementById('formTriviaAdmin').style.display = "none";
+            document.getElementById('modalGeneral').style.display = "flex";
+        }
+
+        function validarCancelacion(hora, alumno) {
+            document.getElementById('modalTitle').innerText = "Reprogramar";
+            document.getElementById('infoReprogramar').innerText = alumno + " (" + hora + ")";
+            document.getElementById('formAlumno').style.display = "none";
+            document.getElementById('formReprogramar').style.display = "block";
+            document.getElementById('formTriviaAdmin').style.display = "none";
+            document.getElementById('modalGeneral').style.display = "flex";
+        }
+
+        function abrirAdminTrivia() {
+            document.getElementById('modalTitle').innerText = "Nueva Pregunta";
+            document.getElementById('formAlumno').style.display = "none";
+            document.getElementById('formReprogramar').style.display = "none";
+            document.getElementById('formTriviaAdmin').style.display = "block";
+            document.getElementById('modalGeneral').style.display = "flex";
+        }
+
+        function cerrarModal() { document.getElementById('modalGeneral').style.display = "none"; }
+
+        function checkAnswer(btn) {
+            document.querySelectorAll('.answer-btn').forEach(b => b.style.borderColor = "#333");
+            btn.style.borderColor = "var(--green)";
+        }
+
+        function exportarPDF() {
+            const element = document.getElementById('areaImpresion');
+            html2pdf().from(element).save();
+        }
+
+        document.getElementById('busqueda').addEventListener('keyup', function(e) {
+            let term = e.target.value.toLowerCase();
+            document.querySelectorAll('#tablaCuerpo tr').forEach(row => {
+                row.style.display = row.innerText.toLowerCase().includes(term) ? "" : "none";
+            });
+        });
+    </script>
+</body>
+</html>

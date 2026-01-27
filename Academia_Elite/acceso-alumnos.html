@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acceso Seguro | Academia de Conducción Élite</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         :root { --red: #b71c1c; --gold: #c5a059; --dark: #050505; --card: #111; }
         body { 
@@ -49,8 +50,8 @@
         <div id="login-form" class="form-section active">
             <h3 style="text-align:center; color: var(--gold);">IDENTIFICACIÓN</h3>
             <div class="input-group">
-                <label>Usuario o Correo</label>
-                <input type="text" id="logUser" placeholder="Usuario registrado">
+                <label>Correo Electrónico</label>
+                <input type="email" id="logUser" placeholder="Tu correo registrado">
             </div>
             <div class="input-group">
                 <label>Contraseña</label>
@@ -63,115 +64,6 @@
         <div id="register-form" class="form-section">
             <h3 style="text-align:center; color: var(--gold);">REGISTRO NUEVO</h3>
             <div class="input-group">
-                <label>Nombre de Usuario (Máx 50)</label>
+                <label>Nombre de Usuario</label>
                 <input type="text" id="regUser" maxlength="50" placeholder="Ej: JuanP24">
             </div>
-            <div class="input-group">
-                <label>Nombre Completo (Máx 100)</label>
-                <input type="text" id="regFull" maxlength="100" placeholder="Nombre y Apellidos">
-            </div>
-            <div class="input-group">
-                <label>Correo Electrónico</label>
-                <input type="email" id="regMail" placeholder="correo@ejemplo.com">
-            </div>
-            <div class="input-group">
-                <label>Categoría (A1, B1, C1...)</label>
-                <input type="text" id="regCat" placeholder="Ej: B1">
-            </div>
-            <div class="input-group">
-                <label>Contraseña (Máx 80 - 1 Mayús, 1 Esp, Núm)</label>
-                <input type="password" id="regPass" maxlength="80" placeholder="••••••••">
-            </div>
-            
-            <button class="btn-action" onclick="solicitarPinWA()">1. SOLICITAR PIN AL WHATSAPP 📱</button>
-            <button class="btn-action" style="background:#333; color:white;" onclick="verificarPinYRegistrar()">2. INGRESAR PIN Y FINALIZAR 📝</button>
-            
-            <p style="font-size: 10px; color:#555; text-align:center; margin-top:10px;">
-                Debes estar matriculado para recibir tu PIN de activación.
-            </p>
-        </div>
-    </div>
-
-    <script>
-        let intentos = 0;
-        const academiaWA = "573133482932";
-
-        function switchTab(type) {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.form-section').forEach(f => f.classList.remove('active'));
-            if(type === 'login') {
-                document.querySelectorAll('.tab')[0].classList.add('active');
-                document.getElementById('login-form').classList.add('active');
-            } else {
-                document.querySelectorAll('.tab')[1].classList.add('active');
-                document.getElementById('register-form').classList.add('active');
-            }
-        }
-
-        // --- LÓGICA DE REGISTRO ---
-        function solicitarPinWA() {
-            const cat = document.getElementById('regCat').value || "X";
-            const msg = `Hola 👋, soy estudiante matriculado para la categoría ${cat} 🚗. Necesito mi PIN para ingresar y programar mis clases teóricas 📚.`;
-            window.open(`https://wa.me/${academiaWA}?text=${encodeURIComponent(msg)}`, '_blank');
-        }
-
-        function verificarPinYRegistrar() {
-            const pinValidos = ["A123", "B123", "C123"];
-            const pinUser = prompt("🔐 INGRESA EL CÓDIGO DE ACTIVACIÓN:\n(Ejemplo enviado por WhatsApp: E123 - Nota: El ejemplo no es funcional)");
-
-            if (pinValidos.includes(pinUser)) {
-                // Validar contraseña
-                const pass = document.getElementById('regPass').value;
-                const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,80}$/;
-
-                if (!regex.test(pass)) {
-                    alert("❌ La contraseña no cumple los requisitos (Mayúscula, Especial, Letras y Números).");
-                    return;
-                }
-
-                // Guardar datos
-                localStorage.setItem('u_name', document.getElementById('regUser').value);
-                localStorage.setItem('u_mail', document.getElementById('regMail').value);
-                localStorage.setItem('u_pass', pass);
-                localStorage.setItem('u_full', document.getElementById('regFull').value);
-                
-                alert("✅ ¡Registro Exitoso! Bienvenido a la Academia Élite 🏅");
-                switchTab('login');
-            } else {
-                alert("❌ Código PIN inválido o de ejemplo (E123). Solicita uno real a la academia.");
-            }
-        }
-
-        // --- LÓGICA DE INGRESO ---
-        function validarIngreso() {
-            const userIn = document.getElementById('logUser').value;
-            const passIn = document.getElementById('logPass').value;
-
-            const sUser = localStorage.getItem('u_name');
-            const sMail = localStorage.getItem('u_mail');
-            const sPass = localStorage.getItem('u_pass');
-
-            if ((userIn === sUser || userIn === sMail) && passIn === sPass) {
-                alert("✅ Ingreso exitoso. Redirigiendo a tu panel... 🚗💨");
-                intentos = 0;
-                window.location.href = "dashboard_estudiante.html"; 
-            } else {
-                intentos++;
-                if (intentos >= 3) {
-                    alert("❌ Has superado los 3 intentos. Por seguridad, solicita una clave provisional por WhatsApp.");
-                    recuperarClave();
-                    intentos = 0;
-                } else {
-                    alert(`❌ Datos incorrectos. Intento ${intentos} de 3.`);
-                }
-            }
-        }
-
-        function recuperarClave() {
-            const user = document.getElementById('logUser').value || "Estudiante";
-            const msg = `Hola 📢, mi usuario es ${user}. Olvidé mi contraseña 😅 y necesito una provisional para programar mis clases 🔑. ¡Gracias! ✨`;
-            window.open(`https://wa.me/${academiaWA}?text=${encodeURIComponent(msg)}`, '_blank');
-        }
-    </script>
-</body>
-</html>

@@ -19,6 +19,7 @@
         .tab { flex: 1; padding: 12px; text-align: center; cursor: pointer; color: #555; transition: 0.3s; font-weight: bold; }
         .tab.active { color: var(--gold); border-bottom: 2px solid var(--gold); }
         
+        /* ESTADO INICIAL: OCULTAR SECCIONES */
         .form-section { display: none; }
         .form-section.active { display: block; animation: fadeIn 0.4s; }
 
@@ -43,8 +44,8 @@
 
     <div class="auth-container">
         <div class="tabs">
-            <div class="tab active" onclick="switchTab('login')">Ingreso</div>
-            <div class="tab" onclick="switchTab('register')">Registro Estudiante</div>
+            <div id="tab-login" class="tab active" onclick="switchTab('login')">Ingreso</div>
+            <div id="tab-register" class="tab" onclick="switchTab('register')">Registro Estudiante</div>
         </div>
 
         <div id="login-form" class="form-section active">
@@ -65,5 +66,91 @@
             <h3 style="text-align:center; color: var(--gold);">REGISTRO NUEVO</h3>
             <div class="input-group">
                 <label>Nombre de Usuario</label>
-                <input type="text" id="regUser" maxlength="50" placeholder="Ej: JuanP24">
+                <input type="text" id="regUser" placeholder="Ej: JuanP24">
             </div>
+            <div class="input-group">
+                <label>Nombre Completo</label>
+                <input type="text" id="regFull" placeholder="Nombre y Apellidos">
+            </div>
+            <div class="input-group">
+                <label>Correo Electrónico</label>
+                <input type="email" id="regMail" placeholder="correo@ejemplo.com">
+            </div>
+            <div class="input-group">
+                <label>Categoría (A1, B1, C1...)</label>
+                <input type="text" id="regCat" placeholder="Ej: B1">
+            </div>
+            <div class="input-group">
+                <label>Contraseña</label>
+                <input type="password" id="regPass" placeholder="••••••••">
+            </div>
+            
+            <button class="btn-action" onclick="solicitarPinWA()">1. SOLICITAR PIN AL WHATSAPP 📱</button>
+            <button class="btn-action" style="background:#333; color:white;" onclick="verificarPinYRegistrar()">2. INGRESAR PIN Y FINALIZAR 📝</button>
+            
+            <p style="font-size: 10px; color:#555; text-align:center; margin-top:10px;">
+                Debes estar matriculado para recibir tu PIN de activación.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const SUPABASE_URL = 'https://aldwcqpgsjfjcttxfecp.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_OvQYw50Cs8sM21AJGg21zg_v3LunT3J';
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        const academiaWA = "573133482932";
+
+        // FUNCIÓN CLAVE: CAMBIAR ENTRE FORMULARIOS
+        function switchTab(type) {
+            // 1. Quitar 'active' de todas las pestañas y formularios
+            document.getElementById('tab-login').classList.remove('active');
+            document.getElementById('tab-register').classList.remove('active');
+            document.getElementById('login-form').classList.remove('active');
+            document.getElementById('register-form').classList.remove('active');
+
+            // 2. Activar solo lo que el usuario eligió
+            if(type === 'login') {
+                document.getElementById('tab-login').classList.add('active');
+                document.getElementById('login-form').classList.add('active');
+            } else {
+                document.getElementById('tab-register').classList.add('active');
+                document.getElementById('register-form').classList.add('active');
+            }
+        }
+
+        async function verificarPinYRegistrar() {
+            const pinValidos = ["A123", "B123", "C123"];
+            const pinUser = prompt("🔐 INGRESA EL CÓDIGO DE ACTIVACIÓN:");
+            if (!pinValidos.includes(pinUser)) return alert("❌ PIN inválido.");
+
+            const email = document.getElementById('regMail').value;
+            const pass = document.getElementById('regPass').value;
+            const full = document.getElementById('regFull').value;
+
+            const { data, error } = await _supabase.auth.signUp({ email, password: pass });
+            if (error) return alert("Error: " + error.message);
+
+            await _supabase.from('alumnos').insert([{ id: data.user.id, nombre_completo: full, email: email }]);
+            alert("✅ Registro exitoso.");
+            switchTab('login');
+        }
+
+        async function validarIngreso() {
+            const email = document.getElementById('logUser').value;
+            const password = document.getElementById('logPass').value;
+            const { error } = await _supabase.auth.signInWithPassword({ email, password });
+            if (error) alert("Error: " + error.message);
+            else window.location.href = "dashboard-alumno.html";
+        }
+
+        function solicitarPinWA() {
+            window.open(`https://wa.me/${academiaWA}?text=Hola, necesito mi PIN de activación.`, '_blank');
+        }
+
+        function recuperarClave() {
+            window.open(`https://wa.me/${academiaWA}?text=Olvidé mi contraseña.`, '_blank');
+        }
+    </script>
+</body>
+</html>

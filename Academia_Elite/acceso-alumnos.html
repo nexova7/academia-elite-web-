@@ -6,43 +6,59 @@
     <title>Acceso Seguro | Academia de Conducción Élite</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        :root { --red: #b71c1c; --gold: #c5a059; --dark: #050505; --card: #111; }
+        :root { --red: #b71c1c; --gold: #c5a059; --dark: #050505; --card: rgba(17, 17, 17, 0.9); }
         body { 
-            background: var(--dark); color: white; font-family: 'Segoe UI', sans-serif; 
+            background: radial-gradient(circle at center, #1a1a1a 0%, #050505 100%); 
+            color: white; font-family: 'Segoe UI', sans-serif; 
             display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0;
         }
         .auth-container { 
             background: var(--card); padding: 30px; border-radius: 20px; 
-            border: 1px solid #333; width: 100%; max-width: 450px; box-shadow: 0 15px 35px rgba(0,0,0,0.7);
+            border: 1px solid rgba(197, 160, 89, 0.3); width: 100%; max-width: 450px; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.7); backdrop-filter: blur(10px);
         }
         .tabs { display: flex; margin-bottom: 25px; border-bottom: 1px solid #222; }
         .tab { flex: 1; padding: 12px; text-align: center; cursor: pointer; color: #555; transition: 0.3s; font-weight: bold; }
         .tab.active { color: var(--gold); border-bottom: 2px solid var(--gold); }
         
-        /* ESTADO INICIAL: OCULTAR SECCIONES */
         .form-section { display: none; }
         .form-section.active { display: block; animation: fadeIn 0.4s; }
 
-        .input-group { margin-bottom: 12px; }
+        .input-group { margin-bottom: 12px; position: relative; }
         label { display: block; font-size: 11px; color: var(--gold); margin-bottom: 4px; text-transform: uppercase; }
         input { 
-            width: 100%; padding: 10px; background: #000; border: 1px solid #333; 
-            color: white; border-radius: 6px; box-sizing: border-box; 
+            width: 100%; padding: 12px; background: #000; border: 1px solid #333; 
+            color: white; border-radius: 8px; box-sizing: border-box; outline: none;
         }
+        input:focus { border-color: var(--gold); }
+
         .btn-action { 
             width: 100%; padding: 14px; background: var(--gold); border: none; 
-            border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 15px;
+            border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 15px; color: black;
+            transition: 0.3s;
         }
-        .wa-link { 
-            display: block; text-align: center; color: #25D366; text-decoration: none; 
-            font-size: 12px; margin-top: 10px; font-weight: bold;
+        .btn-action:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(197, 160, 89, 0.4); }
+
+        .btn-glass {
+            background: rgba(255,255,255,0.05); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.1); color: var(--gold); padding: 10px 18px;
+            border-radius: 12px; cursor: pointer; margin-bottom: 15px; transition: 0.3s; font-size: 13px;
         }
+        .btn-glass:hover { background: rgba(255,255,255,0.1); color: white; }
+
+        .eye-icon {
+            position: absolute; right: 12px; top: 32px; cursor: pointer; color: var(--gold); font-size: 18px;
+        }
+
+        .wa-link { display: block; text-align: center; color: #25D366; text-decoration: none; font-size: 12px; margin-top: 15px; font-weight: bold; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
     <div class="auth-container">
+        <button class="btn-glass" onclick="window.location.href='index.html'">← Volver al inicio</button>
+
         <div class="tabs">
             <div id="tab-login" class="tab active" onclick="switchTab('login')">Ingreso</div>
             <div id="tab-register" class="tab" onclick="switchTab('register')">Registro Estudiante</div>
@@ -57,9 +73,10 @@
             <div class="input-group">
                 <label>Contraseña</label>
                 <input type="password" id="logPass" placeholder="••••••••">
+                <span class="eye-icon" onclick="togglePass('logPass')">👁️</span>
             </div>
             <button class="btn-action" onclick="validarIngreso()">INGRESAR 🚗</button>
-            <a href="#" class="wa-link" onclick="recuperarClave()">¿Olvidaste tu contraseña? Solicita una aquí 📱</a>
+            <a href="#" class="wa-link" onclick="recuperarClave()">¿Olvidaste tu contraseña? Solicita ayuda 📱</a>
         </div>
 
         <div id="register-form" class="form-section">
@@ -77,20 +94,22 @@
                 <input type="email" id="regMail" placeholder="correo@ejemplo.com">
             </div>
             <div class="input-group">
-                <label>Categoría (A1, B1, C1...)</label>
+                <label>Categoría</label>
                 <input type="text" id="regCat" placeholder="Ej: B1">
             </div>
             <div class="input-group">
                 <label>Contraseña</label>
                 <input type="password" id="regPass" placeholder="••••••••">
+                <span class="eye-icon" onclick="togglePass('regPass')">👁️</span>
+            </div>
+            <div class="input-group">
+                <label>Repetir Contraseña</label>
+                <input type="password" id="regPass2" placeholder="••••••••">
+                <span class="eye-icon" onclick="togglePass('regPass2')">👁️</span>
             </div>
             
             <button class="btn-action" onclick="solicitarPinWA()">1. SOLICITAR PIN AL WHATSAPP 📱</button>
             <button class="btn-action" style="background:#333; color:white;" onclick="verificarPinYRegistrar()">2. INGRESAR PIN Y FINALIZAR 📝</button>
-            
-            <p style="font-size: 10px; color:#555; text-align:center; margin-top:10px;">
-                Debes estar matriculado para recibir tu PIN de activación.
-            </p>
         </div>
     </div>
 
@@ -98,41 +117,48 @@
         const SUPABASE_URL = 'https://aldwcqpgsjfjcttxfecp.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_OvQYw50Cs8sM21AJGg21zg_v3LunT3J';
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
         const academiaWA = "573133482932";
 
-        // FUNCIÓN CLAVE: CAMBIAR ENTRE FORMULARIOS
         function switchTab(type) {
-            // 1. Quitar 'active' de todas las pestañas y formularios
-            document.getElementById('tab-login').classList.remove('active');
-            document.getElementById('tab-register').classList.remove('active');
-            document.getElementById('login-form').classList.remove('active');
-            document.getElementById('register-form').classList.remove('active');
+            document.getElementById('tab-login').classList.toggle('active', type === 'login');
+            document.getElementById('tab-register').classList.toggle('active', type === 'register');
+            document.getElementById('login-form').classList.toggle('active', type === 'login');
+            document.getElementById('register-form').classList.toggle('active', type === 'register');
+        }
 
-            // 2. Activar solo lo que el usuario eligió
-            if(type === 'login') {
-                document.getElementById('tab-login').classList.add('active');
-                document.getElementById('login-form').classList.add('active');
-            } else {
-                document.getElementById('tab-register').classList.add('active');
-                document.getElementById('register-form').classList.add('active');
-            }
+        function togglePass(id) {
+            const el = document.getElementById(id);
+            el.type = el.type === "password" ? "text" : "password";
         }
 
         async function verificarPinYRegistrar() {
             const pinValidos = ["A123", "B123", "C123"];
             const pinUser = prompt("🔐 INGRESA EL CÓDIGO DE ACTIVACIÓN:");
-            if (!pinValidos.includes(pinUser)) return alert("❌ PIN inválido.");
+            
+            if (!pinUser || !pinValidos.includes(pinUser.toUpperCase())) {
+                return alert("❌ PIN incorrecto o cancelado.");
+            }
 
             const email = document.getElementById('regMail').value;
             const pass = document.getElementById('regPass').value;
+            const pass2 = document.getElementById('regPass2').value;
             const full = document.getElementById('regFull').value;
 
+            if (pass !== pass2) return alert("❌ Las contraseñas no coinciden.");
+            if (!email || !pass || !full) return alert("⚠️ Completa todos los campos.");
+
             const { data, error } = await _supabase.auth.signUp({ email, password: pass });
+            
             if (error) return alert("Error: " + error.message);
 
-            await _supabase.from('alumnos').insert([{ id: data.user.id, nombre_completo: full, email: email }]);
-            alert("✅ Registro exitoso.");
+            await _supabase.from('alumnos').insert([{ 
+                id: data.user.id, 
+                nombre_completo: full, 
+                email: email,
+                categoria: document.getElementById('regCat').value
+            }]);
+
+            alert("✅ Registro exitoso. ¡Bienvenido!");
             switchTab('login');
         }
 
@@ -140,14 +166,13 @@
             const email = document.getElementById('logUser').value;
             const password = document.getElementById('logPass').value;
             const { error } = await _supabase.auth.signInWithPassword({ email, password });
-            if (error) alert("Error: " + error.message);
+            
+            if (error) alert("❌ Error: " + error.message);
             else window.location.href = "dashboard-alumno.html";
         }
 
         function solicitarPinWA() {
-            window.open(`https://wa.me/${academiaWA}?text=Hola Academia de Conducción Elite 👋🚗
-Ya finalicé mis clases teóricas 📘✅ y quisiera solicitar, por favor, mi PIN de activación 🔑 para comenzar a programar mis clases prácticas 🚦🗓️.
-¡Muchas gracias! 😊`, '_blank');
+            window.open(`https://wa.me/${academiaWA}?text=Hola, solicito mi PIN de activación.`, '_blank');
         }
 
         function recuperarClave() {

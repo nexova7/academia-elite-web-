@@ -3,55 +3,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acceso Alumnos | Élite Drive</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <title>Acceso Seguro | Academia de Conducción Élite</title>
     <style>
-        :root { --gold: #c5a059; --dark: #0a0a0a; }
-        body { background: var(--dark); color: white; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .login-card { background: #141414; padding: 40px; border-radius: 20px; border: 1px solid var(--gold); width: 100%; max-width: 400px; text-align: center; }
-        input { width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid #333; color: white; border-radius: 8px; box-sizing: border-box; }
-        .btn-login { width: 100%; padding: 15px; background: var(--gold); border: none; color: black; font-weight: bold; border-radius: 10px; cursor: pointer; margin-top: 20px; }
-        .btn-login:hover { background: white; }
+        :root { --red: #b71c1c; --gold: #c5a059; --dark: #050505; --card: #111; }
+        body { 
+            background: var(--dark); color: white; font-family: 'Segoe UI', sans-serif; 
+            display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0;
+        }
+        .auth-container { 
+            background: var(--card); padding: 30px; border-radius: 20px; 
+            border: 1px solid #333; width: 100%; max-width: 450px; box-shadow: 0 15px 35px rgba(0,0,0,0.7);
+        }
+        .tabs { display: flex; margin-bottom: 25px; border-bottom: 1px solid #222; }
+        .tab { flex: 1; padding: 12px; text-align: center; cursor: pointer; color: #555; transition: 0.3s; font-weight: bold; }
+        .tab.active { color: var(--gold); border-bottom: 2px solid var(--gold); }
+        
+        .form-section { display: none; }
+        .form-section.active { display: block; animation: fadeIn 0.4s; }
+
+        .input-group { margin-bottom: 12px; }
+        label { display: block; font-size: 11px; color: var(--gold); margin-bottom: 4px; text-transform: uppercase; }
+        input { 
+            width: 100%; padding: 10px; background: #000; border: 1px solid #333; 
+            color: white; border-radius: 6px; box-sizing: border-box; 
+        }
+        .btn-action { 
+            width: 100%; padding: 14px; background: var(--gold); border: none; 
+            border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 15px;
+        }
+        .wa-link { 
+            display: block; text-align: center; color: #25D366; text-decoration: none; 
+            font-size: 12px; margin-top: 10px; font-weight: bold;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
-    <div class="login-card">
-        <h2 style="color: var(--gold);">SISTEMA ÉLITE</h2>
-        <p>Ingresa tus credenciales de alumno</p>
-        <input type="email" id="email" placeholder="Correo Electrónico">
-        <input type="password" id="password" placeholder="Contraseña">
-        <button class="btn-login" onclick="iniciarSesion()">INGRESAR AL PANEL</button>
-        <p id="msg" style="font-size: 12px; margin-top: 15px;"></p>
+
+    <div class="auth-container">
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('login')">Ingreso</div>
+            <div class="tab" onclick="switchTab('register')">Registro Estudiante</div>
+        </div>
+
+        <div id="login-form" class="form-section active">
+            <h3 style="text-align:center; color: var(--gold);">IDENTIFICACIÓN</h3>
+            <div class="input-group">
+                <label>Usuario o Correo</label>
+                <input type="text" id="logUser" placeholder="Usuario registrado">
+            </div>
+            <div class="input-group">
+                <label>Contraseña</label>
+                <input type="password" id="logPass" placeholder="••••••••">
+            </div>
+            <button class="btn-action" onclick="validarIngreso()">INGRESAR 🚗</button>
+            <a href="#" class="wa-link" onclick="recuperarClave()">¿Olvidaste tu contraseña? Solicita una aquí 📱</a>
+        </div>
+
+        <div id="register-form" class="form-section">
+            <h3 style="text-align:center; color: var(--gold);">REGISTRO NUEVO</h3>
+            <div class="input-group">
+                <label>Nombre de Usuario (Máx 50)</label>
+                <input type="text" id="regUser" maxlength="50" placeholder="Ej: JuanP24">
+            </div>
+            <div class="input-group">
+                <label>Nombre Completo (Máx 100)</label>
+                <input type="text" id="regFull" maxlength="100" placeholder="Nombre y Apellidos">
+            </div>
+            <div class="input-group">
+                <label>Correo Electrónico</label>
+                <input type="email" id="regMail" placeholder="correo@ejemplo.com">
+            </div>
+            <div class="input-group">
+                <label>Categoría (A1, B1, C1...)</label>
+                <input type="text" id="regCat" placeholder="Ej: B1">
+            </div>
+            <div class="input-group">
+                <label>Contraseña (Máx 80 - 1 Mayús, 1 Esp, Núm)</label>
+                <input type="password" id="regPass" maxlength="80" placeholder="••••••••">
+            </div>
+            
+            <button class="btn-action" onclick="solicitarPinWA()">1. SOLICITAR PIN AL WHATSAPP 📱</button>
+            <button class="btn-action" style="background:#333; color:white;" onclick="verificarPinYRegistrar()">2. INGRESAR PIN Y FINALIZAR 📝</button>
+            
+            <p style="font-size: 10px; color:#555; text-align:center; margin-top:10px;">
+                Debes estar matriculado para recibir tu PIN de activación.
+            </p>
+        </div>
     </div>
 
     <script>
-        const SUPABASE_URL = 'https://aldwcqpgsjfjcttxfecp.supabase.co';
-        const SUPABASE_ANON_KEY = 'sb_publishable_OvQYw50Cs8sM21AJGg21zg_v3LunT3J';
-        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        let intentos = 0;
+        const academiaWA = "573133482932";
 
-        async function iniciarSesion() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const msg = document.getElementById('msg');
-
-            msg.innerText = "Verificando...";
-
-            const { data, error } = await _supabase.auth.signInWithPassword({
-                email: email,
-                password: password,
-            });
-
-            if (error) {
-                msg.style.color = "#ff4444";
-                msg.innerText = "❌ Error: " + error.message;
+        function switchTab(type) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.form-section').forEach(f => f.classList.remove('active'));
+            if(type === 'login') {
+                document.querySelectorAll('.tab')[0].classList.add('active');
+                document.getElementById('login-form').classList.add('active');
             } else {
-                msg.style.color = "#44ff44";
-                msg.innerText = "✅ Acceso concedido. Redirigiendo...";
-                // Guardamos el nombre para el saludo inicial
-                setTimeout(() => {
-                    window.location.href = "dashboard-alumno.html"; 
-                }, 1000);
+                document.querySelectorAll('.tab')[1].classList.add('active');
+                document.getElementById('register-form').classList.add('active');
             }
+        }
+
+        // --- LÓGICA DE REGISTRO ---
+        function solicitarPinWA() {
+            const cat = document.getElementById('regCat').value || "X";
+            const msg = `Hola 👋, soy estudiante matriculado para la categoría ${cat} 🚗. Necesito mi PIN para ingresar y programar mis clases teóricas 📚.`;
+            window.open(`https://wa.me/${academiaWA}?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        function verificarPinYRegistrar() {
+            const pinValidos = ["A123", "B123", "C123"];
+            const pinUser = prompt("🔐 INGRESA EL CÓDIGO DE ACTIVACIÓN:\n(Ejemplo enviado por WhatsApp: E123 - Nota: El ejemplo no es funcional)");
+
+            if (pinValidos.includes(pinUser)) {
+                // Validar contraseña
+                const pass = document.getElementById('regPass').value;
+                const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,80}$/;
+
+                if (!regex.test(pass)) {
+                    alert("❌ La contraseña no cumple los requisitos (Mayúscula, Especial, Letras y Números).");
+                    return;
+                }
+
+                // Guardar datos
+                localStorage.setItem('u_name', document.getElementById('regUser').value);
+                localStorage.setItem('u_mail', document.getElementById('regMail').value);
+                localStorage.setItem('u_pass', pass);
+                localStorage.setItem('u_full', document.getElementById('regFull').value);
+                
+                alert("✅ ¡Registro Exitoso! Bienvenido a la Academia Élite 🏅");
+                switchTab('login');
+            } else {
+                alert("❌ Código PIN inválido o de ejemplo (E123). Solicita uno real a la academia.");
+            }
+        }
+
+        // --- LÓGICA DE INGRESO ---
+        function validarIngreso() {
+            const userIn = document.getElementById('logUser').value;
+            const passIn = document.getElementById('logPass').value;
+
+            const sUser = localStorage.getItem('u_name');
+            const sMail = localStorage.getItem('u_mail');
+            const sPass = localStorage.getItem('u_pass');
+
+            if ((userIn === sUser || userIn === sMail) && passIn === sPass) {
+                alert("✅ Ingreso exitoso. Redirigiendo a tu panel... 🚗💨");
+                intentos = 0;
+                window.location.href = "dashboard_estudiante.html"; 
+            } else {
+                intentos++;
+                if (intentos >= 3) {
+                    alert("❌ Has superado los 3 intentos. Por seguridad, solicita una clave provisional por WhatsApp.");
+                    recuperarClave();
+                    intentos = 0;
+                } else {
+                    alert(`❌ Datos incorrectos. Intento ${intentos} de 3.`);
+                }
+            }
+        }
+
+        function recuperarClave() {
+            const user = document.getElementById('logUser').value || "Estudiante";
+            const msg = `Hola 📢, mi usuario es ${user}. Olvidé mi contraseña 😅 y necesito una provisional para programar mis clases 🔑. ¡Gracias! ✨`;
+            window.open(`https://wa.me/${academiaWA}?text=${encodeURIComponent(msg)}`, '_blank');
         }
     </script>
 </body>

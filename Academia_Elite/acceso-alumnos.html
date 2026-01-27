@@ -1,260 +1,91 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acceso Alumnos | Academia Élite Drive</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Panel Élite Drive</title>
     <style>
-        :root {
-            --red: #b71c1c;
-            --gold: #c5a059;
-            --dark: #0a0a0a;
-            --card: #141414;
-        }
+        :root { --red: #b71c1c; --gold: #c5a059; --dark: #0a0a0a; --card: #141414; }
+        body { background: var(--dark); color: white; font-family: sans-serif; margin: 0; display: flex; }
+        
+        /* Sidebar */
+        .sidebar { width: 250px; background: #000; height: 100vh; position: fixed; padding: 20px; border-right: 1px solid #222; display: flex; flex-direction: column; }
+        .nav-btn { width: 100%; padding: 15px; background: none; border: none; color: #666; text-align: left; cursor: pointer; border-radius: 8px; margin-bottom: 10px; font-size: 16px; }
+        .nav-btn.active { color: white; background: #1a1a1a; border-left: 4px solid var(--gold); }
 
-        body {
-            background: var(--dark);
-            color: white;
-            font-family: 'Segoe UI', sans-serif;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-        }
-
-        .btn-back-home {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            color: #888;
-            text-decoration: none;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: 0.3s;
-        }
-
-        .btn-back-home:hover { color: var(--gold); }
-
-        .container-master {
-            display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            gap: 30px;
-            max-width: 1000px;
-            width: 100%;
-        }
-
-        .auth-card {
-            background: var(--card);
-            padding: 30px;
-            border-radius: 20px;
-            border: 1px solid #222;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
-        }
-
-        h2 {
-            color: var(--gold);
-            margin-top: 0;
-            border-bottom: 1px solid #222;
-            padding-bottom: 10px;
-            font-size: 1.4rem;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-            position: relative;
-        }
-
-        label {
-            display: block;
-            font-size: 11px;
-            color: #888;
-            margin-bottom: 5px;
-            text-transform: uppercase;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 10px 12px;
-            background: #0d0d0d;
-            border: 1px solid #333;
-            color: white;
-            border-radius: 6px;
-            box-sizing: border-box;
-            outline: none;
-            transition: 0.3s;
-        }
-
-        input:focus { border-color: var(--gold); }
-
-        .toggle-pass {
-            position: absolute;
-            right: 12px;
-            top: 32px;
-            cursor: pointer;
-            color: #555;
-        }
-
-        .btn-wa {
-            background: #25d366;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 6px;
-            width: 100%;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            text-decoration: none;
-            margin: 10px 0;
-        }
-
-        .btn-submit {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 16px;
-            transition: 0.2s;
-        }
-
-        .btn-red { background: var(--red); color: white; }
-        .btn-gold { background: var(--gold); color: black; }
-
-        .pin-style {
-            border: 1px dashed var(--gold);
-            text-align: center;
-            letter-spacing: 5px;
-            font-weight: bold;
-        }
-
-        @media (max-width: 850px) {
-            .container-master { grid-template-columns: 1fr; }
-        }
+        /* Contenido */
+        .content { margin-left: 250px; padding: 40px; width: 100%; }
+        .section { display: none; } /* Ocultas por defecto */
+        .section.active { display: block; } /* Solo se muestra la activa */
+        
+        .card { background: var(--card); padding: 25px; border-radius: 12px; border: 1px solid #222; }
     </style>
 </head>
-
 <body>
 
-    <a href="index.html" class="btn-back-home">
-        <i class="fa-solid fa-arrow-left"></i> REGRESAR AL INICIO
-    </a>
+    <div class="sidebar">
+        <h2 style="color: var(--gold); text-align: center;">ÉLITE DRIVE</h2>
+        <button class="nav-btn active" onclick="mostrarSeccion('perfil', this)">👤 Mi Perfil</button>
+        <button class="nav-btn" onclick="mostrarSeccion('progreso', this)">📊 Mi Progreso</button>
+        <button class="nav-btn" onclick="mostrarSeccion('clases', this)">🚗 Mis Clases</button>
+        <button class="nav-btn" onclick="mostrarSeccion('trivia', this)">🏆 Trivia Élite</button>
+    </div>
 
-    <div class="container-master">
-        <div class="auth-card">
-            <h2><i class="fa-solid fa-user-plus"></i> Registro Nuevo Alumno</h2>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                <div class="form-group" style="grid-column: span 2;">
-                    <label>Nombre de Usuario</label>
-                    <input type="text" id="regUser" placeholder="Ej: AlumnoElite">
-                </div>
-                <div class="form-group" style="grid-column: span 2;">
-                    <label>Nombre Completo</label>
-                    <input type="text" id="regFullName" placeholder="Nombre y Apellidos">
-                </div>
-                <div class="form-group">
-                    <label>Contraseña</label>
-                    <input type="password" id="regPass">
-                    <i class="fa-solid fa-eye toggle-pass" onclick="toggleView('regPass')"></i>
-                </div>
-                <div class="form-group">
-                    <label>Repetir Contraseña</label>
-                    <input type="password" id="regPassConfirm">
-                </div>
-                <div class="form-group" style="grid-column: span 2;">
-                    <label>Categoría de Licencia</label>
-                    <select id="regCat">
-                        <option value="A2">A2 - Motocicletas</option>
-                        <option value="B1">B1 - Automóviles</option>
-                    </select>
-                </div>
+    <div class="content">
+        <div id="perfil" class="section active">
+            <div class="card">
+                <h2 style="color: var(--gold);">Configuración de Perfil</h2>
+                <p>Aquí puedes editar tus datos personales.</p>
             </div>
-
-            <a href="#" class="btn-wa" onclick="enviarWha()">
-                <i class="fa-brands fa-whatsapp"></i> SOLICITAR PIN DE ACCESO
-            </a>
-
-            <div class="form-group">
-                <label>Ingresa el PIN recibido</label>
-                <input type="text" id="regPin" class="pin-style" maxlength="4">
-            </div>
-
-            <button class="btn-submit btn-red" onclick="registrar()">CREAR MI CUENTA</button>
         </div>
 
-        <div class="auth-card" style="display: flex; flex-direction: column; justify-content: center;">
-            <div style="text-align: center; margin-bottom: 20px;">
-                <i class="fa-solid fa-shield-halved" style="font-size: 3rem; color: var(--gold);"></i>
-                <h2 style="border: none;">Ingreso Alumnos</h2>
+        <div id="progreso" class="section">
+            <div class="card">
+                <h2 style="color: var(--gold);">Mi Avance</h2>
+                <p>Progreso de clases teóricas y prácticas.</p>
             </div>
-            <div class="form-group">
-                <label>Usuario</label>
-                <input type="text" id="loginUser" placeholder="Tu nombre de usuario">
+        </div>
+
+        <div id="clases" class="section">
+            <div class="card">
+                <h2 style="color: var(--gold);">Mis Clases Agendadas</h2>
+                <p>Consulta aquí tus próximos horarios de conducción.</p>
             </div>
-            <div class="form-group">
-                <label>Contraseña</label>
-                <input type="password" id="loginPass" placeholder="••••••••">
-                <i class="fa-solid fa-eye toggle-pass" onclick="toggleView('loginPass')"></i>
+        </div>
+
+        <div id="trivia" class="section">
+            <div class="card">
+                <h2 style="color: var(--gold);">Trivia Vial</h2>
+                <p>Cuestionarios para preparar tu examen teórico.</p>
             </div>
-            <button class="btn-submit btn-gold" onclick="login()">INICIAR SESIÓN</button>
         </div>
     </div>
 
     <script>
-        function toggleView(id) {
-            const input = document.getElementById(id);
-            input.type = (input.type === "password") ? "text" : "password";
-        }
+        // Función principal de navegación
+        function mostrarSeccion(idDeSeccion, botonClicado) {
+            console.log("Cambiando a sección: " + idDeSeccion); // Para verificar en consola
 
-        function enviarWha() {
-            const nombre = document.getElementById('regFullName').value;
-            if (nombre.length < 5) return alert("Ingresa tu nombre completo.");
-            const msg = `Hola Academia Élite, necesito el PIN de acceso. Mi nombre es ${nombre}.`;
-            window.open(`https://wa.me/573133482932?text=${encodeURIComponent(msg)}`, '_blank');
-        }
+            // 1. Ocultar todas las secciones
+            const secciones = document.querySelectorAll('.section');
+            secciones.forEach(sec => {
+                sec.classList.remove('active');
+            });
 
-        function registrar() {
-            const user = document.getElementById('regUser').value.trim();
-            const pass = document.getElementById('regPass').value;
-            const confirm = document.getElementById('regPassConfirm').value;
-            const pin = document.getElementById('regPin').value.toUpperCase();
+            // 2. Quitar el color dorado de todos los botones
+            const botones = document.querySelectorAll('.nav-btn');
+            botones.forEach(btn => {
+                btn.classList.remove('active');
+            });
 
-            if (!user || !pass) return alert("Completa todos los campos.");
-            if (pass !== confirm) return alert("Las contraseñas no coinciden.");
-            
-            // Validación de PIN y Guardado
-            if (["A123", "B123", "C123"].includes(pin)) {
-                localStorage.setItem('elite_user', user);
-                localStorage.setItem('elite_pass', pass);
-                alert("✅ Cuenta registrada. Ahora puedes iniciar sesión.");
-            } else {
-                alert("❌ PIN incorrecto.");
+            // 3. Mostrar la sección que queremos
+            const seccionDestino = document.getElementById(idDeSeccion);
+            if (seccionDestino) {
+                seccionDestino.classList.add('active');
             }
-        }
 
-        function login() { 
-            const userIn = document.getElementById('loginUser').value.trim();
-            const passIn = document.getElementById('loginPass').value;
-
-            const storedUser = localStorage.getItem('elite_user');
-            const storedPass = localStorage.getItem('elite_pass');
-
-            if (userIn === storedUser && passIn === storedPass && storedUser !== null) {
-                window.location.href = "dashboard-alumno.html";
-            } else {
-                alert("❌ Error: Usuario o contraseña incorrectos.");
-            }
+            // 4. Pintar de dorado el botón que tocamos
+            botonClicado.classList.add('active');
         }
     </script>
 </body>

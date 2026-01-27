@@ -139,7 +139,7 @@
                 return alert("❌ PIN incorrecto o cancelado.");
             }
 
-            const email = document.getElementById('regMail').value;
+            const email = document.getElementById('regMail').value.trim();
             const pass = document.getElementById('regPass').value;
             const pass2 = document.getElementById('regPass2').value;
             const full = document.getElementById('regFull').value;
@@ -149,7 +149,7 @@
 
             const { data, error } = await _supabase.auth.signUp({ email, password: pass });
             
-            if (error) return alert("Error: " + error.message);
+            if (error) return alert("Error de registro: " + error.message);
 
             await _supabase.from('alumnos').insert([{ 
                 id: data.user.id, 
@@ -163,12 +163,23 @@
         }
 
         async function validarIngreso() {
-            const email = document.getElementById('logUser').value;
+            const email = document.getElementById('logUser').value.trim();
             const password = document.getElementById('logPass').value;
-            const { error } = await _supabase.auth.signInWithPassword({ email, password });
+
+            if (!email || !password) return alert("⚠️ Ingresa correo y contraseña.");
+
+            const { data, error } = await _supabase.auth.signInWithPassword({ email, password });
             
-            if (error) alert("❌ Error: " + error.message);
-            else window.location.href = "dashboard-alumno.html";
+            if (error) {
+                console.error("Error detectado:", error.message);
+                if (error.message.includes("Invalid login credentials")) {
+                    alert("❌ Datos incorrectos. Asegúrate de usar el correo y contraseña correctos.");
+                } else {
+                    alert("❌ Error: " + error.message);
+                }
+            } else {
+                window.location.href = "dashboard-alumno.html";
+            }
         }
 
         function solicitarPinWA() {

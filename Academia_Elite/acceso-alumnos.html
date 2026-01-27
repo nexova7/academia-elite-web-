@@ -3,89 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Élite Drive</title>
+    <title>Acceso Alumnos | Élite Drive</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        :root { --red: #b71c1c; --gold: #c5a059; --dark: #0a0a0a; --card: #141414; }
-        body { background: var(--dark); color: white; font-family: sans-serif; margin: 0; display: flex; }
-        
-        /* Sidebar */
-        .sidebar { width: 250px; background: #000; height: 100vh; position: fixed; padding: 20px; border-right: 1px solid #222; display: flex; flex-direction: column; }
-        .nav-btn { width: 100%; padding: 15px; background: none; border: none; color: #666; text-align: left; cursor: pointer; border-radius: 8px; margin-bottom: 10px; font-size: 16px; }
-        .nav-btn.active { color: white; background: #1a1a1a; border-left: 4px solid var(--gold); }
-
-        /* Contenido */
-        .content { margin-left: 250px; padding: 40px; width: 100%; }
-        .section { display: none; } /* Ocultas por defecto */
-        .section.active { display: block; } /* Solo se muestra la activa */
-        
-        .card { background: var(--card); padding: 25px; border-radius: 12px; border: 1px solid #222; }
+        :root { --gold: #c5a059; --dark: #0a0a0a; }
+        body { background: var(--dark); color: white; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .login-card { background: #141414; padding: 40px; border-radius: 20px; border: 1px solid var(--gold); width: 100%; max-width: 400px; text-align: center; }
+        input { width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid #333; color: white; border-radius: 8px; box-sizing: border-box; }
+        .btn-login { width: 100%; padding: 15px; background: var(--gold); border: none; color: black; font-weight: bold; border-radius: 10px; cursor: pointer; margin-top: 20px; }
+        .btn-login:hover { background: white; }
     </style>
 </head>
 <body>
-
-    <div class="sidebar">
-        <h2 style="color: var(--gold); text-align: center;">ÉLITE DRIVE</h2>
-        <button class="nav-btn active" onclick="mostrarSeccion('perfil', this)">👤 Mi Perfil</button>
-        <button class="nav-btn" onclick="mostrarSeccion('progreso', this)">📊 Mi Progreso</button>
-        <button class="nav-btn" onclick="mostrarSeccion('clases', this)">🚗 Mis Clases</button>
-        <button class="nav-btn" onclick="mostrarSeccion('trivia', this)">🏆 Trivia Élite</button>
-    </div>
-
-    <div class="content">
-        <div id="perfil" class="section active">
-            <div class="card">
-                <h2 style="color: var(--gold);">Configuración de Perfil</h2>
-                <p>Aquí puedes editar tus datos personales.</p>
-            </div>
-        </div>
-
-        <div id="progreso" class="section">
-            <div class="card">
-                <h2 style="color: var(--gold);">Mi Avance</h2>
-                <p>Progreso de clases teóricas y prácticas.</p>
-            </div>
-        </div>
-
-        <div id="clases" class="section">
-            <div class="card">
-                <h2 style="color: var(--gold);">Mis Clases Agendadas</h2>
-                <p>Consulta aquí tus próximos horarios de conducción.</p>
-            </div>
-        </div>
-
-        <div id="trivia" class="section">
-            <div class="card">
-                <h2 style="color: var(--gold);">Trivia Vial</h2>
-                <p>Cuestionarios para preparar tu examen teórico.</p>
-            </div>
-        </div>
+    <div class="login-card">
+        <h2 style="color: var(--gold);">SISTEMA ÉLITE</h2>
+        <p>Ingresa tus credenciales de alumno</p>
+        <input type="email" id="email" placeholder="Correo Electrónico">
+        <input type="password" id="password" placeholder="Contraseña">
+        <button class="btn-login" onclick="iniciarSesion()">INGRESAR AL PANEL</button>
+        <p id="msg" style="font-size: 12px; margin-top: 15px;"></p>
     </div>
 
     <script>
-        // Función principal de navegación
-        function mostrarSeccion(idDeSeccion, botonClicado) {
-            console.log("Cambiando a sección: " + idDeSeccion); // Para verificar en consola
+        const SUPABASE_URL = 'https://aldwcqpgsjfjcttxfecp.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_OvQYw50Cs8sM21AJGg21zg_v3LunT3J';
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-            // 1. Ocultar todas las secciones
-            const secciones = document.querySelectorAll('.section');
-            secciones.forEach(sec => {
-                sec.classList.remove('active');
+        async function iniciarSesion() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const msg = document.getElementById('msg');
+
+            msg.innerText = "Verificando...";
+
+            const { data, error } = await _supabase.auth.signInWithPassword({
+                email: email,
+                password: password,
             });
 
-            // 2. Quitar el color dorado de todos los botones
-            const botones = document.querySelectorAll('.nav-btn');
-            botones.forEach(btn => {
-                btn.classList.remove('active');
-            });
-
-            // 3. Mostrar la sección que queremos
-            const seccionDestino = document.getElementById(idDeSeccion);
-            if (seccionDestino) {
-                seccionDestino.classList.add('active');
+            if (error) {
+                msg.style.color = "#ff4444";
+                msg.innerText = "❌ Error: " + error.message;
+            } else {
+                msg.style.color = "#44ff44";
+                msg.innerText = "✅ Acceso concedido. Redirigiendo...";
+                // Guardamos el nombre para el saludo inicial
+                setTimeout(() => {
+                    window.location.href = "dashboard-alumno.html"; 
+                }, 1000);
             }
-
-            // 4. Pintar de dorado el botón que tocamos
-            botonClicado.classList.add('active');
         }
     </script>
 </body>

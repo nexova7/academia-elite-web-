@@ -26,7 +26,6 @@
             min-height: 100vh;
         }
 
-        /* ---------- NAVEGACIÓN ---------- */
         nav {
             display: flex; justify-content: space-between; align-items: center;
             padding: 15px 30px; background: rgba(0,0,0,0.8);
@@ -42,10 +41,10 @@
 
         .hamburger { display: none; font-size: 24px; cursor: pointer; color: var(--gold); }
 
-        /* ---------- CONTENEDORES ---------- */
         .container { max-width: 1200px; margin: auto; padding: 25px; }
         .section { display: none; animation: fadeIn 0.5s ease; }
         .section.active { display: block; }
+        
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .glass-card {
@@ -55,10 +54,8 @@
             margin-bottom: 25px;
         }
 
-        /* ---------- GRID PRINCIPAL ---------- */
         .main-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 25px; }
 
-        /* ---------- LICENCIA DIGITAL ---------- */
         .license-card {
             background: linear-gradient(135deg, #111, #050505);
             border: 2px solid var(--gold); border-radius: 20px; padding: 20px;
@@ -73,44 +70,37 @@
             display: flex; align-items: center; justify-content: center; cursor: pointer;
         }
 
-        /* ---------- STATS INDICADORES ---------- */
         .stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
         .stat-item { background: rgba(0,0,0,0.4); padding: 10px; border-radius: 10px; text-align: center; border: 1px solid rgba(197, 160, 89, 0.1); }
         .stat-item span { display: block; font-size: 10px; color: var(--gold); font-weight: bold; text-transform: uppercase; }
         .stat-item b { font-size: 18px; }
 
-        /* ---------- FORMULARIOS ---------- */
         .input-group { margin-bottom: 20px; position: relative; }
         label { display: block; font-size: 12px; color: var(--gold); margin-bottom: 8px; font-weight: bold; }
         input, select {
             width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #333;
             background: rgba(255,255,255,0.05); color: #fff; outline: none; transition: 0.3s;
         }
-        input:focus { border-color: var(--gold); background: rgba(255,255,255,0.1); }
 
         .btn-gold {
             width: 100%; padding: 15px; border: none; border-radius: 10px;
             background: linear-gradient(135deg, var(--gold), var(--gold-light));
             color: #000; font-weight: bold; cursor: pointer; transition: 0.3s;
         }
-        .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(197, 160, 89, 0.4); }
 
-        /* ---------- TRIVIA ---------- */
         .trivia-btn {
             width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 10px;
             background: rgba(255,255,255,0.05); border: 1px solid #444; color: #fff;
-            text-align: left; cursor: pointer; transition: 0.2s;
+            text-align: left; cursor: pointer;
         }
-        .trivia-btn:hover { border-color: var(--gold); background: rgba(197, 160, 89, 0.1); }
 
-        /* ---------- RESERVAS CARDS ---------- */
         .reserva-card {
             background: rgba(255,255,255,0.03); border: 1px solid rgba(197, 160, 89, 0.2);
             padding: 15px; border-radius: 12px; margin-bottom: 10px; display: flex;
             justify-content: space-between; align-items: center;
         }
-        .btn-cancel { background: #b22222; color: #fff; padding: 8px 12px; border: none; border-radius: 5px; cursor: pointer; font-size: 12px; }
-        .btn-cancel:disabled { background: #444; cursor: not-allowed; }
+
+        .btn-cancel { background: #b22222; color: #fff; padding: 8px 12px; border: none; border-radius: 5px; cursor: pointer; }
 
         @media (max-width: 900px) {
             .main-grid { grid-template-columns: 1fr; }
@@ -132,7 +122,6 @@
 </nav>
 
 <div class="container">
-
     <div id="login" class="section active">
         <div class="glass-card" style="max-width: 450px; margin: auto;">
             <h2 style="text-align:center; color: var(--gold);">BIENVENIDO</h2>
@@ -144,7 +133,7 @@
                 <label>Contraseña</label>
                 <input type="password" id="loginPass">
             </div>
-            <button class="btn-gold" onclick="login()">INGRESAR AL SISTEMA</button>
+            <button class="btn-gold" id="btnLogin" onclick="login()">INGRESAR AL SISTEMA</button>
             <p style="text-align:center; font-size: 13px; margin-top: 15px;">
                 ¿No tienes cuenta? <a href="#" onclick="showSection('registro')" style="color:var(--gold);">Regístrate aquí</a>
             </p>
@@ -165,7 +154,6 @@
 
     <div id="dashboard" class="section">
         <div class="main-grid">
-            
             <div class="left-col">
                 <div class="glass-card">
                     <h3 style="color:var(--gold); margin-top:0;"><i class="fas fa-calendar-check"></i> AGENDAR CLASE PRÁCTICA</h3>
@@ -191,140 +179,93 @@
                     </div>
                     <button class="btn-gold" onclick="reservar()">CONFIRMAR AGENDAMIENTO</button>
                 </div>
-
-                <div class="glass-card">
-                    <h3 style="color:var(--gold);"><i class="fas fa-brain"></i> DESAFÍO TEÓRICO (TRIVIA)</h3>
-                    <div id="trivia-box">
-                        <p id="pregunta">¿Cuál es la distancia mínima de seguridad al adelantar a un ciclista?</p>
-                        <button class="trivia-btn" onclick="responderTrivia(100)">A. 1.5 Metros</button>
-                        <button class="trivia-btn" onclick="responderTrivia(0)">B. 0.5 Metros</button>
-                    </div>
-                </div>
             </div>
 
             <div class="right-col">
                 <div class="license-card">
                     <div class="photo-container">
-                        <img id="currentAvatar" src="1.jpeg" class="photo-frame">
+                        <img id="currentAvatar" src="https://via.placeholder.com/140" class="photo-frame">
                         <label for="fileInput" class="upload-badge"><i class="fas fa-camera"></i></label>
                         <input type="file" id="fileInput" hidden accept="image/*" onchange="subirFoto(this)">
                     </div>
-                    <h4 id="dispNombre" style="text-align:center; margin: 10px 0; letter-spacing: 1px;">ALUMNO ÉLITE</h4>
-                    <p style="text-align:center; font-size: 11px; opacity: 0.6;">LICENCIA DE CONDUCCIÓN INTERNA</p>
-                    
+                    <h4 id="dispNombre" style="text-align:center; margin: 10px 0; letter-spacing: 1px;">CARGANDO...</h4>
                     <div class="stats-row">
-                        <div class="stat-item"><span id="lblClases">Clases</span><b id="stat-clases">0/20</b></div>
+                        <div class="stat-item"><span>Clases</span><b id="stat-clases">0/20</b></div>
                         <div class="stat-item"><span>Trivia</span><b id="stat-trivia">0%</b></div>
                     </div>
-
-                    <div style="margin-top:20px;">
-                        <label>Actualizar WhatsApp</label>
-                        <input type="text" id="profWA" placeholder="+57 300...">
-                        <button class="btn-gold" style="padding:10px; margin-top:10px; font-size:12px;" onclick="guardarPerfil()">GUARDAR DATOS</button>
-                    </div>
                 </div>
-
                 <h3 style="color:var(--gold); margin-top:30px;"><i class="fas fa-list-ul"></i> MIS PRÓXIMAS CLASES</h3>
-                <div id="listaReservas">
-                    </div>
+                <div id="listaReservas"></div>
             </div>
         </div>
     </div>
-
 </div>
 
 <script>
-/* ---------- CONFIGURACIÓN SUPABASE ---------- */
+/* ---------- SUPABASE CONFIG ---------- */
 const SUPABASE_URL = "https://aldwcqpgsjfjcttxfecp.supabase.co"; 
-const SUPABASE_KEY = "sb_publishable_OvQYw50Cs8sM21AJGg21zg_v3LunT3J"; // REEMPLAZAR CON TU LLAVE ANON
+const SUPABASE_KEY = "TU_KEY_ANON_AQUI"; // REEMPLAZA CON TU KEY REAL
 
 const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
     db: { schema: 'academia_elite' }
 });
 
-/* ---------- LÓGICA DE NAVEGACIÓN ---------- */
+/* ---------- AUTO-LOGIN CHECK ---------- */
+window.onload = async () => {
+    const { data: { session } } = await _supabase.auth.getSession();
+    if (session) {
+        showSection('dashboard');
+    }
+};
+
+_supabase.auth.onAuthStateChange((event, session) => {
+    if (event === 'SIGNED_IN') showSection('dashboard');
+    if (event === 'SIGNED_OUT') showSection('login');
+});
+
+/* ---------- NAVEGACIÓN ---------- */
 function toggleMenu() { document.getElementById("menu").classList.toggle("show"); }
 
-function showSection(id) {
+async function showSection(id) {
+    const { data: { session } } = await _supabase.auth.getSession();
+    if (id === 'dashboard' && !session) id = 'login';
+
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
+    
     if(id === 'dashboard') {
         document.getElementById('btnLogOut').style.display = 'block';
         cargarDatosAlumno();
         cargarReservas();
+    } else {
+        document.getElementById('btnLogOut').style.display = 'none';
     }
 }
 
-/* ---------- AUTENTICACIÓN ---------- */
+/* ---------- LOGIN / REGISTRO ---------- */
 async function login() {
     const email = document.getElementById("loginEmail").value;
     const pass = document.getElementById("loginPass").value;
-    const { data, error } = await _supabase.auth.signInWithPassword({ email, password: pass });
-    if(error) alert("Error: " + error.message);
-    else showSection('dashboard');
+    const btn = document.getElementById("btnLogin");
+    
+    btn.innerText = "VERIFICANDO...";
+    const { error } = await _supabase.auth.signInWithPassword({ email, password: pass });
+    
+    if(error) {
+        alert("Error: " + error.message);
+        btn.innerText = "INGRESAR AL SISTEMA";
+    }
 }
 
 async function registrar() {
-    const pinsValidos = ["A123", "B123"];
     const nombre = document.getElementById("regNombre").value;
     const email = document.getElementById("regEmail").value;
     const pass = document.getElementById("regPass").value;
-    const pin = document.getElementById("regPin").value;
-
-    if(!pinsValidos.includes(pin)) return alert("PIN no válido");
-
+    
     const { data, error } = await _supabase.auth.signUp({ 
         email, password: pass, options: { data: { nombre_completo: nombre } } 
     });
 
     if(error) alert(error.message);
     else {
-        await _supabase.from('alumnos').insert({ id: data.user.id, nombre_completo: nombre, email: email });
-        alert("Registro exitoso");
-        showSection('login');
-    }
-}
-
-async function logout() {
-    await _supabase.auth.signOut();
-    location.reload();
-}
-
-/* ---------- DATOS DEL ALUMNO ---------- */
-async function cargarDatosAlumno() {
-    const { data: { user } } = await _supabase.auth.getUser();
-    if(!user) return;
-
-    const { data: alumno } = await _supabase.from('alumnos').select('*').eq('id', user.id).single();
-    if(alumno) {
-        document.getElementById('dispNombre').innerText = alumno.nombre_completo.toUpperCase();
-        document.getElementById('stat-trivia').innerText = (alumno.puntaje_trivia || 0) + "%";
-        document.getElementById('stat-clases').innerText = (alumno.clases_realizadas || 0) + "/20";
-        document.getElementById('profWA').value = alumno.whatsapp || "";
-        if(alumno.avatar_url) document.getElementById('currentAvatar').src = alumno.avatar_url;
-    }
-}
-
-async function guardarPerfil() {
-    const { data: { user } } = await _supabase.auth.getUser();
-    const wa = document.getElementById('profWA').value;
-    const { error } = await _supabase.from('alumnos').update({ whatsapp: wa }).eq('id', user.id);
-    if(!error) alert("Datos actualizados");
-}
-
-/* ---------- AGENDAMIENTO CON CUPOS ---------- */
-const fechaInput = document.getElementById("fecha");
-const horaSelect = document.getElementById("hora");
-const instructorSelect = document.getElementById("instructor");
-
-fechaInput.min = new Date().toISOString().split("T")[0];
-fechaInput.addEventListener('change', verificarCupos);
-instructorSelect.addEventListener('change', verificarCupos);
-
-async function verificarCupos() {
-    const fecha = fechaInput.value;
-    const inst = instructorSelect.value;
-    if(!fecha) return;
-
-    // Reset select
-    Array.from(horaSelect.options).forEach(opt => {
+        await _supabase.from('alumnos').insert

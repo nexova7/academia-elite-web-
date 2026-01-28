@@ -3,269 +3,230 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Academia de Conducción Élite | Panel Oficial</title>
-
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <title>Panel Élite Drive | Sistema Integral</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
     <style>
-        :root {
-            --bg: #050505;
-            --glass: rgba(255, 255, 255, 0.05);
-            --gold: #c5a059;
-            --gold-light: #f5d76e;
-            --text: #ffffff;
+        :root { 
+            --red: #b71c1c; 
+            --gold: #c5a059; 
+            --gold-glow: rgba(197, 160, 89, 0.4);
+            --dark: #0a0a0a; 
+            --card: #141414; 
+            --border: #222;
         }
 
-        * { box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
-        
-        body {
-            margin: 0;
-            background: radial-gradient(circle at center, #1a1a1a 0%, #050505 100%);
-            color: var(--text);
-            min-height: 100vh;
-        }
+        body { background: var(--dark); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; overflow-x: hidden; }
 
-        nav {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 15px 30px; background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(10px); border-bottom: 1px solid rgba(197, 160, 89, 0.3);
-            position: sticky; top: 0; z-index: 1000;
-        }
+        /* --- SIDEBAR --- */
+        .sidebar { width: 260px; background: #000; height: 100vh; position: fixed; padding: 20px; border-right: 1px solid var(--border); display: flex; flex-direction: column; z-index: 100; box-sizing: border-box; }
+        .nav-btn { width: 100%; padding: 15px; background: none; border: none; color: #666; text-align: left; cursor: pointer; border-radius: 12px; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; font-weight: 500; transition: 0.3s; }
+        .nav-btn.active { color: white; background: #1a1a1a; border-left: 4px solid var(--gold); }
+        .logout { margin-top: auto; padding: 12px; border: 1px solid var(--red); color: var(--red); text-align: center; font-weight: bold; border-radius: 8px; font-size: 14px; transition: 0.3s; background: none; cursor: pointer; border: 1px solid var(--red); }
+        .logout:hover { background: var(--red); color: white; }
 
-        nav h1 { font-size: 20px; color: var(--gold); margin: 0; letter-spacing: 1px; }
-
-        .menu { display: flex; gap: 20px; }
-        .menu a { color: #fff; text-decoration: none; font-size: 14px; font-weight: 500; transition: 0.3s; }
-        .menu a:hover { color: var(--gold); }
-
-        .hamburger { display: none; font-size: 24px; cursor: pointer; color: var(--gold); }
-
-        .container { max-width: 1200px; margin: auto; padding: 25px; }
-        .section { display: none; animation: fadeIn 0.5s ease; }
+        /* --- CONTENIDO --- */
+        .content { margin-left: 260px; padding: 40px; width: calc(100% - 260px); box-sizing: border-box; }
+        .section { display: none; animation: fadeIn 0.4s ease; }
         .section.active { display: block; }
-        
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .glass-card {
-            background: var(--glass); backdrop-filter: blur(12px);
-            border-radius: 20px; padding: 30px;
-            border: 1px solid rgba(197, 160, 89, 0.2);
-            margin-bottom: 25px;
-        }
+        /* --- TARJETAS RESUMEN --- */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 30px; }
+        .glass-card-mini { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: 15px; padding: 15px; text-align: center; }
+        .stat-val { font-size: 20px; font-weight: bold; color: white; margin-top: 5px; }
 
-        .main-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 25px; }
+        /* --- CIRCULAR PROGRESS --- */
+        .circular-progress { width: 70px; height: 70px; border-radius: 50%; background: conic-gradient(var(--gold) 0deg, #222 0deg); display: flex; align-items: center; justify-content: center; position: relative; }
+        .circular-progress::before { content: ""; position: absolute; width: 60px; height: 60px; background: var(--dark); border-radius: 50%; }
+        #progress-text { position: relative; font-size: 14px; font-weight: bold; color: var(--gold); }
 
-        .license-card {
-            background: linear-gradient(135deg, #111, #050505);
-            border: 2px solid var(--gold); border-radius: 20px; padding: 20px;
-            border-left: 10px solid var(--gold); position: relative;
-        }
+        /* --- LICENCIA DIGITAL (PERFIL) --- */
+        .licencia-digital { border: 2px solid var(--gold); border-radius: 20px; background: linear-gradient(135deg, #111, #000); position: relative; overflow: hidden; }
+        .profile-img-container { position: relative; width: 120px; height: 140px; }
+        .profile-img { width: 100%; height: 100%; border-radius: 10px; border: 2px solid var(--gold); object-fit: cover; }
+        .btn-edit-img { position: absolute; bottom: -10px; right: -10px; background: var(--gold); border: 2px solid var(--dark); width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; color: black; }
 
-        .photo-container { position: relative; width: 140px; height: 140px; margin: 0 auto 15px; }
-        .photo-frame { width: 100%; height: 100%; border: 3px solid var(--gold); border-radius: 15px; object-fit: cover; background: #222; }
-        .upload-badge {
-            position: absolute; bottom: -5px; right: -5px; background: var(--gold);
-            color: black; width: 35px; height: 35px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; cursor: pointer;
-        }
-
-        .stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
-        .stat-item { background: rgba(0,0,0,0.4); padding: 10px; border-radius: 10px; text-align: center; border: 1px solid rgba(197, 160, 89, 0.1); }
-        .stat-item span { display: block; font-size: 10px; color: var(--gold); font-weight: bold; text-transform: uppercase; }
-        .stat-item b { font-size: 18px; }
-
-        .input-group { margin-bottom: 20px; position: relative; }
-        label { display: block; font-size: 12px; color: var(--gold); margin-bottom: 8px; font-weight: bold; }
-        input, select {
-            width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #333;
-            background: rgba(255,255,255,0.05); color: #fff; outline: none; transition: 0.3s;
-        }
-
-        .btn-gold {
-            width: 100%; padding: 15px; border: none; border-radius: 10px;
-            background: linear-gradient(135deg, var(--gold), var(--gold-light));
-            color: #000; font-weight: bold; cursor: pointer; transition: 0.3s;
-        }
-
-        .trivia-btn {
-            width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 10px;
-            background: rgba(255,255,255,0.05); border: 1px solid #444; color: #fff;
-            text-align: left; cursor: pointer;
-        }
-
-        .reserva-card {
-            background: rgba(255,255,255,0.03); border: 1px solid rgba(197, 160, 89, 0.2);
-            padding: 15px; border-radius: 12px; margin-bottom: 10px; display: flex;
-            justify-content: space-between; align-items: center;
-        }
-
-        .btn-cancel { background: #b22222; color: #fff; padding: 8px 12px; border: none; border-radius: 5px; cursor: pointer; }
-
-        @media (max-width: 900px) {
-            .main-grid { grid-template-columns: 1fr; }
-            .menu { display: none; }
-            .hamburger { display: block; }
-        }
+        /* --- FORMULARIO Y TABLAS --- */
+        .input-group { display: flex; flex-direction: column; margin-bottom: 15px; text-align: left; }
+        label { font-size: 10px; color: var(--gold); text-transform: uppercase; margin-bottom: 5px; font-weight: bold; }
+        .elite-input { background: #0d0d0d; border: 1px solid #333; color: white; padding: 12px; border-radius: 8px; outline: none; transition: 0.3s; width: 100%; box-sizing: border-box; }
+        .elite-input:focus { border-color: var(--gold); }
+        .btn-save-gold { width: 100%; background: var(--gold); color: black; border: none; padding: 15px; font-weight: bold; cursor: pointer; text-transform: uppercase; border-radius: 8px; }
+        .card-reserva { background: rgba(255,255,255,0.02); border: 1px solid #222; padding: 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; border-left: 4px solid var(--gold); margin-bottom: 10px; }
     </style>
 </head>
 <body>
 
-<nav>
-    <h1><i class="fas fa-steering-wheel"></i> ACADEMIA ÉLITE</h1>
-    <div class="hamburger" onclick="toggleMenu()">☰</div>
-    <div class="menu" id="menu">
-        <a href="#" onclick="showSection('login')">INICIO</a>
-        <a href="#" onclick="showSection('dashboard')">MI PANEL</a>
-        <a href="#" id="btnLogOut" style="display:none" onclick="logout()">SALIR</a>
-    </div>
-</nav>
-
-<div class="container">
-    <div id="login" class="section active">
-        <div class="glass-card" style="max-width: 450px; margin: auto;">
-            <h2 style="text-align:center; color: var(--gold);">BIENVENIDO</h2>
-            <div class="input-group">
-                <label>Correo Electrónico</label>
-                <input type="email" id="loginEmail" placeholder="ejemplo@correo.com">
-            </div>
-            <div class="input-group">
-                <label>Contraseña</label>
-                <input type="password" id="loginPass">
-            </div>
-            <button class="btn-gold" id="btnLogin" onclick="login()">INGRESAR AL SISTEMA</button>
-            <p style="text-align:center; font-size: 13px; margin-top: 15px;">
-                ¿No tienes cuenta? <a href="#" onclick="showSection('registro')" style="color:var(--gold);">Regístrate aquí</a>
-            </p>
-        </div>
+    <div class="sidebar">
+        <h2 style="color: var(--gold); text-align: center; letter-spacing: 2px;">ÉLITE DRIVE</h2>
+        <button class="nav-btn active" onclick="nav('perfil', this)"><i class="fa-solid fa-id-card"></i> Mi Perfil</button>
+        <button class="nav-btn" onclick="nav('clases', this)"><i class="fa-solid fa-calendar-check"></i> Mis Clases</button>
+        <button class="nav-btn" onclick="nav('progreso', this)"><i class="fa-solid fa-gauge-high"></i> Mi Progreso</button>
+        <button class="nav-btn" onclick="nav('trivia', this)"><i class="fa-solid fa-lightbulb"></i> Trivia Élite</button>
+        
+        <button onclick="logout()" class="logout">CERRAR SESIÓN</button>
     </div>
 
-    <div id="registro" class="section">
-        <div class="glass-card" style="max-width: 450px; margin: auto;">
-            <h2 style="text-align:center; color: var(--gold);">NUEVO ALUMNO</h2>
-            <div class="input-group"><label>Nombre Completo</label><input type="text" id="regNombre"></div>
-            <div class="input-group"><label>Email</label><input type="email" id="regEmail"></div>
-            <div class="input-group"><label>Contraseña</label><input type="password" id="regPass"></div>
-            <div class="input-group"><label>PIN de Activación</label><input type="text" id="regPin" placeholder="Ej: A123"></div>
-            <button class="btn-gold" onclick="registrar()">CREAR CUENTA</button>
-            <button class="btn-gold" style="background:none; color:white; margin-top:10px;" onclick="showSection('login')">VOLVER</button>
-        </div>
-    </div>
+    <div class="content">
+        
+        <div id="perfil" class="section active">
+            <h1 style="color: var(--gold); margin-bottom: 5px;">Configuración de Perfil</h1>
+            <p id="bienvenida-msg" style="color: #666; margin-bottom: 25px;">Gestiona tus datos personales.</p>
 
-    <div id="dashboard" class="section">
-        <div class="main-grid">
-            <div class="left-col">
-                <div class="glass-card">
-                    <h3 style="color:var(--gold); margin-top:0;"><i class="fas fa-calendar-check"></i> AGENDAR CLASE PRÁCTICA</h3>
-                    <div class="input-group">
-                        <label>Selecciona Instructor</label>
-                        <select id="instructor">
-                            <option value="Instructor Camilo">Instructor Camilo (Experto Moto)</option>
-                            <option value="Instructora Liliana">Instructora Liliana (Seguridad Vial)</option>
-                        </select>
+            <div class="stats-grid">
+                <div class="glass-card-mini">
+                    <label>Sesiones</label>
+                    <div id="stat-clases" class="stat-val">0 / 20</div>
+                </div>
+                <div class="glass-card-mini" style="display: flex; justify-content: center; align-items: center; gap: 10px;">
+                    <div class="circular-progress" id="circular-bar">
+                        <span id="progress-text">0%</span>
                     </div>
-                    <div class="input-group">
-                        <label>Fecha de la Clase</label>
-                        <input type="date" id="fecha">
-                    </div>
-                    <div class="input-group">
-                        <label>Horario Disponible</label>
-                        <select id="hora">
-                            <option value="08:00:00">08:00 AM</option>
-                            <option value="10:00:00">10:00 AM</option>
-                            <option value="14:00:00">02:00 PM</option>
-                            <option value="16:00:00">04:00 PM</option>
-                        </select>
-                    </div>
-                    <button class="btn-gold" onclick="reservar()">CONFIRMAR AGENDAMIENTO</button>
+                    <label style="margin:0; text-align: left;">Meta<br>Licencia</label>
                 </div>
             </div>
 
-            <div class="right-col">
-                <div class="license-card">
-                    <div class="photo-container">
-                        <img id="currentAvatar" src="https://via.placeholder.com/140" class="photo-frame">
-                        <label for="fileInput" class="upload-badge"><i class="fas fa-camera"></i></label>
-                        <input type="file" id="fileInput" hidden accept="image/*" onchange="subirFoto(this)">
+            <div class="licencia-digital">
+                <div style="display: flex; padding: 30px; gap: 30px; flex-wrap: wrap;">
+                    <div class="profile-img-container">
+                        <img src="https://via.placeholder.com/120x140" id="pfp" class="profile-img">
+                        <button class="btn-edit-img" onclick="document.getElementById('fileIn').click()"><i class="fa-solid fa-camera"></i></button>
+                        <input type="file" id="fileIn" style="display:none" onchange="preview(event)">
                     </div>
-                    <h4 id="dispNombre" style="text-align:center; margin: 10px 0; letter-spacing: 1px;">CARGANDO...</h4>
-                    <div class="stats-row">
-                        <div class="stat-item"><span>Clases</span><b id="stat-clases">0/20</b></div>
-                        <div class="stat-item"><span>Trivia</span><b id="stat-trivia">0%</b></div>
+
+                    <div style="flex: 1; min-width: 280px;">
+                        <h2 id="displayNombre" style="margin:0;">ALUMNO ÉLITE</h2>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px;">
+                            <div class="input-group">
+                                <label>Nombre</label>
+                                <input type="text" id="editNombre" class="elite-input">
+                            </div>
+                            <div class="input-group">
+                                <label>WhatsApp</label>
+                                <input type="text" id="editTel" class="elite-input">
+                            </div>
+                            <div class="input-group" style="grid-column: span 2;">
+                                <label>Email</label>
+                                <input type="email" id="editEmail" class="elite-input" disabled>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <h3 style="color:var(--gold); margin-top:30px;"><i class="fas fa-list-ul"></i> MIS PRÓXIMAS CLASES</h3>
-                <div id="listaReservas"></div>
+                <button class="btn-save-gold" style="border-radius: 0 0 18px 18px;" onclick="guardarPerfil()">GUARDAR CAMBIOS</button>
             </div>
         </div>
+
+        <div id="clases" class="section">
+            <h1 style="color: var(--gold); margin-bottom: 5px;">Agenda Práctica</h1>
+            <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 25px;">
+                <div class="glass-card-mini" style="text-align: left; padding: 25px;">
+                    <div class="input-group">
+                        <label>Instructor</label>
+                        <select id="select-instructor" class="elite-input">
+                            <option value="Instructora Liliana">Instructora Liliana</option>
+                            <option value="Instructor Camilo">Instructor Camilo</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Fecha</label>
+                        <input type="date" id="select-fecha" class="elite-input" onchange="validarDia()">
+                    </div>
+                    <div class="input-group">
+                        <label>Bloque (2h)</label>
+                        <select id="select-hora" class="elite-input">
+                            <option value="06:00:00">06:00 AM - 08:00 AM</option>
+                            <option value="09:00:00">09:00 AM - 11:00 AM</option>
+                            <option value="13:00:00">01:00 PM - 03:00 PM</option>
+                            <option value="16:00:00">04:00 PM - 06:00 PM</option>
+                        </select>
+                    </div>
+                    <button class="btn-save-gold" onclick="agendarClase()">RESERVAR CUPO</button>
+                </div>
+                <div id="lista-reservas"></div>
+            </div>
+        </div>
+
     </div>
-</div>
 
-<script>
-/* ---------- SUPABASE CONFIG ---------- */
-const SUPABASE_URL = "https://aldwcqpgsjfjcttxfecp.supabase.co"; 
-const SUPABASE_KEY = "TU_KEY_ANON_AQUI"; // REEMPLAZA CON TU KEY REAL
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SB_URL = "https://aldwcqpgsjfjcttxfecp.supabase.co"; 
+        const SB_KEY = "TU_KEY_ANON_AQUI"; 
+        const _supabase = supabase.createClient(SB_URL, SB_KEY);
 
-const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
-    db: { schema: 'academia_elite' }
-});
+        window.onload = async () => {
+            const { data: { session } } = await _supabase.auth.getSession();
+            if (!session) { window.location.href = "acceso-alumnos.html"; }
+            else { 
+                cargarDatosAlumno(session.user); 
+                cargarReservas();
+            }
+            document.getElementById('select-fecha').setAttribute('min', new Date().toISOString().split('T')[0]);
+        };
 
-/* ---------- AUTO-LOGIN CHECK ---------- */
-window.onload = async () => {
-    const { data: { session } } = await _supabase.auth.getSession();
-    if (session) {
-        showSection('dashboard');
-    }
-};
+        async function cargarDatosAlumno(user) {
+            const { data: alumno } = await _supabase.from('alumnos').select('*').eq('id', user.id).single();
+            if (alumno) {
+                document.getElementById('displayNombre').innerText = alumno.nombre_completo.toUpperCase();
+                document.getElementById('editNombre').value = alumno.nombre_completo;
+                document.getElementById('editTel').value = alumno.whatsapp || "";
+                document.getElementById('editEmail').value = user.email;
+                if (alumno.avatar_url) document.getElementById('pfp').src = alumno.avatar_url;
+                
+                const clases = alumno.clases_realizadas || 0;
+                const porcentaje = (clases / 20) * 100;
+                document.getElementById('stat-clases').innerText = `${clases} / 20`;
+                document.getElementById('progress-text').innerText = `${porcentaje}%`;
+                document.getElementById('circular-bar').style.background = `conic-gradient(var(--gold) ${porcentaje * 3.6}deg, #222 0deg)`;
+            }
+        }
 
-_supabase.auth.onAuthStateChange((event, session) => {
-    if (event === 'SIGNED_IN') showSection('dashboard');
-    if (event === 'SIGNED_OUT') showSection('login');
-});
+        async function agendarClase() {
+            const { data: { session } } = await _supabase.auth.getSession();
+            const inst = document.getElementById('select-instructor').value;
+            const fecha = document.getElementById('select-fecha').value;
+            const hora = document.getElementById('select-hora').value;
+            
+            if(!fecha) return alert("Selecciona fecha");
+            
+            const { error } = await _supabase.from('reservas_clases').insert([
+                { alumno_id: session.user.id, instructor: inst, fecha_hora: `${fecha} ${hora}`, estado: 'programada' }
+            ]);
 
-/* ---------- NAVEGACIÓN ---------- */
-function toggleMenu() { document.getElementById("menu").classList.toggle("show"); }
+            if(!error) { alert("¡Clase agendada!"); cargarReservas(); }
+        }
 
-async function showSection(id) {
-    const { data: { session } } = await _supabase.auth.getSession();
-    if (id === 'dashboard' && !session) id = 'login';
+        async function cargarReservas() {
+            const { data: { session } } = await _supabase.auth.getSession();
+            const { data: reservas } = await _supabase.from('reservas_clases').select('*').eq('alumno_id', session.user.id).order('fecha_hora', { ascending: true });
+            
+            const lista = document.getElementById('lista-reservas');
+            lista.innerHTML = "";
+            reservas?.forEach(res => {
+                const f = new Date(res.fecha_hora);
+                lista.innerHTML += `
+                    <div class="card-reserva">
+                        <div><strong>${res.instructor}</strong><br><small>${f.toLocaleString()}</small></div>
+                        <button onclick="cancelar('${res.id}')" style="color:var(--red); background:none; border:none; cursor:pointer;">Cancelar</button>
+                    </div>`;
+            });
+        }
 
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    
-    if(id === 'dashboard') {
-        document.getElementById('btnLogOut').style.display = 'block';
-        cargarDatosAlumno();
-        cargarReservas();
-    } else {
-        document.getElementById('btnLogOut').style.display = 'none';
-    }
-}
+        async function cancelar(id) {
+            if(confirm("¿Cancelar reserva?")) {
+                await _supabase.from('reservas_clases').delete().eq('id', id);
+                cargarReservas();
+            }
+        }
 
-/* ---------- LOGIN / REGISTRO ---------- */
-async function login() {
-    const email = document.getElementById("loginEmail").value;
-    const pass = document.getElementById("loginPass").value;
-    const btn = document.getElementById("btnLogin");
-    
-    btn.innerText = "VERIFICANDO...";
-    const { error } = await _supabase.auth.signInWithPassword({ email, password: pass });
-    
-    if(error) {
-        alert("Error: " + error.message);
-        btn.innerText = "INGRESAR AL SISTEMA";
-    }
-}
+        function nav(id, btn) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            btn.classList.add('active');
+        }
 
-async function registrar() {
-    const nombre = document.getElementById("regNombre").value;
-    const email = document.getElementById("regEmail").value;
-    const pass = document.getElementById("regPass").value;
-    
-    const { data, error } = await _supabase.auth.signUp({ 
-        email, password: pass, options: { data: { nombre_completo: nombre } } 
-    });
-
-    if(error) alert(error.message);
-    else {
-        await _supabase.from('alumnos').insert
+        async function logout() { await _supabase.auth.signOut(); window.location.href = "acceso-alumnos.html"; }
+    </script>
+</body>
+</html>

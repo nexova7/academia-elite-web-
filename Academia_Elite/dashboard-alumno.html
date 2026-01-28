@@ -134,32 +134,48 @@
             </div>
         </div>
 
-        <div id="clases" class="section">
-            <h1 style="color: var(--gold); margin-bottom: 5px;">Agenda Práctica</h1>
+          <h1 style="color: var(--gold); margin-bottom: 5px;">Agenda Práctica</h1>
+
             <div style="display: grid; grid-template-columns: 1fr 1.6fr; gap: 30px;">
-                <div class="glass-form">
-                    <h3 style="color: var(--gold); margin-top: 0;">Agendar Nueva Sesión</h3>
-                    <div class="input-group" style="margin-bottom:15px">
-                        <label>Instructor</label>
-                        <select id="select-instructor" class="elite-input" style="background:black">
-                            <option value="Instructora Liliana">Instructora Liliana</option>
-                            <option value="Instructor Camilo">Instructor Camilo</option>
-                        </select>
-                    </div>
-                    <div class="input-group" style="margin-bottom:15px">
-                        <label>Fecha de Clase</label>
-                        <input type="date" id="select-fecha" class="elite-input" onchange="validarDomingo()">
-                    </div>
-                    <div class="input-group" style="margin-bottom:15px">
-                        <label>Bloque Horario</label>
-                        <select id="select-hora" class="elite-input" style="background:black">
-                            <option value="06:00:00">06:00 AM - 08:00 AM</option>
-                            <option value="09:00:00">09:00 AM - 11:00 AM</option>
-                            <option value="13:00:00">01:00 PM - 03:00 PM</option>
-                            <option value="16:00:00">04:00 PM - 06:00 PM</option>
-                        </select>
-                    </div>
-                    <button class="btn-save" onclick="agendarClase()" style="margin-top:10px">RESERVAR TURNO ÉLITE</button>
+              <div class="glass-form">
+               <h3 style="color: var(--gold); margin-top: 0;">Agendar Nueva Sesión</h3>
+        
+        <div class="input-group" style="margin-bottom:15px">
+            <label>Instructor</label>
+            <select id="select-instructor" class="elite-input" style="background:black; width: 100%;">
+                <option value="Instructora Liliana">Instructora Liliana</option>
+                <option value="Instructor Camilo">Instructor Camilo</option>
+            </select>
+        </div>
+
+        <div class="input-group" style="margin-bottom:15px">
+            <label>Fecha de Clase</label>
+            <input type="date" id="select-fecha" class="elite-input" style="width: 100%;" onchange="validarFecha()">
+        </div>
+
+        <div class="input-group" style="margin-bottom:15px">
+            <label>Bloque Horario</label>
+            <select id="select-hora" class="elite-input" style="background:black; width: 100%;">
+                <option value="06:00:00">06:00 AM - 08:00 AM</option>
+                <option value="09:00:00">09:00 AM - 11:00 AM</option>
+                <option value="13:00:00">01:00 PM - 03:00 PM</option>
+                <option value="16:00:00">04:00 PM - 06:00 PM</option>
+            </select>
+        </div>
+
+        <button class="btn-save" onclick="agendarClase()" style="margin-top:10px">RESERVAR TURNO ÉLITE</button>
+    </div>
+
+    <div>
+        <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+            <button class="nav-btn active" id="tab-reservas" onclick="switchList('reservas')" style="width: auto; padding: 10px 20px;">RESERVADAS</button>
+            <button class="nav-btn" id="tab-cumplidas" onclick="switchList('cumplidas')" style="width: auto; padding: 10px 20px;">CUMPLIDAS</button>
+        </div>
+
+        <div id="lista-reservas"></div>
+        <div id="lista-cumplidas" style="display:none"></div>
+    </div>
+</div>
                 </div>
 
                 <div>
@@ -185,6 +201,101 @@
                 document.getElementById('select-fecha').setAttribute('min', new Date().toISOString().split('T')[0]);
             }
         };
+
+// 1. Bloquear fechas pasadas al cargar la página
+function configurarCalendario() {
+    const hoy = new Date().toISOString().split('T')[0];
+    document.getElementById('select-fecha').setAttribute('min', hoy);
+}
+
+// 2. Validación de Domingos
+function validarFecha() {
+    const input = document.getElementById('select-fecha');
+    const fechaSeleccionada = new Date(input.value + "T00:00:00");
+    const diaSemana = fechaSeleccionada.getDay(); // 0 es Domingo
+
+    if (diaSemana === 0) {
+        alert("❌ Los domingos no hay clases prácticas. Por favor selecciona otro día.");
+        input.value = "";
+    }
+}
+
+// 3. Agendar con validación de "Choque de Horario"
+async function agendarClase() {
+    const { data: { session } } = await _supabase.auth.getSession();
+    const inst = document.getElementById('select-instructor').value;
+    const fecha = document.getElementById('select-fecha').value;
+    const hora = document.getElementById('select-hora').value;
+    const fechaHoraFull = `${fecha} ${hora}`;
+
+    if(!fecha) return alert("Por favor selecciona una fecha.");
+
+    // Validar si el instructor ya tiene una clase en esa hora exacta
+    const { data: existe } = await _supabase.from('reservas_clases')
+        .select('*')
+        .eq('instructor', inst)
+        .eq('fecha_hora', fechaHoraFull);
+
+    if (existe.length > 0) {
+        return alert(`❌ El ${inst} ya tiene una reserva para este horario. Elige otra hora.`);
+    }
+
+    const { error } = await _supabase.from('reservas_clases').insert([
+        { alumno_id: session.user.id, instructor: inst, fecha_hora: fechaHoraFull, estado: 'programada' }
+    ]);
+
+    if (!error) {
+        alert("✅ Clase reservada con éxito.");
+        cargarReservas(); // Refrescar lista
+    }
+}
+
+// 4. Cargar Reservas con Regla de las 8 Horas y Notas
+async function cargarReservas() {
+    const { data: { session } } = await _supabase.auth.getSession();
+    const { data: clases } = await _supabase.from('reservas_clases')
+        .select('*')
+        .eq('alumno_id', session.user.id)
+        .order('fecha_hora', { ascending: true });
+
+    const divRes = document.getElementById('lista-reservas');
+    const divCum = document.getElementById('lista-cumplidas');
+    divRes.innerHTML = ""; divCum.innerHTML = "";
+
+    clases?.forEach(clase => {
+        const fClase = new Date(clase.fecha_hora);
+        const ahora = new Date();
+        const diffHoras = (fClase - ahora) / (1000 * 60 * 60); // Diferencia en horas
+
+        const tarjetaHtml = `
+            <div class="card-reserva">
+                <div style="flex:1">
+                    <strong style="color:var(--gold); font-size:16px;">${clase.instructor}</strong><br>
+                    <small>${fClase.toLocaleDateString()} | ${fClase.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</small>
+                    
+                    ${clase.nota_instructor ? `
+                        <div class="nota-instructor">
+                            <b>Nota del Instructor:</b> ${clase.nota_instructor}
+                        </div>
+                    ` : ''}
+                </div>
+                
+                ${clase.estado !== 'completada' ? `
+                    <button class="btn-cancel" onclick="cancelarClase('${clase.id}')" ${diffHoras < 8 ? 'disabled' : ''}>
+                        ${diffHoras < 8 ? '<i class="fa-solid fa-lock"></i> Bloqueado' : 'Cancelar'}
+                    </button>
+                ` : '<i class="fa-solid fa-circle-check" style="color:#2e7d32; font-size:20px;"></i>'}
+            </div>
+        `;
+
+        if (clase.estado === 'completada' || fClase < ahora) {
+            divCum.innerHTML += tarjetaHtml;
+        } else {
+            divRes.innerHTML += tarjetaHtml;
+        }
+    });
+}
+
 
         async function cargarDatosAlumno(user) {
             const { data: alumno } = await _supabase.from('alumnos').select('*').eq('id', user.id).single();

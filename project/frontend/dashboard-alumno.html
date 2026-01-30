@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Élite Drive</title>
+    <!-- Supabase Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <h2 class="logo-text">ÉLITE DRIVE</h2>
+        <button class="nav-btn active" onclick="nav('perfil')">👤 Mi Perfil</button>
+        <button class="nav-btn" onclick="nav('lecciones')">📚 Mis Lecciones</button>
+        <button class="nav-btn" onclick="nav('clases')">🗓️ Calendario Práctico</button>
+        <button class="nav-btn" onclick="nav('trivia')">🏆 Trivia & Logros</button>
+        <a href="index.html" class="logout">CERRAR SESIÓN</a>
+    </div>
+
+    <div class="content">
+        <!-- PANEL DE BIENVENIDA (RESUMEN ÉLITE) -->
+        <div id="resumen-elite" class="section active">
+            <div class="banner-welcome">
+                <h1 id="welcomeGreeting">¡Bienvenido, <span id="studentNameDisplay">Aspirante Élite</span>!</h1>
+                <p>Tu camino hacia la maestría al volante continúa hoy.</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card-glass">
+                    <i class="fa-solid fa-car-side"></i>
+                    <h3 id="clasesCompletadas">0</h3>
+                    <p>Clases Completadas</p>
+                </div>
+                <div class="stat-card-glass">
+                    <i class="fa-solid fa-trophy"></i>
+                    <h3 id="puntajeTrivia">0%</h3>
+                    <p>Puntaje de Trivia</p>
+                </div>
+                <div class="stat-card-glass">
+                    <i class="fa-solid fa-calendar-check"></i>
+                    <h3 id="proximaClase">--/--</h3>
+                    <p>Próxima Clase</p>
+                </div>
+                <div class="stat-card-glass progress-stat">
+                    <div class="progress-circle-container">
+                        <svg viewBox="0 0 36 36" class="circular-chart gold">
+                            <path class="circle-bg"
+                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            <path id="progressCircle" class="circle" stroke-dasharray="0, 100"
+                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            <text x="18" y="20.35" class="percentage" id="progressText">0%</text>
+                        </svg>
+                    </div>
+                    <p>Progreso Licencia <span id="licenciaCategoria">--</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN PERFIL (ESTILO LICENCIA) -->
+        <div id="perfil" class="section">
+            <h1>Identidad & Seguridad</h1>
+            <p class="section-desc">Gestiona tu licencia digital y credenciales de acceso.</p>
+
+            <div class="license-card-container">
+                <div class="license-card">
+                    <div class="micro-texture"></div>
+
+                    <div class="avatar-side">
+                        <div class="avatar-container">
+                            <img src="mascota masculina.png" id="pfp" class="avatar-main">
+                            <div class="upload-overlay" onclick="document.getElementById('pfpInput').click()">
+                                <span>SUBIR FOTO</span>
+                            </div>
+                            <button class="btn-upload" title="Subir Foto"
+                                onclick="document.getElementById('pfpInput').click()">+</button>
+                            <input type="file" id="pfpInput" hidden accept="image/*"
+                                onchange="handleImageUpload(event)">
+                        </div>
+                        <p class="avatar-grid-trigger" onclick="toggleAvatars()">AVATARES ÉLITE</p>
+
+                        <div id="avatarGrid" class="avatar-grid">
+                            <img src="pixel_avatar_men_1.png" class="avatar-opt" onclick="changePfp(this.src)">
+                            <img src="pixel_avatar_men_2.png" class="avatar-opt" onclick="changePfp(this.src)">
+                            <img src="pixel_avatar_men_3.png" class="avatar-opt" onclick="changePfp(this.src)">
+                            <img src="pixel_avatar_women_1.png" class="avatar-opt" onclick="changePfp(this.src)">
+                            <img src="pixel_avatar_women_2.png" class="avatar-opt" onclick="changePfp(this.src)">
+                            <img src="pixel_avatar_women_3.png" class="avatar-opt" onclick="changePfp(this.src)">
+                        </div>
+                    </div>
+
+                    <div class="info-side">
+                        <div class="field-grid">
+                            <div class="license-field">
+                                <label>Nombre Completo</label>
+                                <input type="text" id="userName" class="input-glass">
+                            </div>
+                            <div class="license-field">
+                                <label>Categoría</label>
+                                <input type="text" id="userCategory" class="input-glass" disabled>
+                            </div>
+                            <div class="license-field">
+                                <label>WhatsApp</label>
+                                <input type="text" id="userPhone" class="input-glass">
+                            </div>
+                            <div class="license-field">
+                                <label>Email Institucional</label>
+                                <input type="email" id="userEmail" class="input-glass">
+                            </div>
+                        </div>
+
+                        <hr class="license-divider">
+
+                        <h4 class="security-title"><i class="fa-solid fa-shield-halved"></i> Seguridad de Acceso</h4>
+                        <div class="field-grid">
+                            <div>
+                                <label class="field-label-sm">Nueva Contraseña</label>
+                                <input type="password" id="newPassword" class="input-glass" placeholder="••••••••">
+                            </div>
+                            <div>
+                                <label class="field-label-sm">Confirmar Contraseña</label>
+                                <input type="password" id="confirmPassword" class="input-glass" placeholder="••••••••">
+                            </div>
+                        </div>
+                        <p id="passError" class="error-msg">* Las contraseñas no coinciden</p>
+
+                        <button onclick="saveProfile()" class="btn-save">GUARDAR CAMBIOS</button>
+                    </div>
+
+                    <div class="license-seal">
+                        <i class="fa-solid fa-shield-cat"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN LECCIONES -->
+        <div id="lecciones" class="section">
+            <h1>Mis Lecciones Teóricas</h1>
+            <p class="section-desc">Progreso de aprendizaje técnico y vial.</p>
+
+            <div class="module-grid">
+                <div class="module-card">
+                    <h3>Normas & Señalización</h3>
+                    <p class="module-desc">Fundamentos legales y reglamentación de tránsito.</p>
+                    <div class="progress-mini">
+                        <div class="progress-mini-bar" style="width: 80%;"></div>
+                    </div>
+                    <span class="progress-label">80% Completado</span>
+                    <button class="btn-module">CONTINUAR</button>
+                </div>
+                <div class="module-card">
+                    <h3>Mecánica Básica</h3>
+                    <p class="module-desc">Conocimiento técnica del vehículo y mantenimiento.</p>
+                    <div class="progress-mini">
+                        <div class="progress-mini-bar" style="width: 30%;"></div>
+                    </div>
+                    <span class="progress-label">30% Completado</span>
+                    <button class="btn-module">REANUDAR</button>
+                </div>
+                <div class="module-card locked">
+                    <h3>Primeros Auxilios</h3>
+                    <p class="module-desc">Protocolo PAS y atención inicial en accidentes.</p>
+                    <div class="progress-mini">
+                        <div class="progress-mini-bar" style="width: 0%;"></div>
+                    </div>
+                    <span class="progress-label disabled">Bloqueado</span>
+                    <button disabled class="btn-module disabled">PRÓXIMAMENTE</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="clases" class="section">
+            <h1 class="mb-xs">Agenda de Clases Prácticas</h1>
+            <p class="section-desc mb-md">Reserva con Instructores Élite (Mínimo 8h de anticipación para cambios).</p>
+
+            <div class="agenda-layout">
+                <div class="form-container agenda-form">
+                    <div class="input-group">
+                        <label><i class="fa-solid fa-user-tie"></i> Instructor Asignado</label>
+                        <select id="reservaInstructor" class="input-glass">
+                            <option value="Instructora Liliana">Instructora Liliana</option>
+                            <option value="Instructor Camilo">Instructor Camilo</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label><i class="fa-solid fa-calendar-day"></i> Fecha de Práctica</label>
+                        <input type="date" id="reservaFecha" class="input-glass">
+                    </div>
+
+                    <div class="input-group">
+                        <label><i class="fa-solid fa-clock"></i> Franja Horaria (Sesión 2h)</label>
+                        <select id="reservaHora" class="input-glass">
+                            <option value="06:00">06:00 AM - 08:00 AM</option>
+                            <option value="08:30">08:30 AM - 10:30 AM</option>
+                            <option value="11:00">11:00 AM - 01:00 PM</option>
+                            <option value="13:30">01:30 PM - 03:30 PM</option>
+                            <option value="16:00">04:00 PM - 06:00 PM</option>
+                        </select>
+                    </div>
+
+                    <button class="btn-save btn-agenda" onclick="agendarClase()">CONFIRMAR RESERVA</button>
+                </div>
+
+                <div class="card-progreso agenda-list-card">
+                    <h3><i class="fa-solid fa-list-ul"></i> MI AGENDA PRÁCTICA</h3>
+                    <div id="listaClases"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="trivia" class="section">
+        <h1>Trivia de Conducción</h1>
+        <p class="section-desc">Demuestra que eres un experto en las normas de tránsito.</p>
+
+        <div class="trivia-footer">
+            <a href="evaluacion.html" class="btn-glass">
+                <i class="fa-solid fa-play"></i> COMENZAR EXAMEN
+            </a>
+
+            <div class="logros-grid">
+                <div class="logro-card ganado">
+                    <i class="fa-solid fa-medal"></i>
+                    <p>Primer Intento</p>
+                </div>
+                <div class="logro-card">
+                    <i class="fa-solid fa-bolt"></i>
+                    <p>Rapidez Extrema</p>
+                </div>
+                <div class="logro-card">
+                    <i class="fa-solid fa-star"></i>
+                    <p>Puntaje 100%</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modales -->
+    <div id="modalPass" class="modal">
+        <div class="modal-box">
+            <div id="step1">
+                <h3>Validar Código</h3>
+                <p class="modal-subtitle">Ingresa el código enviado a tu correo (Prueba: 1234)</p>
+                <input type="text" id="inputCodigo" placeholder="Ingrese el código">
+                <button onclick="validarCodigo()" class="btn-modal">VERIFICAR</button>
+            </div>
+            <div id="step2" style="display:none;">
+                <h3>Nueva Contraseña</h3>
+                <input type="password" id="newPass" placeholder="Nueva Contraseña">
+                <input type="password" id="confirmPass" placeholder="Confirmar Contraseña">
+                <button onclick="finalizarCambio()" class="btn-modal">ACTUALIZAR</button>
+            </div>
+            <button onclick="document.getElementById('modalPass').style.display='none'"
+                class="btn-cancel">Cancelar</button>
+        </div>
+    </div>
+
+    <script>
+        // --- CONFIGURACIÓN DE CONEXIÓN ---
+        const SUPABASE_URL = 'https://aldwcqpgsjfjcttxfecp.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_OvQYw50Cs8sM21AJGg21zg_v3LunT3J';
+
+        const supabaseInstance = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        window.supabaseClient = supabaseInstance;
+        window.currentUserId = null;
+
+        let reservasExistentes = [];
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const hoy = new Date().toISOString().split('T')[0];
+            const inputFecha = document.getElementById('reservaFecha');
+            if (inputFecha) {
+                inputFecha.setAttribute('min', hoy);
+                inputFecha.addEventListener('change', function () {
+                    const dia = new Date(this.value).getUTCDay();
+                    if (dia === 0) {
+                        alert("SISTEMA ÉLITE: No se agendan clases los domingos.");
+                        this.value = "";
+                    }
+                });
+            }
+
+            const { data: { session } } = await window.supabaseClient.auth.getSession();
+            if (session) {
+                window.currentUserId = session.user.id;
+                loadStudentData();
+                renderizarClases();
+            } else {
+                console.warn("Sesión no detectada. Usando ID de prueba.");
+                window.currentUserId = "00000000-0000-0000-0000-000000000000";
+                loadStudentData();
+                renderizarClases();
+            }
+        });
+
+        async function loadStudentData() {
+            try {
+                const { data, error } = await window.supabaseClient
+                    .from('alumnos')
+                    .select('*')
+                    .eq('id', window.currentUserId)
+                    .single();
+
+                if (error) throw error;
+
+                if (data) {
+                    document.getElementById('studentNameDisplay').innerText = data.nombre || "Alumno";
+                    document.getElementById('userName').value = data.nombre || "";
+                    document.getElementById('userPhone').value = data.whatsapp || "";
+                    document.getElementById('userEmail').value = data.email || "";
+                    document.getElementById('userCategory').value = data.categoria || "N/A";
+                    document.getElementById('licenciaCategoria').innerText = data.categoria || "B1";
+                    if (data.avatar_url) document.getElementById('pfp').src = data.avatar_url;
+                    document.getElementById('clasesCompletadas').innerText = data.clases_completadas || 0;
+                    document.getElementById('puntajeTrivia').innerText = (data.puntaje_trivia || 0) + "%";
+                    loadNextClass();
+                    updateCircularProgress(data.progreso || 0);
+                }
+            } catch (err) {
+                console.error("Error cargando perfil:", err);
+            }
+        }
+
+        async function loadNextClass() {
+            try {
+                const { data, error } = await window.supabaseClient
+                    .from('reservas_clases')
+                    .select('fecha')
+                    .eq('alumno_id', window.currentUserId)
+                    .gte('fecha', new Date().toISOString())
+                    .order('fecha', { ascending: true })
+                    .limit(1);
+
+                if (data && data.length > 0) {
+                    document.getElementById('proximaClase').innerText = data[0].fecha;
+                }
+            } catch (err) {
+                console.warn("No se pudo cargar la próxima clase.");
+            }
+        }
+
+        function updateCircularProgress(percent) {
+            const circle = document.getElementById('progressCircle');
+            const text = document.getElementById('progressText');
+            if (circle) {
+                const offset = percent + ", 100";
+                circle.style.strokeDasharray = offset;
+                text.innerText = percent + "%";
+            }
+        }
+
+        function nav(id) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            const targetSection = document.getElementById(id);
+            if (targetSection) targetSection.classList.add('active');
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                const onclickAttr = btn.getAttribute('onclick');
+                if (onclickAttr && onclickAttr.includes(`'${id}'`)) btn.classList.add('active');
+            });
+        }
+
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) { document.getElementById('pfp').src = e.target.result; };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function toggleAvatars() {
+            const grid = document.getElementById('avatarGrid');
+            grid.style.display = grid.style.display === 'none' ? 'grid' : 'none';
+        }
+
+        function changePfp(src) {
+            document.getElementById('pfp').src = src;
+            document.getElementById('avatarGrid').style.display = 'none';
+        }
+
+        async function saveProfile() {
+            const btn = event.currentTarget;
+            const originalText = btn.innerText;
+            const userName = document.getElementById('userName').value;
+            const userPhone = document.getElementById('userPhone').value;
+            const userEmail = document.getElementById('userEmail').value;
+            const userAvatar = document.getElementById('pfp').src;
+            const newPass = document.getElementById('newPassword').value;
+            const confirmPass = document.getElementById('confirmPassword').value;
+
+            const passError = document.getElementById('passError');
+            if (newPass || confirmPass) {
+                if (newPass !== confirmPass) { passError.style.display = 'block'; return; }
+                if (newPass.length < 6) { alert("La contraseña debe tener al menos 6 caracteres."); return; }
+            }
+            passError.style.display = 'none';
+
+            btn.innerText = "PROCESANDO...";
+            btn.disabled = true;
+
+            try {
+                const { error: dbError } = await window.supabaseClient
+                    .from('alumnos')
+                    .update({ nombre: userName, whatsapp: userPhone, email: userEmail, avatar_url: userAvatar })
+                    .eq('id', window.currentUserId);
+                if (dbError) throw dbError;
+
+                if (newPass) {
+                    const { error: authError } = await window.supabaseClient.auth.updateUser({ password: newPass });
+                    if (authError) throw authError;
+                }
+                alert("¡ÉXITO! Tu perfil Élite ha sido actualizado.");
+                location.reload();
+            } catch (err) {
+                console.error("Error al guardar:", err);
+                alert("Error al guardar: " + (err.message || "Error desconocido"));
+            } finally {
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        async function agendarClase() {
+            const inst = document.getElementById('reservaInstructor').value;
+            const fecha = document.getElementById('reservaFecha').value;
+            const hora = document.getElementById('reservaHora').value;
+            if (!fecha) return alert("Selecciona una fecha.");
+            if (new Date(fecha).getUTCDay() === 0) return alert("No se permiten reservas en domingo.");
+
+            const btn = event.target;
+            btn.disabled = true;
+            btn.innerText = "PROCESANDO...";
+
+            try {
+                const { error } = await window.supabaseClient
+                    .from('reservas_clases')
+                    .insert([{ alumno_id: window.currentUserId, instructor: inst, fecha, hora }]);
+                if (error) throw error;
+                alert("✅ Clase reservada.");
+                renderizarClases();
+            } catch (err) { alert("Error al agendar: " + err.message); }
+            finally { btn.disabled = false; btn.innerText = "CONFIRMAR RESERVA"; }
+        }
+
+        async function renderizarClases() {
+            const lista = document.getElementById('listaClases');
+            if (!lista) return;
+            try {
+                const { data, error } = await window.supabaseClient
+                    .from('reservas_clases')
+                    .select('*')
+                    .eq('alumno_id', window.currentUserId)
+                    .order('fecha', { ascending: true });
+                if (error) throw error;
+                reservasExistentes = data;
+                if (data.length === 0) {
+                    lista.innerHTML = `<p class="empty-msg">No tienes clases agendadas.</p>`;
+                    return;
+                }
+                lista.innerHTML = data.map((r) => {
+                    const fechaClase = new Date(`${r.fecha}T${r.hora}`);
+                    const ahora = new Date();
+                    const diffHours = (fechaClase - ahora) / (1000 * 60 * 60);
+                    const bloqueada = diffHours < 8;
+                    return `
+                        <div class="agenda-item ${bloqueada ? 'locked' : ''}">
+                            <small class="agenda-tag">${bloqueada ? '🔒 BLOQUEADA' : '🔓 CANCELABLE'}</small><br>
+                            <strong class="agenda-title">${r.instructor}</strong><br>
+                            <span class="agenda-time">${r.fecha} | ${r.hora}</span>
+                            <button onclick="eliminarClase('${r.id}', ${bloqueada})" class="btn-delete" ${bloqueada ? 'disabled' : ''}>
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+                }).join('');
+            } catch (err) { console.error("Error al cargar clases:", err); }
+        }
+
+        async function eliminarClase(id, bloqueada) {
+            if (bloqueada) return alert("No se puede cancelar con menos de 8h.");
+            if (confirm("¿Deseas cancelar?")) {
+                try {
+                    const { error } = await window.supabaseClient.from('reservas_clases').delete().eq('id', id);
+                    if (error) throw error;
+                    alert("✅ Cancelada.");
+                    renderizarClases();
+                } catch (err) { alert("Error al eliminar: " + err.message); }
+            }
+        }
+    </script>
+</body>
+
+</html>

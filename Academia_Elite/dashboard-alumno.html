@@ -394,20 +394,181 @@
             </div>
         </div>
 
-
-
-
-
         <script>
             // --- CONFIGURACIÓN DE CONEXIÓN ---
             const SUPABASE_URL = 'https://aldwcqpgsjfjcttxfecp.supabase.co';
             const SUPABASE_ANON_KEY = 'sb_publishable_OvQYw50Cs8sM21AJGg21zg_v3LunT3J';
 
+            // Inicializar Supabase sólo para el cliente real, pero usaremos DataManager para abstraer
             const supabaseInstance = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             window.supabaseClient = supabaseInstance;
             window.currentUserId = null;
+            window.isDemoUser = false;
 
-            let reservasExistentes = [];
+            // --- GESTOR DE DATOS (HYBRID: SUPABASE + LOCALSTORAGE) ---
+            const DataManager = {
+                // Claves para LocalStorage
+                KEYS: {
+                    PROFILE: 'elite_demo_profile',
+                    CLASSES: 'elite_demo_classes',
+                    NOTES: 'elite_demo_notes'
+                },
+
+                // Inicializar datos demo si no existen
+                initDemoData: () => {
+                    if (!localStorage.getItem(DataManager.KEYS.PROFILE)) {
+                        const defaultProfile = {
+                            nombre: "Aspirante Élite (Demo)",
+                            whatsapp: "+57 300 123 4567",
+                            email: "aspirante@elite.com",
+                            categoria: "B1 Particular",
+                            avatar_url: "https://cdn-icons-png.flaticon.com/512/4140/4140048.png",
+                            clases_completadas: 5,
+                            progreso: 45
+                        };
+                        localStorage.setItem(DataManager.KEYS.PROFILE, JSON.stringify(defaultProfile));
+                    }
+                    if (!localStorage.getItem(DataManager.KEYS.CLASSES)) {
+                        localStorage.setItem(DataManager.KEYS.CLASSES, JSON.stringify([]));
+                    }
+                },
+
+                // --- PERFIL ---
+                async getProfile() {
+                    if (window.isDemoUser) {
+                        return JSON.parse(localStorage.getItem(DataManager.KEYS.PROFILE));
+                    } else {
+                        const { data, error } = await window.supabaseClient
+                            .from('alumnos')
+                            .select('*')
+                            .eq('id', window.currentUserId)
+                            .single();
+                        if (error) throw error;
+                        return data;
+                    }
+                },
+
+                async updateProfile(updates) {
+                    if (window.isDemoUser) {
+                        const current = JSON.parse(localStorage.getItem(DataManager.KEYS.PROFILE));
+                        const updated = { ...current, ...updates };
+                        localStorage.setItem(DataManager.KEYS.PROFILE, JSON.stringify(updated));
+                        return { data: updated, error: null };
+                    } else {
+                        return await window.supabaseClient
+                            .from('alumnos')
+                            .update(updates)
+                            .eq('id', window.currentUserId);
+                    }
+                },
+
+                async updatePassword(newPass) {
+                    if (window.isDemoUser) {
+                        // En modo demo no cambiamos la contraseña real, pero simulamos éxito
+                        return { error: null };
+                    } else {
+                        return await window.supabaseClient.auth.updateUser({ password: newPass });
+                    }
+                },
+
+                // --- CLASES ---
+                async getClasses() {
+                    if (window.isDemoUser) {
+                        const classes = JSON.parse(localStorage.getItem(DataManager.KEYS.CLASSES)) || [];
+                        return classes.filter(c => c.estado !== 'CANCELADA').sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
+                    } else {
+                        const { data, error } = await window.supabaseClient
+                            .from('reservas_clases')
+                            .select('*')
+                            .eq('alumno_id', window.currentUserId)
+                            .neq('estado', 'CANCELADA')
+                            .order('fecha', { ascending: true });
+                        if (error) throw error;
+                        return data;
+                    }
+                },
+
+                async checkConflicts(instructor, fecha, hora) {
+                    if (window.isDemoUser) {
+                        const classes = JSON.parse(localStorage.getItem(DataManager.KEYS.CLASSES)) || [];
+                        // Conflicto Instructor (Simulado: si ya hay una clase con ese instructor a esa hora en MIS reservas - simplificación)
+                        // En un sistema real, un usuario local no sabe las reservas de OTROS. 
+                        // Para la demo, asumimos que el instructor está libre a menos que YO tenga clase.
+                        // O podemos simular aleatoriamente ocupado:
+                        // if (Math.random() > 0.9) return { error: "Horario no disponible con este instructor." };
+
+                        const myConflict = classes.some(c => c.fecha === fecha && c.hora === hora && c.estado !== 'CANCELADA');
+                        if (myConflict) return { error: "Ya tienes clase a esa hora." };
+
+                        return { error: null };
+                    } else {
+                        // Lógica Supabase original
+                        const { data: conflictos } = await window.supabaseClient
+                            .from('reservas_clases')
+                            .select('*')
+                            .eq('instructor', instructor)
+                            .eq('fecha', fecha)
+                            .eq('hora', hora)
+                            .neq('estado', 'CANCELADA');
+                        if (conflictos && conflictos.length > 0) return { error: "Horario no disponible con este instructor." };
+
+                        const { data: miConflicto } = await window.supabaseClient
+                            .from('reservas_clases')
+                            .select('*')
+                            .eq('alumno_id', window.currentUserId)
+                            .eq('fecha', fecha)
+                            .eq('hora', hora)
+                            .neq('estado', 'CANCELADA');
+                        if (miConflicto && miConflicto.length > 0) return { error: "Ya tienes clase a esa hora." };
+
+                        return { error: null };
+                    }
+                },
+
+                async addClass(reservation) {
+                    if (window.isDemoUser) {
+                        const classes = JSON.parse(localStorage.getItem(DataManager.KEYS.CLASSES)) || [];
+                        // Generar ID falso
+                        reservation.id = 'demo-' + Date.now();
+                        reservation.alumno_id = 'demo-user';
+                        classes.push(reservation);
+                        localStorage.setItem(DataManager.KEYS.CLASSES, JSON.stringify(classes));
+                        return { error: null };
+                    } else {
+                        return await window.supabaseClient
+                            .from('reservas_clases')
+                            .insert([reservation]);
+                    }
+                },
+
+                async cancelClass(id) {
+                    if (window.isDemoUser) {
+                        let classes = JSON.parse(localStorage.getItem(DataManager.KEYS.CLASSES)) || [];
+                        // En local storage las eliminamos o marcamos canceladas. Marcamos para consistencia.
+                        classes = classes.map(c => {
+                            if (c.id === id) c.estado = 'CANCELADA';
+                            return c;
+                        });
+                        localStorage.setItem(DataManager.KEYS.CLASSES, JSON.stringify(classes));
+                        return { error: null };
+                    } else {
+                        return await window.supabaseClient
+                            .from('reservas_clases')
+                            .update({ estado: 'CANCELADA' })
+                            .eq('id', id);
+                    }
+                },
+
+                // --- NOTAS ---
+                async getNotes() {
+                    // Por ahora mock para ambos
+                    const mockNotas = [];
+                    // Ejemplo: { fecha: '2023-10-27', texto: 'Buen trabajo.' }
+                    return mockNotas;
+                }
+            };
+
+            // --- LÓGICA PRINCIPAL ---
 
             document.addEventListener('DOMContentLoaded', async () => {
                 const hoy = new Date().toISOString().split('T')[0];
@@ -424,29 +585,25 @@
                 }
 
                 const { data: { session } } = await window.supabaseClient.auth.getSession();
+
                 if (session) {
                     window.currentUserId = session.user.id;
-                    loadStudentData();
-                    renderizarClases();
-                    loadInstructorNotes();
+                    window.isDemoUser = false;
                 } else {
-                    console.warn("Sesión no detectada. Usando ID de prueba.");
+                    console.warn("Sesión no detectada. Iniciando MODO DEMO.");
                     window.currentUserId = "00000000-0000-0000-0000-000000000000";
-                    loadStudentData();
-                    renderizarClases();
-                    loadInstructorNotes();
+                    window.isDemoUser = true;
+                    DataManager.initDemoData();
                 }
+
+                await loadStudentData();
+                await renderizarClases();
+                await loadInstructorNotes();
             });
 
             async function loadStudentData() {
                 try {
-                    const { data, error } = await window.supabaseClient
-                        .from('alumnos')
-                        .select('*')
-                        .eq('id', window.currentUserId)
-                        .single();
-
-                    if (error) throw error;
+                    const data = await DataManager.getProfile();
 
                     if (data) {
                         document.getElementById('studentNameDisplay').innerText = data.nombre || "Alumno";
@@ -458,29 +615,23 @@
                         if (data.avatar_url) document.getElementById('pfp').src = data.avatar_url;
                         document.getElementById('clasesCompletadas').innerText = data.clases_completadas || 0;
 
-                        loadNextClass();
+                        // Recalcular próxima clase
+                        const allClasses = await DataManager.getClasses();
+                        const now = new Date();
+                        const upcoming = allClasses
+                            .filter(c => new Date(c.fecha + 'T' + c.hora) >= now)
+                            .sort((a, b) => new Date(a.fecha + 'T' + a.hora) - new Date(b.fecha + 'T' + b.hora));
+
+                        if (upcoming.length > 0) {
+                            document.getElementById('proximaClase').innerText = upcoming[0].fecha;
+                        } else {
+                            document.getElementById('proximaClase').innerText = "--/--";
+                        }
+
                         updateCircularProgress(data.progreso || 0);
                     }
                 } catch (err) {
                     console.error("Error cargando perfil:", err);
-                }
-            }
-
-            async function loadNextClass() {
-                try {
-                    const { data, error } = await window.supabaseClient
-                        .from('reservas_clases')
-                        .select('fecha')
-                        .eq('alumno_id', window.currentUserId)
-                        .gte('fecha', new Date().toISOString())
-                        .order('fecha', { ascending: true })
-                        .limit(1);
-
-                    if (data && data.length > 0) {
-                        document.getElementById('proximaClase').innerText = data[0].fecha;
-                    }
-                } catch (err) {
-                    console.warn("No se pudo cargar la próxima clase.");
                 }
             }
 
@@ -505,7 +656,7 @@
                 });
             }
 
-            // ... (Avatar functions unchanged) ...
+            // --- AVATAR & PERFIL ---
             function handleImageUpload(event) {
                 const file = event.target.files[0];
                 if (file) {
@@ -516,8 +667,7 @@
             }
 
             function toggleAvatars() {
-                const grid = document.getElementById('avatarGrid');
-                grid.classList.toggle('show');
+                document.getElementById('avatarGrid').classList.toggle('show');
             }
 
             function changePfp(src) {
@@ -526,7 +676,6 @@
             }
 
             async function saveProfile() {
-                // (Profile save logic unchanged for brevity, unless needed distinctively)
                 const btn = event.currentTarget;
                 const originalText = btn.innerText;
                 const userName = document.getElementById('userName').value;
@@ -547,14 +696,12 @@
                 btn.disabled = true;
 
                 try {
-                    const { error: dbError } = await window.supabaseClient
-                        .from('alumnos')
-                        .update({ nombre: userName, whatsapp: userPhone, email: userEmail, avatar_url: userAvatar })
-                        .eq('id', window.currentUserId);
-                    if (dbError) throw dbError;
+                    const updates = { nombre: userName, whatsapp: userPhone, email: userEmail, avatar_url: userAvatar };
+                    const { error } = await DataManager.updateProfile(updates);
+                    if (error) throw error;
 
                     if (newPass) {
-                        const { error: authError } = await window.supabaseClient.auth.updateUser({ password: newPass });
+                        const { error: authError } = await DataManager.updatePassword(newPass);
                         if (authError) throw authError;
                     }
                     alert("¡ÉXITO! Tu perfil Élite ha sido actualizado.");
@@ -568,8 +715,7 @@
                 }
             }
 
-            // --- LÓGICA DE AGENDAMIENTO & CALENDARIO ---
-
+            // --- AGENDAMIENTO ---
             async function agendarClase() {
                 const inst = document.getElementById('reservaInstructor').value;
                 const fecha = document.getElementById('reservaFecha').value;
@@ -587,44 +733,25 @@
                 if (fechaSeleccionada < hoy) return alert("⚠️ No puedes reservar en el pasado.");
                 if (fechaSeleccionada.getUTCDay() === 0) return alert("⚠️ Domingos no disponibles.");
 
-                const btn = event.target; // Fixed: using global event which works in inline handlers mostly, but better passed
+                const btn = event.target || event.currentTarget;
                 const originalText = btn.innerHTML;
                 btn.disabled = true;
                 btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> PROCESANDO...';
 
                 try {
                     // Validar conflictos
-                    const { data: conflictos } = await window.supabaseClient
-                        .from('reservas_clases')
-                        .select('*')
-                        .eq('instructor', inst)
-                        .eq('fecha', fecha)
-                        .eq('hora', hora)
-                        .neq('estado', 'CANCELADA');
-
-                    if (conflictos && conflictos.length > 0) throw new Error("Horario no disponible con este instructor.");
-
-                    const { data: miConflicto } = await window.supabaseClient
-                        .from('reservas_clases')
-                        .select('*')
-                        .eq('alumno_id', window.currentUserId)
-                        .eq('fecha', fecha)
-                        .eq('hora', hora)
-                        .neq('estado', 'CANCELADA');
-
-                    if (miConflicto && miConflicto.length > 0) throw new Error("Ya tienes clase a esa hora.");
+                    const { error: conflictError } = await DataManager.checkConflicts(inst, fecha, hora);
+                    if (conflictError) throw new Error(conflictError);
 
                     // Insertar
-                    const { error } = await window.supabaseClient
-                        .from('reservas_clases')
-                        .insert([{
-                            alumno_id: window.currentUserId,
-                            instructor: inst,
-                            fecha: fecha,
-                            hora: hora,
-                            notas: notas,
-                            estado: 'CONFIRMADA'
-                        }]);
+                    const { error } = await DataManager.addClass({
+                        alumno_id: window.currentUserId,
+                        instructor: inst,
+                        fecha: fecha,
+                        hora: hora,
+                        notas: notas,
+                        estado: 'CONFIRMADA'
+                    });
 
                     if (error) throw error;
 
@@ -632,6 +759,7 @@
                     document.getElementById('reservaFecha').value = '';
                     document.getElementById('reservaHora').value = '';
                     renderizarClases();
+                    loadStudentData(); // Update next class widget
 
                 } catch (err) {
                     alert("❌ Error: " + err.message);
@@ -648,15 +776,7 @@
                 lista.innerHTML = '<div class="empty-state"><i class="fa-solid fa-circle-notch fa-spin"></i><p>Cargando agenda...</p></div>';
 
                 try {
-                    const { data, error } = await window.supabaseClient
-                        .from('reservas_clases')
-                        .select('*')
-                        .eq('alumno_id', window.currentUserId)
-                        .neq('estado', 'CANCELADA') // Solo mostrar activas
-                        .order('fecha', { ascending: true });
-
-                    if (error) throw error;
-                    reservasExistentes = data;
+                    const data = await DataManager.getClasses();
 
                     if (!data || data.length === 0) {
                         lista.innerHTML = `
@@ -673,8 +793,6 @@
                         const ahora = new Date();
                         const diffMs = fechaClase - ahora;
                         const diffHours = diffMs / (1000 * 60 * 60);
-
-                        // Regla de Oro: Menos de 8 horas = Bloqueado
                         const bloqueada = diffHours < 8;
 
                         return `
@@ -698,7 +816,7 @@
                     }).join('');
                 } catch (err) {
                     console.error("Error rendering:", err);
-                    lista.innerHTML = `<p class="error-msg">Error cargando agenda.</p>`;
+                    lista.innerHTML = `<p class="error-msg">Error cargando agenda: ${err.message}</p>`;
                 }
             }
 
@@ -709,14 +827,11 @@
                 }
                 if (confirm("¿Estás seguro de cancelar esta práctica?\nEsta acción liberará el horario para otros alumnos.")) {
                     try {
-                        const { error } = await window.supabaseClient
-                            .from('reservas_clases')
-                            .update({ estado: 'CANCELADA' }) // Soft delete preferido
-                            .eq('id', id);
-
+                        const { error } = await DataManager.cancelClass(id);
                         if (error) throw error;
                         alert("✅ Clase cancelada exitosamente.");
                         renderizarClases();
+                        loadStudentData(); // Update next class widget
                     } catch (err) {
                         alert("Error: " + err.message);
                     }
@@ -725,19 +840,11 @@
 
             async function loadInstructorNotes() {
                 const container = document.getElementById('notasInstructor');
-                // Mock de notas para demostración (ya que no hay tabla definida aun)
-                // En producción: select * from notas_alumnos where alumno_id = ...
-
-                // Simulación de delay
                 await new Promise(r => setTimeout(r, 500));
 
-                // Si agregáramos lógica real sería aquí. Por ahora mostramos un mensaje elegante.
-                // O un ejemplo si el usuario tuviera notas.
+                const notes = await DataManager.getNotes();
 
-                const mockNotas = []; // Dejar vacío por defecto, o agregar uno para probar
-                // const mockNotas = [{ fecha: '2023-10-27', texto: 'Excelente control del embrague. Mejorar espejos.' }];
-
-                if (mockNotas.length === 0) {
+                if (notes.length === 0) {
                     container.innerHTML = `
                         <div class="empty-state" style="padding: 20px;">
                             <i class="fa-solid fa-clipboard-check" style="font-size: 24px;"></i>
@@ -745,7 +852,7 @@
                             <small>Tus instructores dejarán observaciones aquí.</small>
                         </div>`;
                 } else {
-                    container.innerHTML = mockNotas.map(n => `
+                    container.innerHTML = notes.map(n => `
                         <div class="note-card">
                             <div class="note-header">
                                 <span><i class="fa-solid fa-user-pen"></i> Feedback Instructor</span>
@@ -769,11 +876,6 @@
 
                 const percent = Math.round((checked / total) * 100);
                 updateCircularProgress(percent);
-
-                // Opcional: Guardar en Supabase
-                // if (window.currentUserId) {
-                //      window.supabaseClient.from('alumnos').update({ progreso: percent }).eq('id', window.currentUserId);
-                // }
             }
         </script>
 </body>

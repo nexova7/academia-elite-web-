@@ -7,6 +7,7 @@
     <title>Panel Élite Drive</title>
     <!-- Supabase Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/dashboard.css">
@@ -422,12 +423,9 @@
 
             <script>
                 // --- CONFIGURACIÓN DE CONEXIÓN ---
-                const SUPABASE_URL = 'https://aldwcqpgsjfjcttxfecp.supabase.co';
-                const SUPABASE_ANON_KEY = 'sb_publishable_OvQYw50Cs8sM21AJGg21zg_v3LunT3J';
-
-                // Inicializar Supabase sólo para el cliente real, pero usaremos DataManager para abstraer
-                const supabaseInstance = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-                window.supabaseClient = supabaseInstance;
+                // --- CONFIGURACIÓN DE CONEXIÓN ---
+                // Usamos la instancia segura cargada desde js/supabase-config.js
+                window.supabaseClient = window.supabaseInstance;
                 window.currentUserId = null;
                 window.isDemoUser = false;
 

@@ -1,0 +1,219 @@
+/* --- DASHBOARD V2: ELITE GLASS --- */
+/* Variables Extra para Dashboard V2 */
+:root {
+    --glass-bg: rgba(20, 20, 20, 0.6);
+    --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+    --neon-gold: #eebb55;
+    --neon-silver: #a0a0ff;
+    --danger-glass: rgba(183, 28, 28, 0.3);
+}
+
+/* Panel Dividido - Estructura */
+.split-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    height: calc(100vh - 140px);
+}
+
+@media (max-width: 1024px) {
+    .split-layout {
+        grid-template-columns: 1fr;
+        height: auto;
+    }
+}
+
+/* Columnas de Instructor */
+.instructor-column {
+    background: var(--glass-bg);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow-y: auto;
+    transition: 0.3s;
+}
+
+/* Estilos Específicos por Instructor */
+.col-liliana {
+    border: 2px solid var(--gold);
+    box-shadow: 0 0 15px rgba(197, 160, 89, 0.1);
+}
+
+.col-camilo {
+    border: 2px solid #708090;
+    /* Silver/Slate */
+    box-shadow: 0 0 15px rgba(112, 128, 144, 0.1);
+}
+
+.instructor-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 20px;
+}
+
+.instructor-title {
+    font-size: 1.4rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Tarjetas de Clase "Bubble Glass" */
+.class-bubble {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.class-bubble:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-2px);
+}
+
+.bubble-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.vehicle-icon {
+    font-size: 1.5rem;
+    width: 45px;
+    height: 45px;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bubble-info h4 {
+    margin: 0;
+    font-size: 1rem;
+    color: white;
+}
+
+.bubble-info span {
+    font-size: 0.8rem;
+    color: #aaa;
+}
+
+.level-badge {
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    margin-left: 8px;
+    vertical-align: middle;
+}
+
+.btn-cancel {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: rgba(255, 59, 59, 0.1);
+    color: #ff5252;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.btn-cancel:hover {
+    background: #ff5252;
+    color: white;
+}
+
+/* Estados de Clase */
+.bubble-cancelled {
+    background: rgba(100, 20, 20, 0.4);
+    border-color: #ff5252;
+    opacity: 0.8;
+}
+
+/* Header Semanal */
+.week-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 12px;
+}
+
+/* Botones Glass Genéricos */
+.glass-btn {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.glass-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+.glass-btn.danger {
+    color: #ff8a80;
+    border-color: rgba(255, 82, 82, 0.3);
+}
+
+.glass-btn.danger:hover {
+    background: rgba(255, 82, 82, 0.2);
+}
+
+/* Buscador Inteligente */
+.smart-search {
+    width: 100%;
+    padding: 15px;
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    font-size: 1rem;
+    outline: none;
+    transition: 0.3s;
+}
+
+.smart-search:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 15px rgba(197, 160, 89, 0.2);
+}
+
+/* Scrollbar Bonito para las columnas */
+.instructor-column::-webkit-scrollbar {
+    width: 6px;
+}
+
+.instructor-column::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+}

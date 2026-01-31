@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acceso Seguro | Academia de Conducción Élite</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
     <style>
         :root {
             --red: #b71c1c;
@@ -239,9 +240,8 @@
     </div>
 
     <script>
-        const SUPABASE_URL = 'https://aldwcqpgsjfjcttxfecp.supabase.co';
-        const SUPABASE_ANON_KEY = 'sb_publishable_OvQYw50Cs8sM21AJGg21zg_v3LunT3J';
-        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        // Usar instancia centralizada (js/supabase-config.js)
+        const _supabase = window.supabaseInstance;
         const academiaWA = "573133482932";
 
         function switchTab(type) {

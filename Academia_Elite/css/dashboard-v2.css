@@ -14,6 +14,8 @@
     grid-template-columns: 1fr 1fr;
     gap: 30px;
     height: calc(100vh - 140px);
+    overflow: hidden;
+    /* Prevent body scroll */
 }
 
 @media (max-width: 1024px) {
@@ -216,4 +218,37 @@
 .instructor-column::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.2);
     border-radius: 3px;
+}
+
+/* Fix Modal Issues */
+.modal-overlay {
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(5px);
+    display: none;
+    /* FORCE HIDE */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: #111;
+    padding: 30px;
+    border-radius: 15px;
+    border: 1px solid var(--neon-gold);
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+    position: relative;
+    /* Ensure it doesn't get lost */
+}
+
+/* Sidebar Footer Fix */
+.sidebar {
+    justify-content: space-between;
 }

@@ -153,6 +153,7 @@
             cursor: pointer;
             color: var(--gold);
             font-size: 18px;
+            z-index: 10;
         }
 
         .wa-link {
@@ -197,8 +198,11 @@
             </div>
             <div class="input-group">
                 <label>Contraseña</label>
-                <input type="password" id="logPass" placeholder="••••••••">
-                <span class="eye-icon" onclick="togglePass('logPass')">👁️</span>
+                <div style="position:relative;">
+                    <input type="password" id="logPass" placeholder="••••••••" style="padding-right: 40px;">
+                    <span class="eye-icon" onclick="togglePass('logPass')"
+                        style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer; font-size:1.2rem; z-index:100;">👁️</span>
+                </div>
             </div>
             <button class="btn-action" onclick="validarIngreso()">INGRESAR 🚗</button>
             <a href="#" class="wa-link" onclick="recuperarClave()">¿Olvidaste tu contraseña? Solicita ayuda 📱</a>
@@ -225,13 +229,19 @@
             </div>
             <div class="input-group">
                 <label>Contraseña</label>
-                <input type="password" id="regPass" placeholder="••••••••">
-                <span class="eye-icon" onclick="togglePass('regPass')">👁️</span>
+                <div style="position:relative;">
+                    <input type="password" id="regPass" placeholder="••••••••" style="padding-right: 40px;">
+                    <span class="eye-icon" onclick="togglePass('regPass')"
+                        style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer; font-size:1.2rem; z-index:100;">👁️</span>
+                </div>
             </div>
             <div class="input-group">
                 <label>Repetir Contraseña</label>
-                <input type="password" id="regPass2" placeholder="••••••••">
-                <span class="eye-icon" onclick="togglePass('regPass2')">👁️</span>
+                <div style="position:relative;">
+                    <input type="password" id="regPass2" placeholder="••••••••" style="padding-right: 40px;">
+                    <span class="eye-icon" onclick="togglePass('regPass2')"
+                        style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer; font-size:1.2rem; z-index:100;">👁️</span>
+                </div>
             </div>
 
             <button class="btn-action" onclick="solicitarPinWA()">1. SOLICITAR PIN AL WHATSAPP 📱</button>
@@ -242,8 +252,16 @@
 
     <script>
         // Usar instancia centralizada (js/supabase-config.js)
-        const _supabase = window.supabaseInstance;
+        let _supabase;
         const academiaWA = "573133482932";
+
+        try {
+            if (!window.supabaseInstance) throw new Error("Supabase no inicializado en js/supabase-config.js");
+            _supabase = window.supabaseInstance;
+        } catch (e) {
+            alert("⚠️ ERROR CRÍTICO DEL SISTEMA:\nNo se pudo cargar la configuración de la base de datos.\n\n" + e.message);
+            console.error(e);
+        }
 
         function switchTab(type) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));

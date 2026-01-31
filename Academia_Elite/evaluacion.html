@@ -5,6 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Evaluación | Academia de Conducción Élite</title>
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@400;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="css/theme-elite-asphalt.css">
     <style>
         :root {
@@ -20,7 +24,8 @@
         body {
             background: var(--dark);
             color: white;
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Inter', sans-serif;
+            /* Update font family base */
             margin: 0;
             display: flex;
             flex-direction: column;
@@ -28,43 +33,64 @@
         }
 
         header {
-            padding: 15px 30px;
-            background: #000;
-            border-bottom: 1px solid #222;
+            padding: 15px 5%;
+            background: rgba(5, 5, 5, 0.95);
+            border-bottom: 1px solid rgba(197, 160, 89, 0.1);
+            /* Subtle gold border */
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: sticky;
             top: 0;
             z-index: 1000;
+            backdrop-filter: blur(10px);
         }
 
-        .brand-button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            text-align: left;
-            padding: 5px 10px;
-            border-radius: 8px;
-            transition: 0.3s;
-            display: flex;
-            flex-direction: column;
-            text-decoration: none;
-        }
-
-        .brand-button .main-title {
-            color: var(--red);
-            font-weight: bold;
-            font-size: 1.2rem;
+        /* LOGO STYLE MATCHING INDEX */
+        .brand-logo {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            /* Responsivo */
+            letter-spacing: 1px;
+            color: white;
             text-transform: uppercase;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
-        .brand-button .sub-title {
+        .text-gold {
             color: var(--gold);
-            font-size: 0.7rem;
-            letter-spacing: 3px;
-            font-weight: bold;
-            margin-top: -2px;
+        }
+
+        /* BACK BUTTON */
+        .btn-back {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ccc;
+            padding: 8px 16px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            margin-right: 15px;
+        }
+
+        .btn-back:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+            background: rgba(197, 160, 89, 0.1);
+        }
+
+        /* HEADER LEFT CONTAINER */
+        .header-left {
+            display: flex;
+            align-items: center;
         }
 
         .game-container {
@@ -170,7 +196,8 @@
             border-radius: 12px;
             cursor: pointer;
             text-align: left;
-            transition: 0.2s;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
         }
 
         .option-btn.correct {
@@ -183,13 +210,60 @@
             color: white;
         }
 
+        .option-btn:disabled {
+            cursor: default;
+            opacity: 0.7;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #444;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: inherit;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: var(--gold);
+            color: #000;
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
         .stats-bar {
             background: #111;
-            padding: 8px 20px;
+            padding: 8px 15px;
             display: flex;
             gap: 15px;
             border-radius: 50px;
             border: 1px solid #222;
+            font-size: 0.9rem;
+        }
+
+        /* Mobile Adjustments for Header */
+        @media(max-width: 768px) {
+            .brand-logo {
+                font-size: 0.9rem;
+            }
+
+            .btn-back span {
+                display: none;
+            }
+
+            /* Show only arrow on mobile if needed, or keep text */
+            .btn-back {
+                padding: 8px 12px;
+            }
+
+            header {
+                padding: 10px 15px;
+            }
         }
 
         @keyframes fadeIn {
@@ -219,10 +293,13 @@
 <body class="elite-asphalt">
 
     <header>
-        <a href="index.html" class="brand-button">
-            <span class="main-title">Academia de Conducción</span>
-            <span class="sub-title">ÉLITE</span>
-        </a>
+        <div class="header-left">
+            <a href="index.html" class="btn-back">← Volver</a>
+            <div class="brand-logo">
+                ACADEMIA DE CONDUCCION<span class="text-gold" style="margin-left:5px;">ÉLITE</span>
+            </div>
+        </div>
+
         <div class="stats-bar">
             <span id="player-type">👤 Visitante</span>
             <span id="score" style="color:var(--green)">Pts: 0</span>
@@ -269,90 +346,245 @@
         <div id="trivia-screen">
             <h2 id="question-text">¿Qué indica esta señal?</h2>
             <div class="visual-area">
-                <div class="image-box"><img id="question-image" src=""></div>
+                <div class="image-box">
+                    <img id="question-image" src="" alt="Imagen de la pregunta"
+                        onerror="this.onerror=null; this.parentElement.innerText='[Imagen Referencial No Disponible]'; this.parentElement.style.color='#666'; this.parentElement.style.textAlign='center';">
+                </div>
                 <div class="answers-grid" id="options-box"></div>
             </div>
-            <div style="margin-top: 30px; display: flex; justify-content: space-between; align-items: center;">
+            <div id="feedback" style="font-weight: bold; margin-top: 20px; min-height: 24px;"></div>
+
+            <!-- Navigation Controls -->
+            <div class="navigation-controls"
+                style="display: flex; justify-content: space-between; align-items: center; margin-top: 30px; border-top: 1px solid #222; padding-top: 20px;">
+                <button id="btn-prev" class="nav-btn" onclick="anteriorPregunta()">⬅ Anterior</button>
                 <button onclick="volverAlMenu()"
                     style="background: none; border: 1px solid #333; color: #666; padding: 10px 20px; border-radius: 8px; cursor: pointer;">SALIR</button>
-                <div id="feedback" style="font-weight: bold;"></div>
+                <button id="btn-next" class="nav-btn" onclick="siguientePregunta()">Siguiente ➡</button>
             </div>
         </div>
     </div>
 
+    <script src="js/trivia_banco.js"></script>
     <script>
-        const bancoPreguntas = {
-            1: [
-                { q: "¿Qué significa esta señal?", img: "https://cdn-icons-png.flaticon.com/512/565/565547.png", options: ["Pare", "Siga", "Ceda", "Curva"], correct: 0 }
-            ],
-            2: [
-                { q: "¿Quién tiene la prelación?", img: "https://cdn-icons-png.flaticon.com/512/4836/4836691.png", options: ["Derecha", "Izquierda", "Rápido", "Grande"], correct: 0 }
-            ],
-            3: [
-                { q: "¿Distancia de triángulos?", img: "https://cdn-icons-png.flaticon.com/512/595/595005.png", options: ["10m", "30m", "50-100m", "500m"], correct: 2 }
-            ]
-        };
+        // TRIVIA_DATA ya está cargado desde el archivo externo
+
+        // --- CONSTANTES DE CONFIGURACIÓN ---
+        const PUNTOS_POR_ACIERTO = 10;
+        const PREGUNTAS_POR_SESION = 20;
+        const PUNTAJE_MAXIMO = PUNTOS_POR_ACIERTO * PREGUNTAS_POR_SESION; // 200
+        const PUNTAJE_APROBACION = PUNTAJE_MAXIMO * 0.8; // 80% = 160 puntos
 
         let puntos = 0;
         let nivelActual = 1;
         let preguntaActualIdx = 0;
         let nivelMaximoDesbloqueado = 1; // Control de progreso
+        let preguntasSesion = []; // Preguntas seleccionadas para la partida actual
+        let respuestasUsuario = {}; // Stores user answers: { idx: selectedOptionIndex }
+
+        // --- INICIALIZACIÓN ---
+        window.onload = function () {
+            cargarProgreso();
+            actualizarInterfazNiveles();
+        };
+
+        // --- PERSISTENCIA (LOCALSTORAGE) ---
+        function guardarProgreso() {
+            const estado = {
+                nivelMax: nivelMaximoDesbloqueado,
+                medallas: nivelMaximoDesbloqueado - 1
+            };
+            localStorage.setItem('academia_trivia_progress', JSON.stringify(estado));
+        }
+
+        function cargarProgreso() {
+            const guardado = localStorage.getItem('academia_trivia_progress');
+            if (guardado) {
+                const estado = JSON.parse(guardado);
+                nivelMaximoDesbloqueado = estado.nivelMax || 1;
+                document.getElementById('medals').innerText = `🏅 ${estado.medallas || 0}`;
+            }
+        }
 
         function intentarEntrar(lvl) {
             if (lvl <= nivelMaximoDesbloqueado) {
                 iniciarNivel(lvl);
             } else {
-                alert("❌ Nivel bloqueado. Debes completar el Nivel " + (lvl - 1) + " primero.");
+                alert("❌ Nivel bloqueado. Debes completar el Nivel " + (lvl - 1) + " con al menos 80% (160 pts).");
             }
         }
 
         function iniciarNivel(lvl) {
             nivelActual = lvl;
             preguntaActualIdx = 0;
+            puntos = 0;
+            respuestasUsuario = {}; // Reset answers
+            document.getElementById('score').innerText = `Pts: ${puntos}`;
+
+            // 1. Obtener todas las preguntas del nivel
+            if (!TRIVIA_DATA[lvl]) {
+                alert("Error: No hay datos para el nivel " + lvl);
+                return;
+            }
+            const todasLasPreguntas = [...TRIVIA_DATA[lvl]];
+
+            // 2. Barajar aleatoriamente (Shuffle)
+            shuffleArray(todasLasPreguntas);
+
+            // 3. Seleccionar solo las primeras 20
+            preguntasSesion = todasLasPreguntas.slice(0, PREGUNTAS_POR_SESION);
+
             document.getElementById('selection-screen').style.display = 'none';
             document.getElementById('trivia-screen').style.display = 'block';
             cargarPregunta();
         }
 
-        function cargarPregunta() {
-            const data = bancoPreguntas[nivelActual][preguntaActualIdx];
-            if (!data) { finalizarNivel(); return; }
+        // Función Helper para barajar arreglos (Fisher-Yates Shuffle)
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
 
-            document.getElementById('question-text').innerText = data.q;
+        function cargarPregunta() {
+            const data = preguntasSesion[preguntaActualIdx];
+            const feedbackEl = document.getElementById('feedback');
+            const btnPrev = document.getElementById('btn-prev');
+            const btnNext = document.getElementById('btn-next');
+
+            // Text & Image
+            document.getElementById('question-text').innerText = `Pregunta ${preguntaActualIdx + 1} de ${PREGUNTAS_POR_SESION}: ${data.q}`;
+
+            // Reset image container
+            const imgBox = document.querySelector('.image-box');
+            if (!imgBox.querySelector('img')) {
+                imgBox.innerHTML = '<img id="question-image" src="" alt="Imagen de la pregunta" onerror="this.onerror=null; this.parentElement.innerText=\'[Imagen Referencial No Disponible]\'; this.parentElement.style.color=\'#666\'; this.parentElement.style.display=\'flex\'; this.parentElement.style.alignItems=\'center\'; this.parentElement.style.justifyContent=\'center\';">';
+            }
+            imgBox.style.color = '';
             document.getElementById('question-image').src = data.img;
+
+            // Clear previous options
             const box = document.getElementById('options-box');
             box.innerHTML = "";
+            feedbackEl.innerText = "";
 
-            data.options.forEach((opt, idx) => {
+            // PREPARAR OPCIONES BARAJADAS (SHUFFLE OPTIONS)
+            // Si ya existe un orden guardado para esta pregunta (si el usuario vuelve atrás), úsalo.
+            // Si no, genera uno nuevo y guárdalo.
+
+            if (!data.shuffledOptions) {
+                // Crear objetos con índice original para rastrear la respuesta correcta
+                const optionsWithIndex = data.options.map((opt, i) => ({ text: opt, originalIndex: i }));
+                shuffleArray(optionsWithIndex);
+                data.shuffledOptions = optionsWithIndex;
+            }
+
+            const currentOptions = data.shuffledOptions;
+
+            // Check if already answered
+            const yaRespondido = respuestasUsuario.hasOwnProperty(preguntaActualIdx);
+
+            // Render Options
+            currentOptions.forEach((optObj, visualIdx) => {
                 const btn = document.createElement('button');
                 btn.className = 'option-btn';
-                btn.innerText = opt;
-                btn.onclick = () => {
-                    const botones = document.querySelectorAll('.option-btn');
-                    botones.forEach(b => b.onclick = null);
-                    if (idx === data.correct) {
+                btn.innerText = optObj.text;
+
+                if (yaRespondido) {
+                    btn.disabled = true;
+                    // El usuario guardó el 'originalIndex' de su respuesta
+                    const userOriginalIndex = respuestasUsuario[preguntaActualIdx];
+
+                    if (optObj.originalIndex === data.correct) {
                         btn.classList.add('correct');
-                        puntos += 10;
-                    } else {
-                        btn.classList.add('wrong');
-                        botones[data.correct].classList.add('correct');
                     }
-                    setTimeout(() => { preguntaActualIdx++; cargarPregunta(); }, 1500);
-                };
+                    if (optObj.originalIndex === userOriginalIndex && optObj.originalIndex !== data.correct) {
+                        btn.classList.add('wrong');
+                    }
+                } else {
+                    // Al responder pasamos el originalIndex para validar
+                    btn.onclick = () => responder(optObj.originalIndex, data);
+                }
                 box.appendChild(btn);
             });
+
+            // Restore Feedback if answered
+            if (yaRespondido) {
+                const userOriginalIndex = respuestasUsuario[preguntaActualIdx];
+                if (userOriginalIndex === data.correct) {
+                    feedbackEl.style.color = "var(--green)";
+                    feedbackEl.innerText = data.feedback || "¡Correcto!";
+                } else {
+                    feedbackEl.style.color = "var(--red)";
+                    feedbackEl.innerText = data.feedback || "Incorrecto.";
+                }
+            }
+
+            // Navigation Buttons State
+            btnPrev.disabled = (preguntaActualIdx === 0);
+
+            // Next button logic:
+            if (preguntaActualIdx === preguntasSesion.length - 1) {
+                btnNext.innerText = "FINALIZAR 🏁";
+            } else {
+                btnNext.innerText = "Siguiente ➡";
+            }
+
+            // Disable next if not answered
+            btnNext.disabled = !yaRespondido;
+        }
+
+        function responder(idx, data) {
+            // Save answer
+            respuestasUsuario[preguntaActualIdx] = idx;
+
+            // Update Score
+            if (idx === data.correct) {
+                puntos += PUNTOS_POR_ACIERTO;
+                document.getElementById('score').innerText = `Pts: ${puntos}`;
+            }
+
+            // Refresh UI (show colors, disable buttons, show Next)
+            cargarPregunta();
+        }
+
+        function siguientePregunta() {
+            if (preguntaActualIdx < preguntasSesion.length - 1) {
+                preguntaActualIdx++;
+                cargarPregunta();
+            } else {
+                finalizarNivel();
+            }
+        }
+
+        function anteriorPregunta() {
+            if (preguntaActualIdx > 0) {
+                preguntaActualIdx--;
+                cargarPregunta();
+            }
         }
 
         function finalizarNivel() {
-            alert("🎉 ¡Nivel " + nivelActual + " Superado!");
+            const aprobado = puntos >= PUNTAJE_APROBACION;
+            let mensaje = `🏁 NIVEL ${nivelActual} FINALIZADO 🏁\n\n`;
+            mensaje += `Puntaje Obtenido: ${puntos} / ${PUNTAJE_MAXIMO}\n`;
+            mensaje += `Mínimo para aprobar: ${PUNTAJE_APROBACION} (80%)\n\n`;
 
-            // Lógica de desbloqueo
-            if (nivelActual === nivelMaximoDesbloqueado && nivelMaximoDesbloqueado < 3) {
-                nivelMaximoDesbloqueado++;
-                actualizarInterfazNiveles();
+            if (aprobado) {
+                mensaje += "🎉 ¡FELICITACIONES! HAS APROBADO EL NIVEL. 🎉";
+
+                if (nivelActual === nivelMaximoDesbloqueado && nivelMaximoDesbloqueado < 3) {
+                    nivelMaximoDesbloqueado++;
+                    guardarProgreso(); // Guardar en LocalStorage
+                    actualizarInterfazNiveles();
+                }
+                document.getElementById('medals').innerText = `🏅 ${nivelMaximoDesbloqueado - 1}`;
+            } else {
+                mensaje += "❌ NO HAS APROBADO. Debes repasar y volver a intentarlo.";
             }
 
-            document.getElementById('medals').innerText = `🏅 ${nivelMaximoDesbloqueado - 1}`;
+            alert(mensaje);
             volverAlMenu();
         }
 
@@ -366,7 +598,17 @@
                     card.classList.remove('locked');
                     card.classList.add('unlocked');
                     if (lock) lock.innerText = "🔓";
+                    const nombreNivel = i === 1 ? "BÁSICA" : i === 2 ? "TÉCNICA" : "MÁSTER";
+                    // Mantener texto descriptivo original si se quiere, o simplificar
                     btn.innerText = "COMENZAR";
+                    btn.disabled = false;
+                    btn.style.cursor = "pointer";
+                } else {
+                    // Asegurar estado bloqueado visualmente si se recarga
+                    card.classList.add('locked');
+                    card.classList.remove('unlocked');
+                    if (lock) lock.innerText = "🔒";
+                    btn.innerText = "BLOQUEADO";
                 }
             }
         }
@@ -374,6 +616,7 @@
         function volverAlMenu() {
             document.getElementById('selection-screen').style.display = 'block';
             document.getElementById('trivia-screen').style.display = 'none';
+            actualizarInterfazNiveles(); // Refrescar por si hubo cambios
         }
     </script>
 </body>

@@ -1285,8 +1285,9 @@ select.input-glass {
     position: relative;
     width: 100%;
     aspect-ratio: 16/9;
-    overflow: hidden;
+    /* overflow: hidden; Removed to allow z-index pop out if needed, but mainly to fix stacking context issues */
     background: #000;
+    z-index: 10;
 }
 
 .thumb-wrapper img {
@@ -1302,6 +1303,7 @@ select.input-glass {
     opacity: 0.4;
 }
 
+/* Ensure play overlay does not block video clicks if video is present */
 .play-overlay {
     position: absolute;
     top: 50%;
@@ -1310,7 +1312,6 @@ select.input-glass {
     width: 50px;
     height: 50px;
     background: rgba(197, 160, 89, 0.9);
-    /* Elite Gold */
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -1318,13 +1319,16 @@ select.input-glass {
     opacity: 0;
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     box-shadow: 0 0 20px var(--elite-gold-glow);
+    z-index: 5;
+    /* Lower than video */
+    pointer-events: none;
+    /* KEY FIX: Let clicks pass through to the video */
 }
 
 .play-overlay i {
     color: #000;
     font-size: 20px;
     margin-left: 2px;
-    /* Visual correction for play icon */
 }
 
 .netflix-card:hover .play-overlay {
@@ -1424,4 +1428,171 @@ select.input-glass {
     border: solid black;
     border-width: 0 2px 2px 0;
     transform: rotate(45deg);
+}
+
+/* Video Player Styles */
+.video-elite {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: relative;
+    z-index: 50;
+    /* Super High Z-Index */
+    cursor: pointer;
+    background: #000;
+    pointer-events: auto !important;
+    /* Force pointer events */
+}
+
+/* Ensure controls are visible */
+.video-elite::-webkit-media-controls {
+    z-index: 51;
+    position: relative;
+}
+
+/* DISARM HOVER EFFECT FOR VIDEO CARDS */
+.netflix-card.no-hover-scale:hover {
+    transform: none !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5) !important;
+    /* Keep original shadow, don't grow */
+    border-color: rgba(255, 255, 255, 0.05) !important;
+    /* Reset border */
+    z-index: auto !important;
+}
+
+/* Ensure wrapper allows clicks */
+.netflix-card.no-hover-scale .thumb-wrapper {
+    pointer-events: auto !important;
+    transform: none !important;
+    /* Disable image zoom effect wrapper */
+}
+
+/* =====================================================
+   RESPONSIVE DASHBOARD (MOBILE)
+   ===================================================== */
+
+/* Mobile Header (Solo visible en móvil) */
+.mobile-header {
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-bottom: 1px solid var(--elite-border);
+    position: sticky;
+    top: 0;
+    z-index: 1100;
+}
+
+.logo-text-mobile {
+    color: var(--elite-gold);
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+/* Botón Hamburguesa Estilo Cristal */
+.dashboard-toggle {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.dashboard-toggle span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: #fff;
+    border-radius: 2px;
+    transition: all 0.3s;
+}
+
+.dashboard-toggle.active span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+    background: var(--elite-gold);
+}
+
+.dashboard-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.dashboard-toggle.active span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+    background: var(--elite-gold);
+}
+
+/* OVERLAY PARA CERRAR MENU */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.sidebar-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* MEDIA QUERY PRINCIPAL */
+@media (max-width: 1024px) {
+
+    /* Mostrar Header Móvil */
+    .mobile-header {
+        display: flex;
+    }
+
+    /* Sidebar Off-Canvas */
+    .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.4s cubic-bezier(0.77, 0, 0.18, 1);
+        box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .sidebar.active {
+        transform: translateX(0);
+    }
+
+    /* Contenido Full Width */
+    .content {
+        margin-left: 0;
+        width: 100%;
+        padding: 20px;
+    }
+
+    /* Ajustes Grid para Móvil */
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .license-card {
+        grid-template-columns: 1fr;
+        padding: 20px;
+    }
+
+    .avatar-side {
+        border-bottom: 1px solid var(--elite-border);
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+        width: 100%;
+    }
+
+    .field-grid {
+        grid-template-columns: 1fr;
+    }
 }

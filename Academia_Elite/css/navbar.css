@@ -1,6 +1,6 @@
 /* 
   Academia Élite - Navigation Styles
-  Estética: Luxury Glassmorphism 
+  Estética: Luxury Glassmorphism & Neon Glow (Modernizado)
 */
 
 /* Reset de visibilidad por defecto */
@@ -17,130 +17,175 @@
     justify-content: space-between;
     align-items: center;
     padding: 15px 5%;
-    background: rgba(5, 5, 5, 0.95);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
+    background: rgba(5, 5, 5, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     position: fixed;
     width: 100%;
     top: 0;
     z-index: 1000;
     box-sizing: border-box;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+}
+
+.navbar.nav-scrolled {
+    background: rgba(5, 5, 5, 0.98);
+    border-bottom: 1px solid rgba(197, 160, 89, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    padding: 12px 5%;
 }
 
 .nav-logo {
     font-family: 'Playfair Display', serif;
     font-weight: 700;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     letter-spacing: 1px;
     color: white;
     flex: 1;
     z-index: 1100;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
 }
 
 .nav-links {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 15px;
+    gap: 20px;
     flex: 2;
 }
 
-/* Botones Base con Efecto Vidrio */
+/* Botones Base con Efecto Vidrio Premium */
 .nav-link,
 .btn-alumno,
 .btn-profe {
     background: rgba(255, 255, 255, 0.03) !important;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
     border-radius: 8px !important;
-    padding: 10px 18px !important;
+    padding: 10px 20px !important;
     text-decoration: none;
     font-size: 11px;
-    letter-spacing: 1.2px;
-    font-weight: 500;
+    letter-spacing: 1.5px;
+    font-weight: 600;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.8) !important;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: rgba(255, 255, 255, 0.7) !important;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
 }
 
-/* ESTADO ACTIVO (Dorado Élite) */
-.nav-link.active {
-    background: rgba(197, 160, 89, 0.15) !important;
-    border: 1px solid rgba(197, 160, 89, 0.5) !important;
-    color: #c5a059 !important;
-    box-shadow: 0 0 15px rgba(197, 160, 89, 0.1);
-}
-
-/* Hover general */
+/* Hover fx - Glow */
 .nav-link:hover,
 .btn-alumno:hover,
 .btn-profe:hover {
     background: rgba(255, 255, 255, 0.1) !important;
-    transform: translateY(-3px);
-    border-color: rgba(255, 255, 255, 0.3) !important;
+    border-color: rgba(255, 255, 255, 0.4) !important;
     color: #fff !important;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
 }
 
-/* EFECTO ACTIVE (TACTO NATIVO) */
-.nav-link:active,
-.btn-alumno:active,
-.btn-profe:active,
-.nav-toggle:active {
-    transform: scale(0.95);
-    filter: brightness(0.9);
+/* ESTADO ACTIVO (Dorado Élite) */
+.nav-link.active {
+    background: linear-gradient(135deg, rgba(197, 160, 89, 0.15) 0%, rgba(197, 160, 89, 0.05) 100%) !important;
+    border: 1px solid rgba(197, 160, 89, 0.6) !important;
+    color: #c5a059 !important;
+    box-shadow: 0 0 25px rgba(197, 160, 89, 0.2);
 }
 
-/* Accesos (Derecha) */
+/* Accesos Right Side */
 .nav-access {
     display: flex;
-    gap: 10px;
+    gap: 12px;
     justify-content: flex-end;
     flex: 1;
     z-index: 1100;
 }
 
 .btn-alumno {
-    background: rgba(183, 28, 28, 0.2) !important;
-    border: 1px solid rgba(183, 28, 28, 0.4) !important;
+    border-color: rgba(183, 28, 28, 0.3) !important;
+}
+
+.btn-alumno:hover {
+    box-shadow: 0 0 20px rgba(183, 28, 28, 0.4) !important;
+    border-color: #b71c1c !important;
 }
 
 .btn-profe {
-    background: rgba(197, 160, 89, 0.05) !important;
-    border: 1px solid rgba(197, 160, 89, 0.4) !important;
+    border-color: rgba(197, 160, 89, 0.3) !important;
     color: #c5a059 !important;
 }
 
-/* --- MOBILE TOGGLE (Hamburguesa) --- */
+.btn-profe:hover {
+    box-shadow: 0 0 20px rgba(197, 160, 89, 0.4) !important;
+    border-color: #c5a059 !important;
+}
+
+/* --- MOBILE TOGGLE (Hamburguesa Estilo Cristal Moderno) --- */
 .nav-toggle {
     display: none;
+    /* Desktop default */
     flex-direction: column;
-    gap: 6px;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
     cursor: pointer;
     z-index: 1100;
-    padding: 5px;
+
+    /* Caja de cristal */
+    width: 45px;
+    height: 45px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.nav-toggle:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(197, 160, 89, 0.5);
+    box-shadow: 0 0 15px rgba(197, 160, 89, 0.2);
 }
 
 .nav-toggle span {
     display: block;
-    width: 25px;
+    width: 24px;
     height: 2px;
     background: white;
-    transition: 0.3s;
-    border-radius: 2px;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    /* Elastic bouncy effect */
+    border-radius: 4px;
+    position: relative;
 }
 
-/* --- VISIBILIDAD ROBUSTA --- */
-.mobile-only {
-    display: none !important;
+/* Animación Hamburguesa activa */
+.nav-toggle.active {
+    border-color: #c5a059;
+    background: rgba(197, 160, 89, 0.1);
+    box-shadow: 0 0 20px rgba(197, 160, 89, 0.3);
 }
 
-.desktop-only {
-    display: flex !important;
+.nav-toggle.active span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+    background: #c5a059;
+    width: 28px;
+}
+
+.nav-toggle.active span:nth-child(2) {
+    opacity: 0;
+    transform: translateX(10px);
+}
+
+.nav-toggle.active span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+    background: #c5a059;
+    width: 28px;
 }
 
 /* --- RESPONSIVE LOGIC --- */
@@ -163,62 +208,98 @@
         right: -100%;
         width: 100%;
         height: 100vh;
-        background: rgba(5, 5, 5, 0.98);
-        backdrop-filter: blur(25px);
-        -webkit-backdrop-filter: blur(25px);
+
+        /* Fondo Full Cristal Dark */
+        background: rgba(5, 5, 5, 0.85);
+        /* Fallback */
+        background: radial-gradient(circle at top right, rgba(20, 20, 20, 0.95), #000000);
+        backdrop-filter: blur(30px);
+        -webkit-backdrop-filter: blur(30px);
+
         flex-direction: column;
         justify-content: center;
-        transition: 0.5s cubic-bezier(0.77, 0.2, 0.05, 1);
+        transition: right 0.6s cubic-bezier(0.77, 0, 0.18, 1);
+        /* Smooth bezier */
         z-index: 1050;
+        box-shadow: -10px 0 40px rgba(0, 0, 0, 0.8);
     }
 
     .nav-links.active {
         right: 0;
     }
 
+    /* Links en Mobile */
     .nav-link {
-        font-size: 1.5rem !important;
-        padding: 15px 30px !important;
-        width: 80%;
+        font-size: 1.6rem !important;
+        padding: 20px 0 !important;
+        width: 100%;
         text-align: center;
         background: transparent !important;
         border: none !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.03) !important;
         box-shadow: none !important;
+        border-radius: 0 !important;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.4s ease, transform 0.4s ease;
     }
 
+    /* Staggered animation reveal can be done in JS or simplified here */
+    .nav-links.active .nav-link {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .nav-links.active .nav-link:nth-child(1) {
+        transition-delay: 0.1s;
+    }
+
+    .nav-links.active .nav-link:nth-child(2) {
+        transition-delay: 0.2s;
+    }
+
+    .nav-links.active .nav-link:nth-child(3) {
+        transition-delay: 0.3s;
+    }
+
+    .nav-links.active .nav-link:nth-child(4) {
+        transition-delay: 0.4s;
+    }
+
+    .nav-links.active .nav-link:nth-child(5) {
+        transition-delay: 0.5s;
+    }
+
+    .nav-links.active .nav-link:nth-child(6) {
+        transition-delay: 0.6s;
+    }
+
+    .nav-link.active {
+        background: transparent !important;
+        border-bottom: 1px solid #c5a059 !important;
+        color: #c5a059 !important;
+        box-shadow: none;
+    }
+
+    /* Accesos móviles destacados */
     .nav-link.mobile-only {
         width: 80%;
-        margin: 10px auto !important;
-        border-radius: 8px !important;
-        background: rgba(255, 255, 255, 0.05) !important;
+        margin: 15px auto !important;
+        border-radius: 50px !important;
+        /* Pill shape en mobile */
         border: 1px solid rgba(255, 255, 255, 0.1) !important;
-        font-size: 1rem !important;
+        font-size: 1.1rem !important;
+        background: rgba(255, 255, 255, 0.05) !important;
     }
 
     .nav-link.mobile-only.red {
         color: #ef4444 !important;
-        border-color: rgba(239, 68, 68, 0.3) !important;
-        margin-top: 30px !important;
-        /* Espacio separador en móvil */
-        border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
-        padding-top: 25px !important;
+        border-color: rgba(239, 68, 68, 0.5) !important;
+        margin-top: 40px !important;
     }
 
     .nav-link.mobile-only.gold {
         color: #c5a059 !important;
-        border-color: rgba(197, 160, 89, 0.3) !important;
+        border-color: rgba(197, 160, 89, 0.5) !important;
     }
-}
-
-/* Animación Hamburguesa activa */
-.nav-toggle.active span:nth-child(1) {
-    transform: translateY(8px) rotate(45deg);
-}
-
-.nav-toggle.active span:nth-child(2) {
-    opacity: 0;
-}
-
-.nav-toggle.active span:nth-child(3) {
-    transform: translateY(-8px) rotate(-45deg);
 }

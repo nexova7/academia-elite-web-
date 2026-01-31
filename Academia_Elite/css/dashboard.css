@@ -817,19 +817,7 @@ body {
 }
 
 @media (max-width: 768px) {
-    .sidebar {
-        width: 100%;
-        height: auto;
-        position: relative;
-        border-right: none;
-        border-bottom: 1px solid var(--elite-border);
-    }
-
-    .content {
-        margin-left: 0;
-        width: 100%;
-        padding: 24px 20px;
-    }
+    /* Eliminamos estilos conflictivos del sidebar para mantener el off-canvas menu */
 
     .stats-grid {
         grid-template-columns: 1fr;
@@ -845,6 +833,17 @@ body {
 
     .banner-welcome h1 {
         font-size: 24px;
+    }
+
+    /* Fix Avatar Squashing: Volver a columna en móviles */
+    .avatar-side {
+        flex-direction: column !important;
+        gap: 20px;
+    }
+
+    .avatar-container {
+        width: 160px;
+        height: 160px;
     }
 }
 
@@ -1562,6 +1561,14 @@ select.input-glass {
         transform: translateX(-100%);
         transition: transform 0.4s cubic-bezier(0.77, 0, 0.18, 1);
         box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        z-index: 1200;
+        /* Asegurar que esté sobre todo */
+        width: 280px;
+        /* Ancho fijo para el menú móvil */
     }
 
     .sidebar.active {

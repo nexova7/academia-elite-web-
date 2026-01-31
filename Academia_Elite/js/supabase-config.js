@@ -17,9 +17,20 @@ const SUPABASE_ANON_KEY = 'sb_publishable_OvQYw50Cs8sM21AJGg21zg_v3LunT3J'; // R
 let _supabase = null;
 
 if (typeof supabase !== 'undefined') {
-    _supabase = supabase.createClient(SUPABASE_PROJECT_URL, SUPABASE_ANON_KEY);
-    console.log("✅ Supabase Security Client Initialized");
+    try {
+        _supabase = supabase.createClient(SUPABASE_PROJECT_URL, SUPABASE_ANON_KEY);
+        console.log("✅ Supabase Security Client Initialized");
+    } catch (err) {
+        console.error("❌ Falló constructor Supabase:", err);
+    }
 } else {
+    // FALLBACK VISUAL: Si no carga la librería, inyectar alerta
+    window.addEventListener('load', () => {
+        const errDiv = document.createElement("div");
+        errDiv.style.cssText = "position:fixed; top:0; left:0; width:100%; padding:20px; background:red; color:white; z-index:9999; text-align:center; font-weight:bold; font-family:sans-serif;";
+        errDiv.innerText = "⚠️ ERROR CRÍTICO DE RED: La librería de Supabase no cargó. Verifica tu conexión a internet.";
+        document.body.prepend(errDiv);
+    });
     console.error("❌ Error Crítico: Librería Supabase no cargada antes de la configuración.");
 }
 

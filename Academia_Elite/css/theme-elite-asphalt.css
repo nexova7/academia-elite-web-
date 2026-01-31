@@ -1,0 +1,133 @@
+/* 
+  Academia Élite - Theme: Asfalto Nocturno + Iluminación Dramática 
+  Description: Fondo oscuro con textura de asfalto, spotlight, detalles dorados y CTA rojo.
+*/
+
+body.elite-asphalt {
+    background-color: #000000 !important;
+    background-image:
+        /* Top Fade: Ensures header integration */
+        linear-gradient(to bottom, #000000 0%, transparent 30%),
+        /* Bottom Fade: Ensures footer integration */
+        linear-gradient(to top, #000000 0%, transparent 30%),
+        /* Left/Right Vignette Strength */
+        radial-gradient(ellipse at center, transparent 20%, #000000 100%),
+        /* Darken Overlay for Text Readability */
+        linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+        /* Seamless Background Image */
+        url("../images/background-elite-seamless.png") !important;
+    background-position: center bottom;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+}
+
+/* Typography Overrides */
+body.elite-asphalt h1,
+body.elite-asphalt h2,
+body.elite-asphalt h3 {
+    text-shadow: 0 4px 30px rgba(0, 0, 0, 0.9);
+}
+
+/* Gold Details - Lines and Borders */
+body.elite-asphalt hr,
+body.elite-asphalt .divider,
+body.elite-asphalt border-gold {
+    border-color: #C5A059 !important;
+    opacity: 0.8;
+}
+
+/* Buttons - Red CTA */
+body.elite-asphalt .btn-primary,
+body.elite-asphalt .cta-button,
+body.elite-asphalt button[type="submit"],
+body.elite-asphalt a.btn[style*="background: #b71c1c"]
+
+/* Target inline styled buttons if possible */
+/* Target inline styled buttons if possible */
+    {
+    background: linear-gradient(180deg, #D32F2F 0%, #B71C1C 100%) !important;
+    /* Deep Red Gradient */
+    border: 2px solid #C5A059 !important;
+    /* GOLDEN BORDER */
+    border-bottom-width: 4px !important;
+    /* Tactile depth feel */
+    color: white !important;
+    box-shadow:
+        0 10px 20px rgba(0, 0, 0, 0.6),
+        /* Drop Shadow */
+        0 0 15px rgba(183, 28, 28, 0.5),
+        /* Red Glow */
+        inset 0 1px 0 rgba(255, 255, 255, 0.2)
+        /* Inner Highlight */
+        !important;
+    text-shadow: 0 2px 2px rgba(0, 0, 0, 0.8);
+    font-weight: 700 !important;
+    letter-spacing: 1px !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    top: 0;
+}
+
+body.elite-asphalt .btn-primary:hover,
+body.elite-asphalt .cta-button:hover,
+body.elite-asphalt button[type="submit"]:hover,
+body.elite-asphalt a.btn[style*="background: #b71c1c"]:hover {
+    background: linear-gradient(180deg, #E53935 0%, #C62828 100%) !important;
+    border-color: #FFD54F !important;
+    /* Brighter Gold on Hover */
+    box-shadow:
+        0 15px 30px rgba(0, 0, 0, 0.7),
+        0 0 25px rgba(229, 57, 53, 0.6),
+        0 0 10px rgba(255, 213, 79, 0.4) !important;
+    transform: translateY(-2px);
+    border-bottom-width: 4px !important;
+}
+
+body.elite-asphalt .btn-primary:active,
+body.elite-asphalt .cta-button:active,
+body.elite-asphalt button[type="submit"]:active {
+    transform: translateY(2px);
+    border-bottom-width: 2px !important;
+    /* Press effect */
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Remove default white backgrounds if any containers have them */
+body.elite-asphalt .card,
+body.elite-asphalt .container-box {
+    background: rgba(20, 20, 20, 0.8) !important;
+    border: 1px solid rgba(197, 160, 89, 0.2);
+    /* Subtle Gold border */
+    backdrop-filter: blur(10px);
+}
+
+/* Gold Accents for secondary elements */
+body.elite-asphalt .text-gold,
+body.elite-asphalt .highlight {
+    color: #C5A059 !important;
+}
+
+/* Sections specific adjustments */
+body.elite-asphalt .hero {
+    background: transparent !important;
+}
+
+body.elite-asphalt .trivia-preview {
+    background: transparent !important;
+    border-top: 1px solid rgba(197, 160, 89, 0.3) !important;
+}
+
+body.elite-asphalt footer {
+    border-top: 1px solid rgba(197, 160, 89, 0.3) !important;
+    background: linear-gradient(to top, #050505, transparent) !important;
+}
+
+/* Navbar transparency adjustment */
+body.elite-asphalt .navbar {
+    background: rgba(5, 5, 5, 0.9) !important;
+    border-bottom: 1px solid rgba(197, 160, 89, 0.2);
+}

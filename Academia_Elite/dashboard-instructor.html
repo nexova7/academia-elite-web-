@@ -95,21 +95,28 @@
             }
         }
 
-        /* Mobile */
+        /* Mobile Header Premium Glass */
         .mobile-header {
             display: none;
             justify-content: space-between;
             align-items: center;
-            padding: 15px;
+            padding: 15px 25px;
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             z-index: 2000;
             box-sizing: border-box;
         }
 
         @media (max-width: 1024px) {
+            .mobile-header {
+                display: flex;
+            }
+
             .sidebar {
                 transform: translateX(-100%);
             }
@@ -123,10 +130,50 @@
                 width: 100%;
                 padding-top: 80px;
             }
+        }
 
-            .mobile-header {
-                display: flex;
-            }
+        /* Botones Glass Premium (Round Design) */
+        .glass-btn {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 50px;
+            /* Píldora */
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .glass-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px) scale(1.02);
+        }
+
+        .glass-btn:active {
+            transform: scale(0.98);
+        }
+
+        .glass-btn.danger {
+            color: #ff8a80;
+            border-color: rgba(255, 82, 82, 0.3);
+            background: rgba(255, 50, 50, 0.05);
+        }
+
+        .glass-btn.danger:hover {
+            background: rgba(255, 82, 82, 0.25);
+            box-shadow: 0 0 20px rgba(255, 82, 82, 0.3);
+            border-color: #ff5252;
         }
     </style>
 </head>
@@ -150,6 +197,12 @@
         <button class="nav-btn" onclick="nav('alumnos')">
             <i class="fa-solid fa-users"></i> Base de Alumnos
         </button>
+        <!-- Centro de Control (Admin Only) -->
+        <button class="nav-btn" id="btn-control" onclick="nav('control')"
+            style="display:none; color: var(--neon-gold);">
+            <i class="fa-solid fa-shield-halved"></i> Centro de Control
+        </button>
+
         <!-- Trivia removed as requested -->
 
         <div style="margin-top: auto;">
@@ -157,8 +210,9 @@
                 <small style="color:#666;">Instructor Activo</small>
                 <div style="color:white; font-weight:bold;" id="instructorNameDisplay">Cargando...</div>
             </div>
-            <button class="glass-btn danger" onclick="logout()" style="width: 100%; justify-content: center;">
-                <i class="fa-solid fa-power-off"></i> CERRAR SESIÓN
+            <button class="glass-btn danger" onclick="logout()"
+                style="width: 100%; justify-content: center; margin-top: 10px;">
+                <i class="fa-solid fa-door-open"></i> <span>Cerrar Sesión</span>
             </button>
         </div>
     </aside>
@@ -238,10 +292,121 @@
             </div>
         </section>
 
+        <!-- SECCIÓN 3: CENTRO DE CONTROL (ADMIN) -->
+        <section id="control" class="section">
+            <div class="week-header">
+                <h1 style="margin:0;">Centro de Control <span style="color: var(--neon-gold);">Administrativo</span>
+                </h1>
+                <span class="level-badge" style="background:var(--neon-gold); color:black;">ACCESO RESTRINGIDO</span>
+            </div>
+
+            <!-- Módulo 1: Reportes -->
+            <div class="control-panel">
+                <div class="control-header">
+                    <h3 style="margin:0; color:white;"><i class="fa-solid fa-file-pdf"></i> Generación de Reportes</h3>
+                </div>
+                <div class="report-grid">
+                    <div class="report-card">
+                        <h4 style="color:#aaa;">Reporte de Actividad</h4>
+                        <div style="display:flex; gap:10px; margin:15px 0;">
+                            <select class="pill-select" id="reportPeriod">
+                                <option value="semanal">Semanal</option>
+                                <option value="quincenal">Quincenal</option>
+                                <option value="mensual">Mensual</option>
+                            </select>
+                        </div>
+                        <button class="glass-btn" onclick="generateReport()"
+                            style="width:100%; justify-content:center;">
+                            Descargar PDF <i class="fa-solid fa-download"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Módulo 2: Cierre de Procesos -->
+            <div class="control-panel" style="border-color: rgba(255, 82, 82, 0.3);">
+                <div class="control-header">
+                    <h3 style="margin:0; color:#ff8a80;"><i class="fa-solid fa-user-slash"></i> Cierre de Procesos (Zona
+                        Crítica)</h3>
+                    <small style="color:#666;">Solo alumnos activos</small>
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <input type="text" class="smart-search" id="adminStudentSearch"
+                        placeholder="Buscar alumno para finalizar..." onkeyup="filterAdminStudents()">
+                </div>
+
+                <div id="adminStudentList" style="max-height: 400px; overflow-y: auto;">
+                    <!-- JS populated list -->
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: GESTIÓN DE ALUMNOS -->
+        <section id="alumnos" class="section">
+            <div class="week-header">
+                <h1 style="margin:0;">Base de Alumnos <span style="color: var(--neon-gold);">Élite</span></h1>
+            </div>
+
+            <div style="margin-bottom: 30px;">
+                <input type="text" class="smart-search" id="studentSearch"
+                    placeholder="🔍 Buscar por Nombre, ID o Cédula..." onkeyup="filterStudents()">
+            </div>
+
+            <div class="table-container" style="background: rgba(20,20,20,0.8);">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="color: var(--neon-gold);">Alumno</th>
+                            <th style="color: var(--neon-gold);">Categoría</th>
+                            <th style="color: var(--neon-gold);">Estado</th>
+                            <th style="color: var(--neon-gold);">Acciones Seguras</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentsTableBody">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
         <!-- SECCIÓN 3: TRIVIA GAME -->
         <!-- Trivia Section Deleted -->
 
     </main>
+
+    <!-- MODAL DE SEGURIDAD (PIN) -->
+    <div class="security-modal" id="securityModal">
+        <div class="control-panel" style="width: 300px; text-align: center; border-color: var(--neon-gold);">
+            <i class="fa-solid fa-lock" style="font-size: 3rem; color: var(--neon-gold); margin-bottom: 20px;"></i>
+            <h3 style="color:white; margin:0 0 10px 0;">Acceso Restringido</h3>
+            <p style="color:#888; font-size: 0.9rem;">Esta acción requiere autorización administrativa segura.</p>
+
+            <div class="pin-display" id="pinDisplay">
+                <div class="pin-dot"></div>
+                <div class="pin-dot"></div>
+                <div class="pin-dot"></div>
+                <div class="pin-dot"></div>
+            </div>
+
+            <div class="numpad">
+                <button class="num-btn" onclick="enterPin(1)">1</button>
+                <button class="num-btn" onclick="enterPin(2)">2</button>
+                <button class="num-btn" onclick="enterPin(3)">3</button>
+                <button class="num-btn" onclick="enterPin(4)">4</button>
+                <button class="num-btn" onclick="enterPin(5)">5</button>
+                <button class="num-btn" onclick="enterPin(6)">6</button>
+                <button class="num-btn" onclick="enterPin(7)">7</button>
+                <button class="num-btn" onclick="enterPin(8)">8</button>
+                <button class="num-btn" onclick="enterPin(9)">9</button>
+                <button class="num-btn" onclick="clearPin()" style="color:#ff8a80;"><i
+                        class="fa-solid fa-delete-left"></i></button>
+                <button class="num-btn" onclick="enterPin(0)">0</button>
+                <button class="num-btn" onclick="closeSecurityModal()" style="color:#888;"><i
+                        class="fa-solid fa-times"></i></button>
+            </div>
+        </div>
+    </div>
 
     <!-- MODAL DE ACCIONES -->
     <div class="modal-overlay" id="actionModal" onclick="if(event.target == this) closeModal()">
@@ -311,8 +476,17 @@
             document.getElementById('sidebarOverlay').classList.toggle('open');
         }
 
-        function logout() {
+        async function logout() {
+            // 1. Limpiar sesión simulada
             sessionStorage.removeItem("instructorActivo");
+
+            // 2. Limpiar sesión Supabase si existe
+            if (window.supabaseInstance) {
+                await window.supabaseInstance.auth.signOut();
+            }
+            localStorage.clear(); // Limpieza profunda solicitada
+
+            // 3. Redirigir
             window.location.href = 'index.html';
         }
 
@@ -370,57 +544,105 @@
             lilianaContainer.innerHTML = '';
             camiloContainer.innerHTML = '';
 
-            // Lógica Domingo: Reset semanal simulado visualmente
-            // Filtramos solo fechas futuras o de hoy en adelante para mantener la vista limpia
-            // (Opcional, según requerimiento de "Domingo limpia")
-
+            // Lógica Domingo: Reset para la "Nueva Semana"
+            // Si es domingo (0), mostramos la semana que empieza mañana (Lunes).
+            // Si es Lunes-Sábado, mostramos la semana en curso.
             const today = new Date();
-            const startOfWeek = getMonday(today);
+            const day = today.getDay(); // 0 = Sunday
 
-            // Filtramos reservas
+            // Calcular el Lunes de la semana objetivo
+            const diff = today.getDate() - day + (day == 0 ? -6 : 1);
+            let monday = new Date(today);
+            monday.setDate(diff); // Now monday is the Monday of the current week (prev Monday if today is Sun)
+
+            if (day === 0) {
+                // Si es domingo, sumar 7 días para ir al Lunes de la PRÓXIMA semana
+                monday.setDate(monday.getDate() + 7);
+            }
+
+            // Establecer rango de la semana (Lunes a Sábado)
+            // monday is set correctly. 
+            // saturday is monday + 5 days
+
+            // Normalizar fechas para comparación (YYYY-MM-DD string is safest or setHours(0,0,0,0))
+            const startStr = getISODate(monday);
+
+            const saturday = new Date(monday);
+            saturday.setDate(monday.getDate() + 5);
+            const endStr = getISODate(saturday);
+
+            console.log(`Rendering Week: ${startStr} to ${endStr}`);
+
+            // Filtramos reservas por instructor Y por rango de fecha
             const lilianaData = currentReservations.filter(r =>
                 r.instructor.includes("Liliana") &&
-                r.estado !== 'CANCELADA_INSTRUCTOR' // Ocultar canceladas por instructor (liberadas)
+                r.estado !== 'CANCELADA_INSTRUCTOR' &&
+                isDateInWeek(r.fecha, startStr, endStr)
             );
 
             const camiloData = currentReservations.filter(r =>
                 r.instructor.includes("Camilo") &&
-                r.estado !== 'CANCELADA_INSTRUCTOR'
+                r.estado !== 'CANCELADA_INSTRUCTOR' &&
+                isDateInWeek(r.fecha, startStr, endStr)
             );
 
             renderBubbles(lilianaContainer, lilianaData, "Liliana");
             renderBubbles(camiloContainer, camiloData, "Camilo");
         }
 
+        // Helper to compare dates yyyy-mm-dd
+        function isDateInWeek(dateStr, startStr, endStr) {
+            return dateStr >= startStr && dateStr <= endStr;
+        }
+
+        function getISODate(d) {
+            // Retorna YYYY-MM-DD local
+            const year = d.getFullYear();
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
         function renderBubbles(container, list, instructorName) {
             if (list.length === 0) {
-                container.innerHTML = `<div style="text-align:center; padding:20px; color:#555;">No hay clases programadas esta semana.</div>`;
+                container.innerHTML = `<div style="text-align:center; padding:20px; color:#666; font-style:italic;">No hay clases para esta semana.</div>`;
                 return;
             }
 
             list.forEach(item => {
                 const isMoto = item.alumnos?.categoria?.includes("A"); // A1/A2 es moto
-                const icon = isMoto ? 'fa-motorcycle' : 'fa-car-side';
+                const isCar = !isMoto; // Default car
+
+                // Iconos solicitados: 🚗/🏍️
+                let iconClass = 'fa-car-side';
+                if (isMoto) iconClass = 'fa-motorcycle';
 
                 // Si el ALUMNO canceló (estado CANCELADA), se muestra rojo
                 const isCancelled = item.estado === 'CANCELADA';
                 const cancelledClass = isCancelled ? 'bubble-cancelled' : '';
                 const studentName = item.alumnos?.nombre || "Sin Nombre";
-                const category = item.alumnos?.categoria || "B1";
+                const category = item.alumnos?.categoria || "Básico";
+
+                // Formatear hora
+                const timeDisplay = formatTime(item.hora);
 
                 const html = `
                 <div class="class-bubble ${cancelledClass}" onclick="openClassAction('${item.id}')">
                     <div class="bubble-left">
-                        <div class="vehicle-icon">
-                            <i class="fa-solid ${icon}"></i>
+                        <div class="vehicle-icon" style="color:white;">
+                            <i class="fa-solid ${iconClass}"></i>
                         </div>
                         <div class="bubble-info">
-                            <h4>${formatTime(item.hora)} - ${studentName}</h4>
-                            <span>${formatDate(item.fecha)} <span class="level-badge">${category}</span></span>
-                            ${isCancelled ? '<span style="color:#ff8a80; font-size:0.7rem; display:block;">⚠ CANCELADO POR ALUMNO</span>' : ''}
+                            <h4 style="color:${isCancelled ? '#ff8a80' : 'white'}">${timeDisplay} - ${studentName}</h4>
+                            <span>
+                                ${formatDate(item.fecha)} 
+                                <span class="level-badge" style="background:${isCancelled ? 'rgba(255,0,0,0.2)' : 'rgba(255,255,255,0.1)'}">
+                                    ${category}
+                                </span>
+                            </span>
+                            ${isCancelled ? '<div style="color:#ff5252; font-size:0.75rem; margin-top:4px; font-weight:bold;">⚠ CANCELADO POR ALUMNO</div>' : ''}
                         </div>
                     </div>
-                    ${!isCancelled ? `<button class="btn-cancel" title="Cancelar Clase">✕</button>` : ''}
                 </div>
                 `;
                 container.insertAdjacentHTML('beforeend', html);
@@ -486,18 +708,39 @@
             tbody.innerHTML = '';
 
             list.forEach(s => {
-                const isActive = s.activo; // boolean
-                const statusColor = isActive ? '#4caf50' : '#ffc107'; // green vs amber
-                const statusText = isActive ? 'Activo' : 'Pausa';
+                // Lógica de Semáforo (LEDs)
+                let statusClass = 'yellow'; // Default Pausa
+                let statusLabel = 'Pausa';
+
+                if (s.activo) {
+                    statusClass = 'green';
+                    statusLabel = 'Activo';
+                }
+
+                // Lógica para Dorado (Graduado) - Simulada si no existe el campo aún
+                if (s.categoria && (s.categoria.includes('Certificado') || s.categoria.includes('Graduado'))) {
+                    statusClass = 'gold';
+                    statusLabel = 'Certificado';
+                }
 
                 const row = `
                 <tr>
-                    <td><strong style="color:white;">${s.nombre}</strong><br><small style="color:#666;">${s.email}</small></td>
-                    <td><span class="level-badge">${s.categoria || 'N/A'}</span></td>
-                    <td><span style="color:${statusColor}">● ${statusText}</span></td>
                     <td>
-                        <button class="glass-btn" onclick="resetPassword('${s.email}')" style="font-size:0.8rem; padding: 5px 12px;">
-                            <i class="fa-solid fa-key"></i> Reset Pass
+                        <strong style="color:white; font-size:1.05rem;">${s.nombre}</strong>
+                        <br><small style="color:#aaa;">${s.email}</small>
+                    </td>
+                    <td><span class="level-badge">${s.categoria || 'N/A'}</span></td>
+                    <td>
+                        <div style="display:flex; align-items:center;">
+                            <span class="status-led ${statusClass}"></span>
+                            <span style="color:#ddd; font-size:0.9rem;">${statusLabel}</span>
+                        </div>
+                    </td>
+                    <td>
+                        <button class="glass-btn amber" onclick="resetPassword('${s.email}')" 
+                                style="font-size:0.85rem; padding: 6px 14px; border-radius:50px;" 
+                                title="Asignar clave ELITE2026">
+                            <i class="fa-solid fa-key"></i> Reset
                         </button>
                     </td>
                 </tr>
@@ -516,15 +759,214 @@
             renderStudentsTable(filtered);
         }
 
-        function resetPassword(email) {
-            // Simulación segura (Client side no puede resetear arbitrariamente sin envío de email)
-            // Opción 1: Trigger de Supabase reset email
-            // Opción 2: Copiar clave temporal
+        // --- CONTROL CENTER & SECURITY LOGIC ---
 
-            const tempPass = "ELITE2026";
-            navigator.clipboard.writeText(tempPass).then(() => {
-                alert(`⚠️ MODO MANUAL SEGURO\n\nNo se puede cambiar la clave directamente sin confirmación del usuario por seguridad.\n\nSin embargo, he COPIADO al portapapeles la clave temporal: ${tempPass}\n\nPuedes indicarle al alumno que use "Olvidé mi contraseña" o intentar actualizarla si tienes su sesión.`);
+        let pinBuffer = "";
+        let pendingSecurityAction = null;
+        const ADMIN_PIN_HASH = "1138dd6617267104753086937e0655e054bd33fb572565615712217154032d19"; // SHA-256 for '2026'
+
+        // 1. Identity Verification on Load
+        async function checkAdminIdentity() {
+            const user = sessionStorage.getItem("instructorActivo");
+            // Only Camilo or Liliana allowed
+            if (user && (user.toUpperCase() === 'CAMILO' || user.toUpperCase() === 'LILIANA')) {
+                document.getElementById('btn-control').style.display = 'block';
+                // Load admin data initially if section is active (or lazy load)
+                await loadAdminStudents();
+            }
+        }
+
+        // Call this on load
+        document.addEventListener('DOMContentLoaded', async () => {
+            // ... existing checks ...
+            await checkAdminIdentity();
+        });
+
+        // 2. Report Generation
+        function generateReport() {
+            const period = document.getElementById('reportPeriod').value;
+            const element = document.createElement('div');
+            const date = new Date().toLocaleDateString();
+
+            // Build simple HTML layout for PDF
+            element.innerHTML = `
+                <div style="font-family: sans-serif; padding: 40px; color: black; background: white;">
+                    <div style="border-bottom: 2px solid #c5a059; padding-bottom: 20px; margin-bottom: 30px; display:flex; justify-content:space-between; align-items:center;">
+                        <h1 style="color: #000; margin:0;">ÉLITE DRIVE</h1>
+                        <span style="color: #666;">Reporte Oficial</span>
+                    </div>
+                    
+                    <h3>Registro de Actividad: ${period.toUpperCase()}</h3>
+                    <p><strong>Generado por:</strong> ${sessionStorage.getItem("instructorActivo")}</p>
+                    <p><strong>Fecha:</strong> ${date}</p>
+                    <p><strong>ID Reporte:</strong> #${Date.now()}</p>
+                    
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 30px;">
+                        <tr style="background: #f0f0f0;">
+                            <th style="padding: 10px; border: 1px solid #ddd; text-align: left;">Métrica</th>
+                            <th style="padding: 10px; border: 1px solid #ddd; text-align: left;">Valor</th>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;">Clases Totales (Semana)</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">${currentReservations.length}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;">Alumnos Activos</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">${currentStudents.filter(s => s.activo).length}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;">Cancelaciones</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">${currentReservations.filter(r => r.estado === 'CANCELADA').length}</td>
+                        </tr>
+                    </table>
+
+                    <div style="margin-top: 50px; text-align: center; color: #888;">
+                        <p>Documento generado electrónicamente por la plataforma administrativa Élite Drive.</p>
+                        <p style="font-size: 0.8rem;">Seguridad y Excelencia</p>
+                    </div>
+                </div>
+            `;
+
+            const opt = {
+                margin: 1,
+                filename: `Reporte_Elite_${period}_${Date.now()}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).save();
+        }
+
+        // 3. Admin Student List (For Closure)
+        async function loadAdminStudents() {
+            const listContainer = document.getElementById('adminStudentList');
+            // Filter only ACTIVE students for closure candidates
+            // Assuming we want to close active students
+            const candidates = currentStudents.filter(s => s.activo);
+
+            listContainer.innerHTML = '';
+            candidates.forEach(s => {
+                const item = `
+                <div class="admin-action-row risk-high">
+                    <div>
+                        <strong style="color:white;">${s.nombre}</strong><br>
+                        <small style="color:#aaa;">${s.email}</small>
+                    </div>
+                    <button class="glass-btn danger" onclick="requestSecureAction('CLOSE_PROCESS', '${s.id}', '${s.nombre}')" style="padding: 5px 12px; font-size: 0.8rem;">
+                        <i class="fa-solid fa-ban"></i> Finalizar Proceso
+                    </button>
+                </div>
+                `;
+                listContainer.insertAdjacentHTML('beforeend', item);
             });
+        }
+
+        function filterAdminStudents() {
+            // Re-implement client side filter logic if list is long
+            // For now, loadAdminStudents is enough if re-called or refined
+            // Or simple DOM filter:
+            const term = document.getElementById('adminStudentSearch').value.toLowerCase();
+            const rows = document.querySelectorAll('#adminStudentList .admin-action-row');
+            rows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                row.style.display = text.includes(term) ? 'flex' : 'none';
+            });
+        }
+
+        // 4. Security Flow
+        function requestSecureAction(type, targetId, targetName) {
+            // STEP 1: Verify Identity (Already done by visibility, but double check)
+            const user = sessionStorage.getItem("instructorActivo");
+            if (!user || (user.toUpperCase() !== 'CAMILO' && user.toUpperCase() !== 'LILIANA')) {
+                alert("⛔ ACCESO DENEGADO: Solo administradores autorizados.");
+                return;
+            }
+
+            // Prepare Payload
+            pendingSecurityAction = { type, targetId, targetName, user };
+
+            // STEP 2: Request PIN
+            pinBuffer = "";
+            updatePinDots();
+            document.getElementById('securityModal').style.display = 'flex';
+        }
+
+        function closeSecurityModal() {
+            document.getElementById('securityModal').style.display = 'none';
+            pinBuffer = "";
+            pendingSecurityAction = null;
+        }
+
+        function enterPin(num) {
+            if (pinBuffer.length < 4) {
+                pinBuffer += num;
+                updatePinDots();
+                if (pinBuffer.length === 4) {
+                    setTimeout(validatePinAction, 300);
+                }
+            }
+        }
+
+        function clearPin() {
+            pinBuffer = "";
+            updatePinDots();
+        }
+
+        function updatePinDots() {
+            const dots = document.querySelectorAll('.pin-dot');
+            dots.forEach((dot, index) => {
+                if (index < pinBuffer.length) dot.classList.add('filled');
+                else dot.classList.remove('filled');
+            });
+        }
+
+        async function validatePinAction() {
+            // Validate Hash (Browser JS native SHA-256)
+            const encoder = new TextEncoder();
+            const data = encoder.encode(pinBuffer);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+
+            if (hashHex === ADMIN_PIN_HASH) {
+                // PIN OK
+                // STEP 3: WhatsApp Alert
+                const msg = `⚠️ *ALERTA DE SEGURIDAD - ÉLITE DRIVE* ⚠️%0A%0ASe ha autorizado una acción administrativa crítica en la plataforma.%0A%0A👤 *Usuario:* ${pendingSecurityAction.user}%0A🛠️ *Acción:* ${pendingSecurityAction.type}%0A🎯 *Objetivo:* ${pendingSecurityAction.targetName} (ID: ${pendingSecurityAction.targetId})%0A🕒 *Hora:* ${new Date().toLocaleTimeString()}%0A%0ASi no reconoces esta acción, revoca accesos inmediatamente.`;
+
+                // Open WA in background tab (simulated alert) or inform user
+                window.open(`https://wa.me/573000000000?text=${msg}`, '_blank');
+
+                // STEP 4: Execution
+                executeAction();
+                closeSecurityModal();
+            } else {
+                alert("❌ PIN INCORRECTO. Intento registrado.");
+                clearPin();
+                // Log failed attempt here
+            }
+        }
+
+        async function executeAction() {
+            if (!pendingSecurityAction) return;
+            const { type, targetId } = pendingSecurityAction;
+
+            if (type === 'CLOSE_PROCESS') {
+                // Supabase Logic: Set active = false, maybe add log
+                const { error } = await window.supabaseInstance
+                    .from('alumnos')
+                    .update({ activo: false, categoria: 'Proceso Finalizado' }) // Update category to reflect status
+                    .eq('id', targetId);
+
+                if (error) {
+                    alert("Error ejecutando acción: " + error.message);
+                } else {
+                    alert("✅ Proceso Finalizado. El alumno ha sido desactivado y archivado.");
+                    // Refresh all lists
+                    loadStudents();       // Refresh main table (removed from there if filtered?)
+                    loadAdminStudents();  // Refresh admin list
+                }
+            }
         }
 
         // --- UTILS ---

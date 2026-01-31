@@ -41,14 +41,18 @@
 
 /* Estilos Específicos por Instructor */
 .col-liliana {
-    border: 2px solid var(--gold);
-    box-shadow: 0 0 15px rgba(197, 160, 89, 0.1);
+    border: 2px solid #c5a059;
+    box-shadow: 0 0 20px rgba(197, 160, 89, 0.15);
+    background: rgba(40, 32, 10, 0.6);
+    /* Dark Warm Glass */
 }
 
 .col-camilo {
-    border: 2px solid #708090;
-    /* Silver/Slate */
-    box-shadow: 0 0 15px rgba(112, 128, 144, 0.1);
+    border: 2px solid #C0C0C0;
+    /* Pure Silver */
+    box-shadow: 0 0 20px rgba(192, 192, 192, 0.15);
+    background: rgba(15, 20, 35, 0.6);
+    /* Dark Cool Glass */
 }
 
 .instructor-header {
@@ -146,9 +150,10 @@
 
 /* Estados de Clase */
 .bubble-cancelled {
-    background: rgba(100, 20, 20, 0.4);
-    border-color: #ff5252;
-    opacity: 0.8;
+    background: rgba(255, 0, 0, 0.15);
+    border: 1px solid rgba(255, 50, 50, 0.5);
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
+    backdrop-filter: blur(4px);
 }
 
 /* Header Semanal */
@@ -199,6 +204,8 @@
     border-radius: 50px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     color: white;
     font-size: 1rem;
     outline: none;
@@ -251,4 +258,168 @@
 /* Sidebar Footer Fix */
 .sidebar {
     justify-content: space-between;
+}
+
+/* --- STATUS LEDs --- */
+.status-led {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 8px;
+    box-shadow: 0 0 5px currentColor;
+}
+
+.status-led.green {
+    background-color: #4caf50;
+    color: #4caf50;
+    box-shadow: 0 0 10px #4caf50;
+}
+
+.status-led.yellow {
+    background-color: #ffc107;
+    color: #ffc107;
+    box-shadow: 0 0 10px #ffc107;
+}
+
+.status-led.gold {
+    background-color: #ffd700;
+    color: #ffd700;
+    box-shadow: 0 0 12px #ffd700, 0 0 20px rgba(255, 215, 0, 0.5);
+    border: 1px solid #fff;
+}
+
+/* Button Amber (Reset) */
+.glass-btn.amber {
+    background: rgba(255, 193, 7, 0.1);
+    border: 1px solid rgba(255, 193, 7, 0.4);
+    color: #ffc107;
+}
+
+.glass-btn.amber:hover {
+    background: rgba(255, 193, 7, 0.2);
+    box-shadow: 0 0 15px rgba(255, 193, 7, 0.3);
+    transform: translateY(-2px);
+}
+
+/* --- CENTRO DE CONTROL (ADMIN) --- */
+.control-panel {
+    background: rgba(10, 10, 10, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 30px;
+}
+
+.control-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.report-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.report-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 20px;
+    transition: 0.3s;
+}
+
+.report-card:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--neon-gold);
+}
+
+.admin-action-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    border-left: 3px solid transparent;
+}
+
+.admin-action-row.risk-high {
+    border-left-color: #ff5252;
+}
+
+/* Security Modal Overlay (Pin) */
+.security-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 10000;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(10px);
+}
+
+.pin-display {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.pin-dot {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: 2px solid #555;
+    transition: 0.2s;
+}
+
+.pin-dot.filled {
+    background: var(--neon-gold);
+    border-color: var(--neon-gold);
+    box-shadow: 0 0 10px var(--neon-gold);
+}
+
+.numpad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    max-width: 250px;
+    margin: 0 auto;
+}
+
+.num-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: white;
+    padding: 15px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: 0.2s;
+    aspect-ratio: 1;
+}
+
+.num-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.pill-select {
+    background: black;
+    color: white;
+    border: 1px solid #333;
+    padding: 8px 15px;
+    border-radius: 50px;
+    outline: none;
+    cursor: pointer;
 }

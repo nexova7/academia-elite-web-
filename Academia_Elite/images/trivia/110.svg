@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <!-- Traffic Light Large Red -->
+  <rect x="150" y="20" width="200" height="460" rx="30" fill="#333" stroke="#000" stroke-width="5"/>
+  <circle cx="250" cy="100" r="60" fill="#f00" stroke="white" stroke-width="3" filter="url(#glow)"/>
+  <circle cx="250" cy="250" r="60" fill="#300"/>
+  <circle cx="250" cy="400" r="60" fill="#030"/>
+  <text x="50" y="250" fill="red" font-weight="bold" font-size="40" transform="rotate(-90 50 250)">D04</text> <!-- Code of fine -->
+  
+  <defs>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="10"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+</svg>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <!-- Slope -->
+  <path d="M0,400 L500,100 L500,500 L0,500 Z" fill="#777"/>
+  <!-- Car Going Up (Left) -->
+  <rect x="80" y="320" width="80" height="40" transform="rotate(-30 120 340)" fill="#0f0" stroke="black"/>
+  <path d="M40,300 L100,260" stroke="#0f0" stroke-width="10" marker-end="url(#arrow)"/> <!-- Priority arrow -->
+  
+  <!-- Car Coming Down (Right) -->
+  <rect x="350" y="160" width="80" height="40" transform="rotate(-30 400 180)" fill="#f00" stroke="black"/>
+  <path d="M420,120 L360,160" stroke="#f00" stroke-width="5"/> <!-- Yield arrow smaller -->
+</svg>

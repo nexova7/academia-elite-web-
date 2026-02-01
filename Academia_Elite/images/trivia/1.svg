@@ -1,1 +1,6 @@
-<svg width="400" height="400" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M30,5 L70,5 L95,30 L95,70 L70,95 L30,95 L5,70 L5,30 Z" fill="#b71c1c" stroke="white" stroke-width="2"/><text x="50" y="55" font-family="Arial" font-size="20" font-weight="bold" fill="white" text-anchor="middle">PARE</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <!-- PARE Sign (Octagon) -->
+  <path d="M150,25 L350,25 L475,150 L475,350 L350,475 L150,475 L25,350 L25,150 Z" file="fill:#c00; stroke:#fff; stroke-width:10" fill="#cc0000" stroke="#ffffff" stroke-width="5"/>
+  <path d="M155,35 L345,35 L465,155 L465,345 L345,465 L155,465 L35,345 L35,155 Z" fill="none" stroke="#ffffff" stroke-width="8"/>
+  <text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold" font-size="140" fill="white">PARE</text>
+</svg>

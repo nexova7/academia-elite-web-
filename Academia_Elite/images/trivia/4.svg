@@ -1,1 +1,9 @@
-<svg width="400" height="400" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" fill="white" stroke="#b71c1c" stroke-width="10"/><path d="M30,35 A20,20 0 1,0 70,35 V60" fill="none" stroke="black" stroke-width="6"/><path d="M60,60 L80,60 L70,75 Z" fill="black"/><line x1="20" y1="20" x2="80" y2="80" stroke="#b71c1c" stroke-width="8"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <!-- Regulatory Circle -->
+  <circle cx="250" cy="250" r="230" fill="#fff" stroke="#cc0000" stroke-width="50"/>
+  <!-- U-Turn Arrow -->
+  <path d="M180,320 L180,220 C180,150 320,150 320,220 L320,280" fill="none" stroke="black" stroke-width="45" stroke-linecap="round"/>
+  <polygon points="320,320 280,260 360,260" fill="black"/>
+  <!-- Prohibition Slash (Diagonal) -->
+  <line x1="88" y1="88" x2="412" y2="412" stroke="#cc0000" stroke-width="45" stroke-linecap="round"/>
+</svg>

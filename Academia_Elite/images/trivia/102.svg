@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <!-- Blue Circle (Mandatory) -->
+  <circle cx="250" cy="250" r="230" fill="#003399" stroke="#fff" stroke-width="10"/>
+  <!-- Rotary Arrows -->
+  <g fill="none" stroke="white" stroke-width="35" stroke-linecap="round">
+    <path d="M250,100 A150,150 0 0,1 400,250"/>
+    <path d="M400,250 A150,150 0 0,1 250,400"/>
+    <path d="M250,400 A150,150 0 0,1 100,250"/>
+  </g>
+  <!-- Arrowheads -->
+  <polygon points="400,250 370,210 430,210" fill="white"/>
+  <polygon points="250,400 290,370 290,430" fill="white"/>
+  <polygon points="100,250 130,290 70,290" fill="white"/>
+</svg>

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <!-- Fire Extinguisher -->
+  <rect x="200" y="150" width="100" height="250" rx="20" fill="#cc0000"/>
+  <rect x="220" y="120" width="60" height="30" fill="#333"/> <!-- Valve -->
+  <path d="M280,130 L350,180" stroke="black" stroke-width="15"/> <!-- Hose -->
+  <rect x="230" y="200" width="40" height="100" fill="#eee"/> <!-- Label -->
+</svg>

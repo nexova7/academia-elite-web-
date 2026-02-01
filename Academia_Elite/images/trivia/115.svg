@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <!-- St Andrews Cross (Cruce Ferrocarril) -->
+  <path d="M50,50 L450,450" stroke="#fff" stroke-width="80" stroke-linecap="square"/>
+  <path d="M450,50 L50,450" stroke="#fff" stroke-width="80" stroke-linecap="square"/>
+  <!-- Red Borders -->
+  <path d="M50,50 L450,450" stroke="#cc0000" stroke-width="60"/>
+  <path d="M450,50 L50,450" stroke="#cc0000" stroke-width="60"/>
+  <!-- Inner White to create hollow effect is complex, using simplified solid x -->
+  <text x="250" y="450" text-anchor="middle" font-weight="bold" font-size="50">FERROCARRIL</text>
+</svg>

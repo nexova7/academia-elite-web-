@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <!-- Shield/Document Shape -->
+  <path d="M250,50 L450,120 V250 C450,380 250,480 250,480 C250,480 50,380 50,250 V120 Z" fill="#fff" stroke="#003399" stroke-width="15"/>
+  <!-- Text SOAT -->
+  <text x="250" y="220" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="100" fill="#003399">SOAT</text>
+  <!-- Medical Cross -->
+  <rect x="220" y="280" width="60" height="120" fill="red"/>
+  <rect x="190" y="310" width="120" height="60" fill="red"/>
+</svg>

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <rect x="0" y="0" width="500" height="500" fill="#ddd"/>
+  <!-- Puddle -->
+  <path d="M100,350 Q250,300 400,350 Q450,400 350,450 Q200,480 100,400 Z" fill="#00ff00" opacity="0.8"/>
+  
+  <!-- Car Silhouette above -->
+  <path d="M50,300 L450,300 L450,150 L350,100 L150,100 L50,150 Z" fill="#555"/>
+  
+  <!-- Drip -->
+  <path d="M250,300 L250,350" stroke="#00ff00" stroke-width="5" stroke-dasharray="10,5"/>
+  <circle cx="250" cy="350" r="5" fill="#00ff00"/>
+  
+  <!-- Thermometer overlay hot -->
+  <rect x="400" y="50" width="20" height="100" fill="white" stroke="black"/>
+  <circle cx="410" cy="150" r="20" fill="red"/>
+  <rect x="405" y="80" width="10" height="70" fill="red"/>
+</svg>

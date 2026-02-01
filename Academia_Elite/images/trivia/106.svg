@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <!-- Black Background (Dashboard) -->
+  <rect x="0" y="0" width="500" height="500" fill="#111"/>
+  <!-- Battery Body -->
+  <rect x="100" y="150" width="300" height="200" rx="10" fill="none" stroke="#f00" stroke-width="20"/>
+  <!-- Terminals -->
+  <rect x="140" y="120" width="40" height="30" fill="#f00"/>
+  <rect x="320" y="120" width="40" height="30" fill="#f00"/>
+  <!-- Signs -->
+  <path d="M160,250 L200,250" stroke="#f00" stroke-width="20"/> <!-- Minus -->
+  <path d="M300,250 L340,250 M320,230 L320,270" stroke="#f00" stroke-width="20"/> <!-- Plus -->
+</svg>

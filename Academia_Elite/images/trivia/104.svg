@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <!-- Asphalt -->
+  <rect x="0" y="0" width="500" height="500" fill="#444"/>
+  <!-- Dashed Line -->
+  <line x1="250" y1="0" x2="250" y2="500" stroke="#fff" stroke-width="20" stroke-dasharray="80,50"/>
+  <!-- Arrow Overtake -->
+  <path d="M150,400 Q150,300 250,250 T350,100" fill="none" stroke="#0f0" stroke-width="15" stroke-dasharray="20,10" marker-end="url(#arrow)"/>
+  <circle cx="150" cy="420" r="10" fill="#0f0"/>
+</svg>

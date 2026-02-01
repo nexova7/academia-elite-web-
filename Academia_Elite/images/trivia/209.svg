@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <!-- Background -->
+  <rect x="0" y="0" width="500" height="500" fill="#555"/>
+  <!-- License Plate -->
+  <rect x="50" y="150" width="400" height="200" rx="10" fill="white" stroke="black" stroke-width="5"/>
+  <!-- Text -->
+  <text x="250" y="260" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold" font-size="100" fill="black" letter-spacing="5">WEM 123</text>
+  <text x="250" y="320" text-anchor="middle" font-family="Arial" font-size="30" fill="black">COLOMBIA</text>
+  <!-- Bolts -->
+  <circle cx="70" cy="170" r="5" fill="#ccc"/>
+  <circle cx="430" cy="170" r="5" fill="#ccc"/>
+  <circle cx="70" cy="330" r="5" fill="#ccc"/>
+  <circle cx="430" cy="330" r="5" fill="#ccc"/>
+</svg>

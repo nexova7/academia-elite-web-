@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <!-- Background -->
+  <rect x="0" y="0" width="500" height="500" fill="#f0f0f0"/>
+  <!-- Triangle Warning -->
+  <path d="M250,50 L450,400 L50,400 Z" fill="#ffcc00" stroke="black" stroke-width="10"/>
+  <text x="250" y="320" text-anchor="middle" font-weight="bold" font-size="200" fill="black">!</text>
+  <!-- P.A.S Text -->
+  <text x="250" y="460" text-anchor="middle" font-weight="bold" font-size="40" fill="#003399">PROTEGER - AVISAR - SOCORRER</text>
+  <!-- Phone Icon (Avisar) -->
+  <rect x="380" y="80" width="80" height="120" rx="10" fill="#333"/>
+  <rect x="390" y="90" width="60" height="80" fill="white"/>
+</svg>

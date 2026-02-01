@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <!-- Car Rear -->
+  <rect x="100" y="200" width="300" height="150" rx="20" fill="#999" stroke="black" stroke-width="5"/>
+  <rect x="120" y="220" width="60" height="30" fill="red"/> <!-- Light L -->
+  <rect x="320" y="220" width="60" height="30" fill="red"/> <!-- Light R -->
+  <rect x="200" y="280" width="100" height="40" fill="white" stroke="black"/> <!-- Plate -->
+  
+  <!-- Exhaust Pipe -->
+  <circle cx="150" cy="350" r="10" fill="#333"/>
+  
+  <!-- Blue Smoke -->
+  <path d="M140,360 Q100,400 80,380 T40,400 T10,350" fill="none" stroke="#99ccff" stroke-width="30" opacity="0.8" filter="url(#blur)"/>
+  <path d="M150,360 Q120,420 90,390 T50,420" fill="none" stroke="#99ccff" stroke-width="20" opacity="0.8" filter="url(#blur)"/>
+  
+  <defs>
+    <filter id="blur">
+      <feGaussianBlur stdDeviation="5"/>
+    </filter>
+  </defs>
+</svg>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <!-- Dashboard Black -->
+  <rect x="0" y="0" width="500" height="500" fill="#111"/>
+  <!-- Oil Can Icon -->
+  <path d="M100,350 L400,350 C400,350 420,200 250,200 L150,200 L80,150" fill="none" stroke="#f00" stroke-width="20" stroke-linejoin="round"/>
+  <path d="M120,350 C120,350 140,220 380,220 C380,220 380,350 380,350 Z" fill="#f00"/>
+  <rect x="200" y="190" width="60" height="30" fill="#f00"/>
+  <circle cx="430" cy="180" r="10" fill="#f00"/> <!-- Drop -->
+</svg>

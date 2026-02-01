@@ -181,7 +181,7 @@ const TRIVIA_DATA = {
         {
             id: 101,
             q: "En una intersección en 'T' sin señalización, ¿quién tiene la prelación?",
-            img: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Interseccion_T.svg/400px-Interseccion_T.svg.png", // Placeholder lógico
+            img: "images/trivia/101.svg",
             options: ["El vehículo que va a girar", "El vehículo que transita por la vía recta (continua)", "El que llegue más rápido", "El vehículo más grande"],
             correct: 1,
             feedback: "¡Correcto! Quien circula por la vía continua tiene prioridad sobre quien va a ingresar a ella. 🛣️"
@@ -189,7 +189,7 @@ const TRIVIA_DATA = {
         {
             id: 102,
             q: "En una glorieta, ¿quién lleva la prelación (vía)?",
-            img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Colombia_road_sign_SR-06.svg/600px-Colombia_road_sign_SR-06.svg.png", // Usando SR-06 circular como ref visual de glorieta
+            img: "images/trivia/102.svg",
             options: ["El que va a entrar a la glorieta", "El que ya está circulando dentro de ella", "El que va a salir inmediatamente", "Cualquiera, depende del afán"],
             correct: 1,
             feedback: "¡Así es! Debes ceder el paso a los que ya están girando dentro. 🔄"
@@ -197,7 +197,7 @@ const TRIVIA_DATA = {
         {
             id: 103,
             q: "¿Qué indican las señales de tránsito de color NARANJA?",
-            img: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Colombia_road_sign_SPO-03.svg/600px-Colombia_road_sign_SPO-03.svg.png",
+            img: "images/trivia/103.svg",
             options: ["Sitios turísticos", "Zonas escolares permanentes", "Obras o trabajos temporales en la vía", "Información de servicios"],
             correct: 2,
             feedback: "¡Ojo a las obras! Naranja significa transitoriedad y precaución por trabajos. 🚧"
@@ -205,7 +205,7 @@ const TRIVIA_DATA = {
         {
             id: 104,
             q: "Si la línea central de la carretera es discontinua (punteada), ¿puedes adelantar?",
-            img: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Road_marking_dashed_line.svg/600px-Road_marking_dashed_line.svg.png",
+            img: "images/trivia/104.svg",
             options: ["Sí, siempre que sea seguro y no venga nadie", "No, nunca está permitido", "Solo si es de noche", "Solo si conduces una moto"],
             correct: 0,
             feedback: "¡Luz verde! Discontinua permite adelantamiento bajo condiciones seguras. 🚗"
@@ -213,7 +213,7 @@ const TRIVIA_DATA = {
         {
             id: 105,
             q: "¿Qué distancia de seguridad debes mantener a 60 km/h en pavimento seco?",
-            img: "https://cdn-icons-png.flaticon.com/512/2554/2554933.png",
+            img: "images/trivia/105.svg",
             options: ["5 metros", "Al menos 20-30 metros (regla de 3 segundos)", "Pegado al de adelante", "1 metro para que no se metan"],
             correct: 1,
             feedback: "¡Responsable! La distancia da tiempo de reacción. 📏"
@@ -221,7 +221,7 @@ const TRIVIA_DATA = {
         {
             id: 106,
             q: "En el tablero se enciende una luz roja con símbolo de BATERÍA. ¿Significado?",
-            img: "https://cdn-icons-png.flaticon.com/512/3203/3203668.png",
+            img: "images/trivia/106.svg",
             options: ["Batería 100% cargada", "Falla en el sistema de carga (Alternador)", "Es hora de cambiar las pilas del control", "El motor necesita aceite"],
             correct: 1,
             feedback: "¡Atención! El auto está funcionando solo con la reserva eléctrica. Al taller. ⚡"
@@ -229,7 +229,7 @@ const TRIVIA_DATA = {
         {
             id: 107,
             q: "¿Qué cubre el SOAT (Seguro Obligatorio)?",
-            img: "https://cdn-icons-png.flaticon.com/512/10416/10416629.png",
+            img: "images/trivia/107.svg",
             options: ["Los golpes de latonería de mi carro", "Los daños materiales al otro vehículo", "Atención médica a víctimas (humanos) en accidente", "Robo del vehículo"],
             correct: 2,
             feedback: "¡Bien! El SOAT es para la VIDA y la salud de las personas involucradas. 🚑"
@@ -237,7 +237,7 @@ const TRIVIA_DATA = {
         {
             id: 108,
             q: "¿Cuándo es correcto usar las luces estacionarias (parqueo)?",
-            img: "https://cdn-icons-png.flaticon.com/512/565/565547.png",
+            img: "images/trivia/108.svg",
             options: ["Cuando está lloviendo fuerte", "Para parquear donde está prohibido", "Solo en detención de emergencia o parqueo temporal legítimo", "Para cruzar intersecciones rápido"],
             correct: 2,
             feedback: "¡Correcto! No las uses para moverte, son para advertir detención. 🅿️"
@@ -245,7 +245,7 @@ const TRIVIA_DATA = {
         {
             id: 109,
             q: "En una pendiente estrecha donde solo pasa un carro, ¿quién tiene prelación?",
-            img: "https://cdn-icons-png.flaticon.com/512/2480/2480746.png",
+            img: "images/trivia/109.svg",
             options: ["El vehículo que baja", "El vehículo que sube", "El vehículo más pesado", "El que pite más fuerte"],
             correct: 1,
             feedback: "¡Solidario! Es más difícil arrancar subiendo, por eso tienen la vía. ⛰️"
@@ -253,7 +253,7 @@ const TRIVIA_DATA = {
         {
             id: 110,
             q: "Pasarse un semáforo en rojo o una señal de PARE es infracción tipo:",
-            img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Traffic_light_red_yellow.svg/480px-Traffic_light_red_yellow.svg.png",
+            img: "images/trivia/110.svg",
             options: ["A (Leve)", "B (Multa moderada)", "D (Muy costosa y riesgo inmovilización)", "No tiene multa si no hay policía"],
             correct: 2,
             feedback: "¡Cuida tu bolsillo y tu vida! Es una de las infracciones más graves (D04). 💸"
@@ -261,7 +261,7 @@ const TRIVIA_DATA = {
         {
             id: 111,
             q: "Las señales de fondo CAFÉ indican:",
-            img: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Colombia_road_sign_SI-07.svg/600px-Colombia_road_sign_SI-07.svg.png", // Ejemplo turistica
+            img: "images/trivia/111.svg",
             options: ["Zonas de derrumbe", "Sitios turísticos, culturales o de interés", "Restaurantes obligatorios", "Vías sin pavimentar"],
             correct: 1,
             feedback: "¡Turista experto! Café te guía a lo interesante. 📷"
@@ -269,7 +269,7 @@ const TRIVIA_DATA = {
         {
             id: 112,
             q: "¿Está permitido adelantar en una curva?",
-            img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Colombia_road_sign_SP-01.svg/600px-Colombia_road_sign_SP-01.svg.png",
+            img: "images/trivia/112.svg",
             options: ["Sí, si tocas la bocina", "Sí, si el de adelante va muy lento", "Nunca, es prohibido por falta de visibilidad", "Solo si es una recta pequeña"],
             correct: 2,
             feedback: "¡Peligro de muerte! En curva no ves quién viene. Prohibido. 🚫"
@@ -277,7 +277,7 @@ const TRIVIA_DATA = {
         {
             id: 113,
             q: "Se prende el testigo de ACEITE (Aladino rojo). ¿Qué haces?",
-            img: "https://cdn-icons-png.flaticon.com/512/1356/1356616.png",
+            img: "images/trivia/113.svg",
             options: ["Conducir rápido a casa", "Detener el motor INMEDIATAMENTE", "Echarle agua al motor", "Esperar que se apague solo"],
             correct: 1,
             feedback: "¡Salvaste el motor! Sin presión de aceite, el motor se funde en segundos. 🛢️"
@@ -285,7 +285,7 @@ const TRIVIA_DATA = {
         {
             id: 114,
             q: "¿Cuál es la tolerancia de alcohol para conductores en Colombia?",
-            img: "https://cdn-icons-png.flaticon.com/512/920/920556.png",
+            img: "images/trivia/114.svg",
             options: ["Una cerveza es permitida", "Grado 0 (Tolerancia casi nula)", "Dos copas de vino", "Depende de lo que comas"],
             correct: 1,
             feedback: "¡Ley seca al volante! Colombia tiene sanciones durísimas desde el primer trago. 🍺🚫"
@@ -293,7 +293,7 @@ const TRIVIA_DATA = {
         {
             id: 115,
             q: "¿Quién tiene la prelación en un cruce ferrovial (tren)?",
-            img: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Colombia_road_sign_SP-56.svg/600px-Colombia_road_sign_SP-56.svg.png",
+            img: "images/trivia/115.svg",
             options: ["El automóvil porque es más ágil", "El tren SIEMPRE", "El transporte público de pasajeros", "El que llegue primero a la carrilera"],
             correct: 1,
             feedback: "¡Física pura! El tren no puede frenar rápido. Él gana. 🚂"
@@ -301,7 +301,7 @@ const TRIVIA_DATA = {
         {
             id: 116,
             q: "¿Qué significa una doble línea central continua amarilla?",
-            img: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Road_marking_double_yellow_line.svg/600px-Road_marking_double_yellow_line.svg.png",
+            img: "images/trivia/116.svg",
             options: ["Se puede adelantar con precaución", "Prohibido adelantar en ambos sentidos", "Carril exclusivo para emergencias", "División de carril bici"],
             correct: 1,
             feedback: "¡Muro infranqueable! No la pises. 🛑"
@@ -309,7 +309,7 @@ const TRIVIA_DATA = {
         {
             id: 117,
             q: "¿Cuál es la distancia mínima para parquear respecto a una intersección?",
-            img: "https://cdn-icons-png.flaticon.com/512/2892/2892289.png",
+            img: "images/trivia/117.svg",
             options: ["1 metro", "5 metros", "10 metros", "Justo en la esquina"],
             correct: 1,
             feedback: "¡Bien! Deja espacio para que otros giren. (Norma general 5m). 📏"
@@ -317,7 +317,7 @@ const TRIVIA_DATA = {
         {
             id: 118,
             q: "Si vas a girar a la izquierda en una vía de doble sentido, ¿dónde te ubicas?",
-            img: "https://cdn-icons-png.flaticon.com/512/65/65611.png",
+            img: "images/trivia/118.svg",
             options: ["En el carril derecho", "En el centro, pegado a la línea central", "En la berma", "En el carril contrario"],
             correct: 1,
             feedback: "¡Técnica correcta! Pégate al eje sin invadirlo. ⬅️"
@@ -325,7 +325,7 @@ const TRIVIA_DATA = {
         {
             id: 119,
             q: "¿Qué luces debes usar en carretera de noche si no hay tráfico en contra?",
-            img: "https://cdn-icons-png.flaticon.com/512/3203/3203649.png",
+            img: "images/trivia/119.svg",
             options: ["Luces bajas", "Luces plenas (altas)", "Luces de parqueo", "Solo cocuyos"],
             correct: 1,
             feedback: "¡Visión lejana! Usa las altas para ver más, pero bájalas si ves otro carro. 🔦"
@@ -333,7 +333,7 @@ const TRIVIA_DATA = {
         {
             id: 120,
             q: "El extintor del vehículo debe ser...",
-            img: "https://cdn-icons-png.flaticon.com/512/2403/2403160.png",
+            img: "images/trivia/120.svg",
             options: ["Color rojo solamente", "Recargado anualmente y vigente", "De agua", "Opcional"],
             correct: 1,
             feedback: "¡Seguridad! Un extintor vencido no sirve de nada. 🔥"
@@ -347,7 +347,7 @@ const TRIVIA_DATA = {
         {
             id: 201,
             q: "En un accidente con heridos, el protocolo universal P.A.S. significa:",
-            img: "https://cdn-icons-png.flaticon.com/512/1032/1032989.png",
+            img: "images/trivia/201.svg",
             options: ["Primero Ayudar Siempre", "Proteger, Avisar, Socorrer", "Parar, Analizar, Salir", "Preguntar, Asistir, Sanar"],
             correct: 1,
             feedback: "¡Vital! 1. Protege la zona. 2. AVISA a emergencias. 3. Socorre si sabes cómo. 🚑"
@@ -355,7 +355,7 @@ const TRIVIA_DATA = {
         {
             id: 202,
             q: "Si se rompe la correa de REPARTICIÓN (distribución) con el motor en marcha:",
-            img: "https://cdn-icons-png.flaticon.com/512/6254/6254642.png",
+            img: "images/trivia/202.svg",
             options: ["El motor se apaga suavemente sin daños", "Se genera un daño catastrófico interno (válvulas vs pistones)", "Solo falla el aire acondicionado", "Se descarga la batería"],
             correct: 1,
             feedback: "¡Conocimiento Pro! Es una de las averías más costosas. Cambiala a tiempo. 💸"
@@ -363,7 +363,7 @@ const TRIVIA_DATA = {
         {
             id: 203,
             q: "Frenada de pánico (a fondo) en carro con ABS. El pedal vibra fuerte. ¿Qué haces?",
-            img: "https://cdn-icons-png.flaticon.com/512/77/77561.png",
+            img: "images/trivia/203.svg",
             options: ["Soltar el freno inmediatamente", "Mantener pisado a fondo sin miedo", "Bombear el pedal rítmicamente", "Apagar el motor"],
             correct: 1,
             feedback: "¡Sin miedo! La vibración es el sistema trabajando para que no derrapes. 🛑"
@@ -371,7 +371,7 @@ const TRIVIA_DATA = {
         {
             id: 204,
             q: "En Colombia, ¿cuál es el horario exacto obligatorio para encender las luces bajas?",
-            img: "https://cdn-icons-png.flaticon.com/512/4648/4648943.png",
+            img: "images/trivia/204.svg",
             options: ["De 6:30 PM a 6:30 AM", "De 6:00 PM a 6:00 AM", "Cuando el conductor no vea bien", "Solo en carreteras nacionales"],
             correct: 1,
             feedback: "¡Puntualidad legal! A las 6:00 PM, luces prendidas sin excusa. 🕕"
@@ -379,7 +379,7 @@ const TRIVIA_DATA = {
         {
             id: 205,
             q: "Humo AZUL constante por el tubo de escape indica:",
-            img: "https://cdn-icons-png.flaticon.com/512/11504/11504899.png",
+            img: "images/trivia/205.svg",
             options: ["Exceso de gasolina", "Paso de agua a la combustión", "Consumo de aceite (Motor desgastado)", "Motor afinado correctamente"],
             correct: 2,
             feedback: "¡Diagnóstico preciso! El vehículo está quemando aceite. Reparación mayor cerca. 💨"
@@ -387,7 +387,7 @@ const TRIVIA_DATA = {
         {
             id: 206,
             q: "El fenómeno de 'Hidroplaneo' o 'Aquaplaning' ocurre cuando:",
-            img: "https://cdn-icons-png.flaticon.com/512/4252/4252084.png",
+            img: "images/trivia/206.svg",
             options: ["El carro flota en un río", "Las llantas pierden contacto con el asfalto por una capa de agua", "Los frenos se mojan", "El motor aspira agua"],
             correct: 1,
             feedback: "¡Peligro invisible! Si sientes la dirección suave en lluvia, suelta el acelerador. 🌧️"
@@ -395,7 +395,7 @@ const TRIVIA_DATA = {
         {
             id: 207,
             q: "¿Debes quitarle el casco a un motociclista inconsciente tras un accidente?",
-            img: "https://cdn-icons-png.flaticon.com/512/2228/2228373.png",
+            img: "images/trivia/207.svg",
             options: ["Sí, para que respire mejor inmediatamente", "NUNCA (Riesgo de lesión medular irreversible)", "Sí, pero solo si no sangra", "Solo si el casco está roto"],
             correct: 1,
             feedback: "¡Regla de oro! Si mueves el cuello mal, podrías dejarlo tetrapléjico. Espera a los paramédicos. ⛑️"
@@ -403,7 +403,7 @@ const TRIVIA_DATA = {
         {
             id: 208,
             q: "Líquido de frenos: El nivel baja un poco con el tiempo. ¿Causa normal?",
-            img: "https://cdn-icons-png.flaticon.com/512/3203/3203644.png",
+            img: "images/trivia/208.svg",
             options: ["Fuga grave", "Evaporación natural", "Desgaste de las pastillas de freno", "Mala calidad del líquido"],
             correct: 2,
             feedback: "¡Mecánica aplicada! Al gastarse la pastilla, el pistón sale más y el líquido baja. Rellena con cuidado. 🔧"
@@ -411,7 +411,7 @@ const TRIVIA_DATA = {
         {
             id: 209,
             q: "Placa de vehículo con fondo BLANCO. Servicio:",
-            img: "https://cdn-icons-png.flaticon.com/512/2607/2607316.png",
+            img: "images/trivia/209.svg",
             options: ["Particular", "Público", "Diplomático", "Clásico o Antiguo"],
             correct: 1,
             feedback: "¡Correcto! Taxis, buses y transporte especial usan blanca. 🚕"
@@ -419,7 +419,7 @@ const TRIVIA_DATA = {
         {
             id: 210,
             q: "Punto Ciego: Antes de cambiar de carril, además del espejo, debes:",
-            img: "https://cdn-icons-png.flaticon.com/512/65/65545.png",
+            img: "images/trivia/210.svg",
             options: ["Acelerar a fondo", "Mirar rápidamente sobre tu hombro (Girar cabeza)", "Pitar tres veces", "Encender los limpiaparabrisas"],
             correct: 1,
             feedback: "¡Visión total! El espejo no lo muestra todo. El giro de cabeza salva vidas. 👀"
@@ -427,7 +427,7 @@ const TRIVIA_DATA = {
         {
             id: 211,
             q: "En una vía rural con berma pavimentada. ¿Puedes circular por la berma?",
-            img: "https://cdn-icons-png.flaticon.com/512/10328/10328639.png",
+            img: "images/trivia/211.svg",
             options: ["Sí, si voy despacio", "Sí, para adelantar", "No, es para peatones y detenciones de emergencia", "Solo las motos"],
             correct: 2,
             feedback: "¡Respeto! La berma no es un carril adicional. 🚶‍♂️"
@@ -435,7 +435,7 @@ const TRIVIA_DATA = {
         {
             id: 212,
             q: "¿Qué efecto produce la velocidad en el campo visual del conductor?",
-            img: "https://cdn-icons-png.flaticon.com/512/3176/3176180.png",
+            img: "images/trivia/212.svg",
             options: ["Mejora la visión periférica", "Produce Efecto Túnel (se reduce la visión lateral)", "No afecta la visión", "Permite ver más detalles lejanos"],
             correct: 1,
             feedback: "¡Ciencia vial! A mayor velocidad, menos ves a los lados. Cuidado en intersecciones. 👁️"
@@ -443,7 +443,7 @@ const TRIVIA_DATA = {
         {
             id: 213,
             q: "Líquido VERDE fosforescente bajo el motor suele ser:",
-            img: "https://cdn-icons-png.flaticon.com/512/1547/1547923.png",
+            img: "images/trivia/213.svg",
             options: ["Aceite de motor", "Líquido refrigerante (Coolant)", "Líquido de frenos", "Agua del limpiabrisas"],
             correct: 1,
             feedback: "¡Alerta térmica! Tienes una fuga en el sistema de refrigeración. Riesgo de recalentamiento. 🌡️"
@@ -451,7 +451,7 @@ const TRIVIA_DATA = {
         {
             id: 214,
             q: "Reincidencia en conducción bajo embriaguez (grado alto) puede causar:",
-            img: "https://cdn-icons-png.flaticon.com/512/2805/2805477.png",
+            img: "images/trivia/214.svg",
             options: ["Multa de dos salarios mínimos", "Suspensión por 1 año", "Cancelación definitiva de la licencia de por vida", "Curso pedagógico solamente"],
             correct: 2,
             feedback: "¡Consecuencia fatal! Jugar con alcohol al volante te puede costar el pase para siempre. 🚫"
@@ -459,7 +459,7 @@ const TRIVIA_DATA = {
         {
             id: 215,
             q: "Carril izquierdo en vía de tres carriles (mismo sentido). Uso exclusivo:",
-            img: "https://cdn-icons-png.flaticon.com/512/9333/9333972.png",
+            img: "images/trivia/215.svg",
             options: ["Para ir observando el paisaje", "Para adelantar o circular a mayor velocidad (hasta el límite)", "Para tráfico pesado", "Para detenerse"],
             correct: 1,
             feedback: "¡Flujo vial! Si no vas a adelantar, conserva tu derecha. No bloquees el izquierdo. 🚀"

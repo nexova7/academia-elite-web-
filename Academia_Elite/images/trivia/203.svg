@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <!-- Dashboard Black -->
+  <rect x="0" y="0" width="500" height="500" fill="#111"/>
+  <!-- ABS Symbol -->
+  <circle cx="250" cy="250" r="150" fill="none" stroke="#ff9900" stroke-width="20"/>
+  <path d="M60,250 A190,190 0 0,1 120,100" fill="none" stroke="#ff9900" stroke-width="20" stroke-linecap="round"/>
+  <path d="M440,250 A190,190 0 0,0 380,100" fill="none" stroke="#ff9900" stroke-width="20" stroke-linecap="round"/>
+  <path d="M60,250 A190,190 0 0,0 120,400" fill="none" stroke="#ff9900" stroke-width="20" stroke-linecap="round"/>
+  <path d="M440,250 A190,190 0 0,1 380,400" fill="none" stroke="#ff9900" stroke-width="20" stroke-linecap="round"/>
+  
+  <text x="250" y="290" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="120" fill="#ff9900">ABS</text>
+</svg>

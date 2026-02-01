@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <!-- Road -->
+  <rect x="0" y="200" width="350" height="300" fill="#555"/> <!-- Main Lane -->
+  <rect x="350" y="200" width="150" height="300" fill="#777"/> <!-- Berma -->
+  
+  <!-- Edge Line -->
+  <line x1="350" y1="200" x2="350" y2="500" stroke="white" stroke-width="10"/>
+  
+  <!-- Car on Berma (Prohibited) -->
+  <rect x="380" y="350" width="80" height="50" fill="red" stroke="black"/>
+  
+  <!-- Pedestrian -->
+  <circle cx="430" cy="250" r="10" fill="yellow"/>
+  <line x1="430" y1="260" x2="430" y2="290" stroke="yellow" stroke-width="2"/>
+  
+  <!-- Prohibition on Car -->
+  <circle cx="420" cy="375" r="40" fill="none" stroke="red" stroke-width="5"/>
+  <line x1="390" y1="345" x2="450" y2="405" stroke="red" stroke-width="5"/>
+</svg>

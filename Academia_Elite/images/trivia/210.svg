@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <!-- Car Top View -->
+  <rect x="220" y="300" width="60" height="100" fill="blue" stroke="black"/>
+  <!-- Driver Head -->
+  <circle cx="240" cy="330" r="10" fill="#fcc"/>
+  <!-- Mirrors -->
+  <rect x="210" y="320" width="10" height="5" fill="black"/>
+  <rect x="280" y="320" width="10" height="5" fill="black"/>
+  
+  <!-- Mirror View Cone -->
+  <path d="M210,320 L100,50 L200,50 Z" fill="yellow" opacity="0.3"/>
+  
+  <!-- Blind Spot -->
+  <path d="M210,330 L100,330 L100,200 Z" fill="red" opacity="0.3"/>
+  <text x="150" y="300" fill="red" font-size="20" font-weight="bold">?</text>
+  
+  <!-- Other Car in Blind Spot -->
+  <rect x="140" y="280" width="40" height="70" fill="red" stroke="black"/>
+</svg>

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <!-- Night Sky -->
+  <rect x="0" y="0" width="500" height="500" fill="#001133"/>
+  <!-- Moon -->
+  <circle cx="400" cy="100" r="40" fill="#ffc"/>
+  <!-- Clock -->
+  <circle cx="250" cy="250" r="150" fill="#fff" stroke="#333" stroke-width="10"/>
+  <line x1="250" y1="250" x2="250" y2="350" stroke="#000" stroke-width="10"/> <!-- Hand at 6 -->
+  <line x1="250" y1="250" x2="250" y2="130" stroke="#000" stroke-width="10"/> <!-- Hand at 12 -->
+  <text x="250" y="100" text-anchor="middle" font-size="30">12</text>
+  <text x="250" y="430" text-anchor="middle" font-size="30">6</text>
+  
+  <!-- Low Beam Icon -->
+  <path d="M50,400 Q20,350 40,300 L120,300 Q140,350 120,400 Z" fill="#0f0"/>
+  <line x1="40" y1="310" x2="10" y2="330" stroke="#0f0" stroke-width="5"/>
+  <line x1="40" y1="330" x2="10" y2="350" stroke="#0f0" stroke-width="5"/>
+</svg>

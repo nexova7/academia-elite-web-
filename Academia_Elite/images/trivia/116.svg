@@ -1,7 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
-  <!-- Asphalt View -->
   <rect x="0" y="0" width="500" height="500" fill="#444"/>
-  <!-- Double Yellow Line -->
   <rect x="220" y="0" width="20" height="500" fill="#ffcc00"/>
   <rect x="260" y="0" width="20" height="500" fill="#ffcc00"/>
+  <!-- Arrows Opposing -->
+  <path d="M150,400 L150,100" stroke="#fff" stroke-width="10" marker-end="url(#arrow)"/>
+  <path d="M350,100 L350,400" stroke="#fff" stroke-width="10" marker-end="url(#arrow)"/>
 </svg>

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <rect x="0" y="0" width="500" height="500" fill="#444"/>
+  <line x1="250" y1="0" x2="250" y2="500" stroke="#ffcc00" stroke-width="10"/>
+  <!-- Car Turning Left -->
+  <rect x="180" y="300" width="60" height="100" fill="blue" stroke="black"/>
+  <path d="M210,300 C210,250 150,250 100,250" stroke="white" stroke-width="5" fill="none" marker-end="url(#arrow)"/>
+</svg>

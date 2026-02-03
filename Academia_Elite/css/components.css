@@ -97,3 +97,10 @@
     border-radius: 2px;
     margin-right: 10px;
 }
+
+/* --- EFECTO 3D PERSPECTIVE --- */
+.glass-3d-animate {
+    transition: transform 0.2s ease-out;
+    transform-style: preserve-3d;
+    will-change: transform;
+}

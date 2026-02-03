@@ -19,18 +19,18 @@ const STATE = {
         {
             question: "¿Cuál es la técnica correcta para frenar en una superficie con hielo?",
             options: [
-                {id: "a", text: "Frenar a fondo de golpe", isCorrect: false},
-                {id: "b", text: "Frenado intermitente o usar ABS", isCorrect: true},
-                {id: "c", text: "Poner el auto en neutro", isCorrect: false}
+                { id: "a", text: "Frenar a fondo de golpe", isCorrect: false },
+                { id: "b", text: "Frenado intermitente o usar ABS", isCorrect: true },
+                { id: "c", text: "Poner el auto en neutro", isCorrect: false }
             ],
             explanation: "El frenado intermitente evita el bloqueo de las ruedas."
         },
         {
             question: "En una curva, ¿cuándo se debe acelerar para mantener la tracción?",
             options: [
-                {id: "a", text: "Justo al entrar", isCorrect: false},
-                {id: "b", text: "Al pasar el ápice y enderezar", isCorrect: true},
-                {id: "c", text: "En el punto más cerrado", isCorrect: false}
+                { id: "a", text: "Justo al entrar", isCorrect: false },
+                { id: "b", text: "Al pasar el ápice y enderezar", isCorrect: true },
+                { id: "c", text: "En el punto más cerrado", isCorrect: false }
             ],
             explanation: "Acelerar después del ápice mejora la salida."
         }
@@ -43,6 +43,8 @@ function initApp() {
     initMobileMenu();
     initSmoothScroll();
     renderServices();
+    init3DEffect('.img-container, .category-card');
+
 
     const startBtn = document.querySelector('a[href="#trivia"]');
     if (startBtn) {
@@ -66,12 +68,12 @@ function initNavbarEffect() {
 function initMobileMenu() {
     const menuBtn = document.getElementById('mobile-menu-btn');
     const navLinks = document.querySelector('.nav-links');
-    
+
     if (menuBtn && navLinks) {
         menuBtn.addEventListener('click', () => {
             menuBtn.classList.toggle('active');
             navLinks.classList.toggle('active');
-            
+
             // Bloquear scroll cuando el menú está abierto
             document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
         });
@@ -146,7 +148,7 @@ window.checkAnswer = (id) => {
     const q = STATE.questions[STATE.currentQuestionIndex];
     const isCorrect = id === q.options.find(o => o.isCorrect).id;
     if (isCorrect) STATE.score++;
-    
+
     document.getElementById('feedback').innerHTML = `
         <p style="margin-top:20px; color: ${isCorrect ? '#10b981' : '#ef4444'}">
             ${isCorrect ? '¡Correcto!' : 'Incorrecto.'} ${q.explanation}
@@ -170,4 +172,29 @@ function renderResults() {
             <button onclick="location.reload()" class="btn btn-primary" style="margin-top:20px">Reiniciar</button>
         </div>
     `;
+}
+
+/**
+ * Efecto de Perspectiva 3D Suave
+ * @param {string} selector - CSS Selector para los elementos
+ */
+function init3DEffect(selector) {
+    const elements = document.querySelectorAll(selector);
+    const factor = 15; // Control de intensidad
+
+    elements.forEach(container => {
+        container.classList.add('glass-3d-animate');
+
+        container.addEventListener('mousemove', (e) => {
+            const rect = container.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+
+            container.style.transform = `perspective(1000px) rotateY(${x / factor}deg) rotateX(${-y / factor}deg)`;
+        });
+
+        container.addEventListener('mouseleave', () => {
+            container.style.transform = `perspective(1000px) rotateY(0deg) rotateX(0deg)`;
+        });
+    });
 }

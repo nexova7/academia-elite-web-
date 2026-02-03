@@ -287,6 +287,13 @@
                 height: 220px;
             }
         }
+
+        /* --- EFECTO 3D PERSPECTIVE --- */
+        .glass-3d-animate {
+            transition: transform 0.2s ease-out;
+            transform-style: preserve-3d;
+            will-change: transform;
+        }
     </style>
 </head>
 
@@ -618,7 +625,37 @@
             document.getElementById('trivia-screen').style.display = 'none';
             actualizarInterfazNiveles(); // Refrescar por si hubo cambios
         }
+
+        /**
+         * Efecto de Perspectiva 3D Suave
+         */
+        function init3DEffect(selector) {
+            const elements = document.querySelectorAll(selector);
+            const factor = 15; // Control de intensidad
+
+            elements.forEach(container => {
+                container.classList.add('glass-3d-animate');
+
+                container.addEventListener('mousemove', (e) => {
+                    const rect = container.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+
+                    container.style.transform = `perspective(1000px) rotateY(${x / factor}deg) rotateX(${-y / factor}deg)`;
+                });
+
+                container.addEventListener('mouseleave', () => {
+                    container.style.transform = `perspective(1000px) rotateY(0deg) rotateX(0deg)`;
+                });
+            });
+        }
+
+        // Inicializar efecto en las tarjetas de niveles
+        document.addEventListener('DOMContentLoaded', () => {
+            init3DEffect('.level-card');
+        });
     </script>
+
 </body>
 
 </html>

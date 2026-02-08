@@ -655,6 +655,17 @@
                         if (error) throw error;
 
                         alert("✅ Reserva Confirmada.");
+
+                        // 🔴 NOTIFICACIÓN AUTOMÁTICA (MODO DESARROLLADOR)
+                        // Destinatarios: Oficial (313 348 2932) y Claudia (302 722 1223)
+                        const waMsg = encodeURIComponent(`Hay agendada una nueva clase para el instructor ${inst}. Por favor, revisar la agenda en la página web.`);
+
+                        // Intentar abrir ambos chats
+                        window.open(`https://wa.me/573133482932?text=${waMsg}`, '_blank');
+                        setTimeout(() => {
+                            window.open(`https://wa.me/573027221223?text=${waMsg}`, '_blank');
+                        }, 1500);
+
                         document.getElementById('reservaFecha').value = '';
                         document.getElementById('reservaHora').value = '';
                         renderizarClases();

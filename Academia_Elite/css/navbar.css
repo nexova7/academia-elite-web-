@@ -40,7 +40,7 @@
 .nav-logo {
     font-family: 'Playfair Display', serif;
     font-weight: 700;
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     letter-spacing: 1px;
     color: white;
     flex: 1;
@@ -206,22 +206,20 @@
         position: fixed;
         top: 0;
         right: -100%;
-        width: 100%;
+        width: 250px;
         height: 100vh;
 
-        /* Fondo Full Cristal Dark */
-        background: rgba(5, 5, 5, 0.85);
-        /* Fallback */
-        background: radial-gradient(circle at top right, rgba(20, 20, 20, 0.95), #000000);
-        backdrop-filter: blur(30px);
-        -webkit-backdrop-filter: blur(30px);
+        background: rgba(10, 10, 10, 0.95);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-left: 1px solid rgba(197, 160, 89, 0.3);
 
         flex-direction: column;
-        justify-content: center;
-        transition: right 0.6s cubic-bezier(0.77, 0, 0.18, 1);
-        /* Smooth bezier */
+        justify-content: flex-start;
+        padding-top: 80px;
+        transition: right 0.5s cubic-bezier(0.77, 0, 0.18, 1);
         z-index: 1050;
-        box-shadow: -10px 0 40px rgba(0, 0, 0, 0.8);
+        box-shadow: -5px 0 30px rgba(0, 0, 0, 0.8);
     }
 
     .nav-links.active {
@@ -230,24 +228,24 @@
 
     /* Links en Mobile */
     .nav-link {
-        font-size: 1.6rem !important;
-        padding: 20px 0 !important;
+        font-size: 0.9rem !important;
+        padding: 12px 20px !important;
         width: 100%;
-        text-align: center;
+        text-align: left;
         background: transparent !important;
         border: none !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.03) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
         box-shadow: none !important;
         border-radius: 0 !important;
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateX(20px);
         transition: opacity 0.4s ease, transform 0.4s ease;
     }
 
     /* Staggered animation reveal can be done in JS or simplified here */
     .nav-links.active .nav-link {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateX(0);
     }
 
     .nav-links.active .nav-link:nth-child(1) {
@@ -283,19 +281,19 @@
 
     /* Accesos móviles destacados */
     .nav-link.mobile-only {
-        width: 80%;
-        margin: 15px auto !important;
-        border-radius: 50px !important;
-        /* Pill shape en mobile */
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
-        font-size: 1.1rem !important;
-        background: rgba(255, 255, 255, 0.05) !important;
+        width: 90%;
+        margin: 10px auto !important;
+        border-radius: 6px !important;
+        border: 1px solid rgba(197, 160, 89, 0.2) !important;
+        font-size: 0.85rem !important;
+        background: rgba(197, 160, 89, 0.05) !important;
+        text-align: center;
     }
 
     .nav-link.mobile-only.red {
         color: #ef4444 !important;
-        border-color: rgba(239, 68, 68, 0.5) !important;
-        margin-top: 40px !important;
+        border-color: rgba(239, 68, 68, 0.3) !important;
+        margin-top: 20px !important;
     }
 
     .nav-link.mobile-only.gold {

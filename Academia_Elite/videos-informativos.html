@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masterclass Élite | Biblioteca Vial</title>
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@400;700&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Estilos Base -->
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/theme-elite-asphalt.css">
+    <!-- Estilos Propios de la Videoteca -->
+    <link rel="stylesheet" href="css/biblioteca-vial-elite.css">
+</head>
+
+<body class="elite-asphalt" style="background: #050505;">
+
+    <!-- HEADER / NAVBAR -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-logo"> ÉLITE <span style="color: #c5a059;">DRIVE</span></div>
+
+        <div class="nav-links" id="nav-links">
+            <a href="index.html" class="nav-link">Inicio</a>
+            <a href="nosotros.html" class="nav-link">Nosotros</a>
+            <a href="cursos.html" class="nav-link">Cursos</a>
+            <a href="evaluacion.html" class="nav-link">Trivia</a>
+            <a href="videos-informativos.html" class="nav-link active">Biblioteca</a>
+            <a href="contacto.html" class="nav-link">Contacto</a>
+            <a href="acceso-alumnos.html" class="nav-link mobile-only red">Alumnos</a>
+            <a href="acceso-instructores.html" class="nav-link mobile-only gold">Profes</a>
+        </div>
+
+        <div class="nav-access desktop-only">
+            <a href="acceso-alumnos.html" class="btn-alumno">Alumnos</a>
+            <a href="acceso-instructores.html" class="btn-profe">Profes</a>
+        </div>
+
+        <!-- Botón Hamburguesa -->
+        <div class="nav-toggle" id="mobile-menu-btn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <!-- CONTENIDO DE LA VIDEOTECA -->
+    <main id="biblioteca-vial-elite" style="padding-top: 140px;">
+        <h2 class="section-title">Masterclass Élite: Domina la Vía con Expertos</h2>
+
+        <div class="netflix-row" id="video-grid">
+            <!-- Los videos se cargarán dinámicamente aquí para mejor mantenimiento -->
+        </div>
+    </main>
+
+    <!-- VENTANA MODAL ÉLITE -->
+    <div class="elite-modal" id="videoModal">
+        <div class="modal-content">
+            <button class="modal-close" id="closeModal">&times;</button>
+            <div class="modal-video-wrapper" id="modalVideoContainer">
+                <!-- iFrame se inserta aquí -->
+            </div>
+            <div class="modal-body">
+                <span class="modal-tag">Lección Élite</span>
+                <h3 class="modal-title" id="modalTitle">Título del Video</h3>
+                <p class="modal-description" id="modalDesc">Descripción detallada...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer style="padding: 60px 0; border-top: 1px solid #1a1a1a; text-align: center; font-size: 0.8rem; color: #444;">
+        <p>Calle 65 Sur N° 78L – 64 Bosa | 313 348 2932</p>
+        <p style="margin-top: 20px; color: #333; font-size: 0.65rem; letter-spacing: 2px;">
+            PÁGINA DISEÑADA POR <span style="color: #555; font-weight: 600;">NEXOVA (+57) 302 722 1223</span>
+        </p>
+    </footer>
+
+    <!-- Scripts de la App -->
+    <script src="js/app.js"></script>
+    <script>
+        // DATOS DE LA VIDEOTECA
+        const VIDEOS_DATA = [
+            {
+                id: "-LsosggkbjE",
+                title: "Arrancar en Cuesta",
+                category: "Técnica Maestra",
+                desc: "Domina el arte del punto de fricción. En esta Masterclass, aprenderás a coordinar embrague, acelerador y freno de mano para salidas impecables en pendientes pronunciadas sin retrocesos.",
+                premium: false
+            },
+            {
+                id: "XEjvE7ABmfo",
+                title: "Control de Embrague",
+                category: "Dominio Total",
+                desc: "El secreto de un conductor experto reside en su pierna izquierda. Descubre cómo manejar la transición de potencia con suavidad quirúrgica para evitar tirones y proteger la vida útil de tu vehículo.",
+                premium: true
+            },
+            {
+                id: "k5-gdSK1PIs",
+                title: "Maniobras de Reversa",
+                category: "Precisión Élite",
+                desc: "La visión periférica y el cálculo espacial son clave. Aprende el método de los 3 puntos para parquear en paralelo y reversar con la precisión de un piloto profesional.",
+                premium: true
+            },
+            {
+                id: "__A2IMF091U",
+                title: "Seguridad Vial",
+                category: "Normativa 2024",
+                desc: "Actualización integral sobre la Ley 2251 de 2022 (Ley Julián Esteban). Repasamos límites de velocidad, prioridades en rotondas y las nuevas normativas que todo conductor Élite debe conocer.",
+                premium: true
+            },
+            {
+                id: "MyQKbmiVESo",
+                title: "Mecánica de Emergencia",
+                category: "Tips Rápidos",
+                desc: "No permitas que un imprevisto te detenga. Aprende a identificar ruidos críticos, revisar niveles de fluidos esenciales y cambiar una llanta en tiempo récord bajo condiciones adversas.",
+                premium: true
+            }
+        ];
+
+        const grid = document.getElementById('video-grid');
+        const modal = document.getElementById('videoModal');
+        const modalContainer = document.getElementById('modalVideoContainer');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalDesc = document.getElementById('modalDesc');
+        const closeModal = document.getElementById('closeModal');
+
+        // Renderizar Galería
+        VIDEOS_DATA.forEach(vid => {
+            const item = document.createElement('div');
+            item.className = 'video-item';
+            item.innerHTML = `
+                <div class="video-thumb-container">
+                    <img src="https://img.youtube.com/vi/${vid.id}/maxresdefault.jpg" alt="${vid.title}">
+                    ${vid.premium ? '<div class="coming-soon-banner">PRÓXIMAMENTE</div>' : ''}
+                    <button class="info-btn-floating">(+) Más información</button>
+                </div>
+                <div class="video-info">
+                    <h4>${vid.title}</h4>
+                    <p style="color: #c5a059; font-size: 0.75rem; text-transform: uppercase;">${vid.category}</p>
+                </div>
+            `;
+            item.onclick = () => openEliteModal(vid);
+            grid.appendChild(item);
+        });
+
+        // Lógica Modal
+        function openEliteModal(vid) {
+            modalTitle.innerText = vid.title;
+            modalDesc.innerText = vid.desc;
+
+            // BLINDAJE TOTAL (Error 153 FIX)
+            const videoUrl = `https://www.youtube-nocookie.com/embed/${vid.id}?rel=0&modestbranding=1&enablejsapi=1&origin=https://academia-elite.onrender.com&autoplay=1`;
+            modalContainer.innerHTML = `<iframe src="${videoUrl}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Bloquear scroll
+        }
+
+        closeModal.onclick = () => {
+            modal.classList.remove('active');
+            modalContainer.innerHTML = ''; // Destruir video
+            document.body.style.overflow = ''; // Habilitar scroll
+        };
+
+        // Cerrar al click exterior
+        window.onclick = (event) => {
+            if (event.target == modal) {
+                closeModal.onclick();
+            }
+        };
+
+        // Smooth horizontal scroll with mouse wheel (desktop only)
+        if (window.innerWidth > 1024) {
+            grid.addEventListener('wheel', (evt) => {
+                evt.preventDefault();
+                grid.scrollLeft += evt.deltaY;
+            });
+        }
+    </script>
+</body>
+
+</html>

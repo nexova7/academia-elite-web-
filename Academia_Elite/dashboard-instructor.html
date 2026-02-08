@@ -197,7 +197,7 @@
         <button class="nav-btn" onclick="nav('alumnos')">
             <i class="fa-solid fa-users"></i> Base de Alumnos
         </button>
-        <!-- Centro de Control (Admin Only) -->
+        <!-- Centro de Control (Admin & Restricted Admin) -->
         <button class="nav-btn" id="btn-control" onclick="nav('control')"
             style="display:none; color: var(--neon-gold);">
             <i class="fa-solid fa-shield-halved"></i> Centro de Control
@@ -375,39 +375,6 @@
 
     </main>
 
-    <!-- MODAL DE SEGURIDAD (PIN) -->
-    <div class="security-modal" id="securityModal">
-        <div class="control-panel" style="width: 300px; text-align: center; border-color: var(--neon-gold);">
-            <i class="fa-solid fa-lock" style="font-size: 3rem; color: var(--neon-gold); margin-bottom: 20px;"></i>
-            <h3 style="color:white; margin:0 0 10px 0;">Acceso Restringido</h3>
-            <p style="color:#888; font-size: 0.9rem;">Esta acción requiere autorización administrativa segura.</p>
-
-            <div class="pin-display" id="pinDisplay">
-                <div class="pin-dot"></div>
-                <div class="pin-dot"></div>
-                <div class="pin-dot"></div>
-                <div class="pin-dot"></div>
-            </div>
-
-            <div class="numpad">
-                <button class="num-btn" onclick="enterPin(1)">1</button>
-                <button class="num-btn" onclick="enterPin(2)">2</button>
-                <button class="num-btn" onclick="enterPin(3)">3</button>
-                <button class="num-btn" onclick="enterPin(4)">4</button>
-                <button class="num-btn" onclick="enterPin(5)">5</button>
-                <button class="num-btn" onclick="enterPin(6)">6</button>
-                <button class="num-btn" onclick="enterPin(7)">7</button>
-                <button class="num-btn" onclick="enterPin(8)">8</button>
-                <button class="num-btn" onclick="enterPin(9)">9</button>
-                <button class="num-btn" onclick="clearPin()" style="color:#ff8a80;"><i
-                        class="fa-solid fa-delete-left"></i></button>
-                <button class="num-btn" onclick="enterPin(0)">0</button>
-                <button class="num-btn" onclick="closeSecurityModal()" style="color:#888;"><i
-                        class="fa-solid fa-times"></i></button>
-            </div>
-        </div>
-    </div>
-
     <!-- MODAL DE ACCIONES -->
     <div class="modal-overlay" id="actionModal" onclick="if(event.target == this) closeModal()">
         <div class="modal-content" style="background: #151515; border: 1px solid var(--neon-gold);">
@@ -458,6 +425,7 @@
             updateWeekDisplay();
             await refreshSchedule(); // Cargar Reservas
             await loadStudents();    // Cargar Alumnos
+            await checkAdminIdentity(); // Validar permisos administrativos
         });
 
         // --- NAVIGATION ---
@@ -737,8 +705,8 @@
                         </div>
                     </td>
                     <td>
-                        <button class="glass-btn amber" onclick="resetPassword('${s.email}')" 
-                                style="font-size:0.85rem; padding: 6px 14px; border-radius:50px;" 
+                        <button class="glass-btn amber admin-only" onclick="resetPasswordAction('${s.id}', '${s.nombre}')" 
+                                style="font-size:0.85rem; padding: 6px 14px; border-radius:50px; display:none;" 
                                 title="Asignar clave ELITE2026">
                             <i class="fa-solid fa-key"></i> Reset
                         </button>
@@ -759,48 +727,80 @@
             renderStudentsTable(filtered);
         }
 
-        // --- CONTROL CENTER & SECURITY LOGIC ---
+        // --- SECURITY & ROLES V2 (NO PIN, NO TOTP) ---
+        const ROLES = {
+            'camilo': 'SUPER_ADMIN',
+            'liliana': 'SUPER_ADMIN',
+            'claudia': 'ADMIN_RESTRINGIDO'
+        };
 
-        let pinBuffer = "";
-        let pendingSecurityAction = null;
-        const ADMIN_PIN_HASH = "1138dd6617267104753086937e0655e054bd33fb572565615712217154032d19"; // SHA-256 for '2026'
+        function getUserRole() {
+            const user = sessionStorage.getItem("instructorActivo")?.toLowerCase();
+            return ROLES[user] || 'USUARIO';
+        }
 
-        // 1. Identity Verification on Load
-        async function checkAdminIdentity() {
+        async function logEvent(accion, resultado, detalles = {}) {
             const user = sessionStorage.getItem("instructorActivo");
-            // Only Camilo or Liliana allowed
-            if (user && (user.toUpperCase() === 'CAMILO' || user.toUpperCase() === 'LILIANA')) {
-                document.getElementById('btn-control').style.display = 'block';
-                // Load admin data initially if section is active (or lazy load)
-                await loadAdminStudents();
+            const role = getUserRole();
+            try {
+                await window.supabaseInstance.from('logs_eventos').insert([{
+                    usuario: user,
+                    rol: role,
+                    accion: accion,
+                    resultado: resultado,
+                    detalles: detalles
+                }]);
+            } catch (e) { console.error("Log error", e); }
+        }
+
+        async function runSecureAction(actionName, targetName, executionFn) {
+            const role = getUserRole();
+            const user = sessionStorage.getItem("instructorActivo");
+
+            if (role !== 'SUPER_ADMIN' && role !== 'ADMIN_RESTRINGIDO') {
+                alert("Error genérico: Acceso no autorizado.");
+                logEvent(actionName, 'DENEGADO', { target: targetName });
+                return;
+            }
+
+            if (role === 'ADMIN_RESTRINGIDO') {
+                const waMsg = `⚠️ *Alerta de Seguridad – Plataforma Élite Drive*%0A%0AUn usuario con permisos administrativos está intentando realizar cambios en la plataforma.%0A%0ASi no reconoces esta acción, toma medidas inmediatas y revisa los accesos.`;
+                window.open(`https://wa.me/573133482932?text=${waMsg}`, '_blank');
+            }
+
+            try {
+                await executionFn();
+                logEvent(actionName, 'EXITO', { target: targetName });
+            } catch (err) {
+                alert("Error genérico ante accesos no autorizados.");
+                logEvent(actionName, 'FALLO', { target: targetName, error: err.message });
             }
         }
 
-        // Call this on load
-        document.addEventListener('DOMContentLoaded', async () => {
-            // ... existing checks ...
-            await checkAdminIdentity();
-        });
+        function filterAdminStudents() {
+            const term = document.getElementById('adminStudentSearch').value.toLowerCase();
+            const rows = document.querySelectorAll('#adminStudentList .admin-action-row');
+            rows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                row.style.display = text.includes(term) ? 'flex' : 'none';
+            });
+        }
 
-        // 2. Report Generation
         function generateReport() {
             const period = document.getElementById('reportPeriod').value;
             const element = document.createElement('div');
             const date = new Date().toLocaleDateString();
 
-            // Build simple HTML layout for PDF
             element.innerHTML = `
                 <div style="font-family: sans-serif; padding: 40px; color: black; background: white;">
                     <div style="border-bottom: 2px solid #c5a059; padding-bottom: 20px; margin-bottom: 30px; display:flex; justify-content:space-between; align-items:center;">
                         <h1 style="color: #000; margin:0;">ÉLITE DRIVE</h1>
                         <span style="color: #666;">Reporte Oficial</span>
                     </div>
-                    
                     <h3>Registro de Actividad: ${period.toUpperCase()}</h3>
                     <p><strong>Generado por:</strong> ${sessionStorage.getItem("instructorActivo")}</p>
                     <p><strong>Fecha:</strong> ${date}</p>
                     <p><strong>ID Reporte:</strong> #${Date.now()}</p>
-                    
                     <table style="width: 100%; border-collapse: collapse; margin-top: 30px;">
                         <tr style="background: #f0f0f0;">
                             <th style="padding: 10px; border: 1px solid #ddd; text-align: left;">Métrica</th>
@@ -814,12 +814,7 @@
                             <td style="padding: 10px; border: 1px solid #ddd;">Alumnos Activos</td>
                             <td style="padding: 10px; border: 1px solid #ddd;">${currentStudents.filter(s => s.activo).length}</td>
                         </tr>
-                        <tr>
-                            <td style="padding: 10px; border: 1px solid #ddd;">Cancelaciones</td>
-                            <td style="padding: 10px; border: 1px solid #ddd;">${currentReservations.filter(r => r.estado === 'CANCELADA').length}</td>
-                        </tr>
                     </table>
-
                     <div style="margin-top: 50px; text-align: center; color: #888;">
                         <p>Documento generado electrónicamente por la plataforma administrativa Élite Drive.</p>
                         <p style="font-size: 0.8rem;">Seguridad y Excelencia</p>
@@ -834,17 +829,66 @@
                 html2canvas: { scale: 2 },
                 jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
             };
-
             html2pdf().set(opt).from(element).save();
         }
 
-        // 3. Admin Student List (For Closure)
+        // 1. Identity Verification on Load
+        async function checkAdminIdentity() {
+            const role = getUserRole();
+
+            if (role === 'SUPER_ADMIN' || role === 'ADMIN_RESTRINGIDO') {
+                document.getElementById('btn-control').style.display = 'block';
+                await loadAdminStudents();
+                // Show admin-only buttons in the UI
+                document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'block');
+            }
+        }
+
+        // 2. Wrap existing actions
+        async function resetPasswordAction(id, name) {
+            runSecureAction('PASSWORD_RESET', name, async () => {
+                const { error } = await window.supabaseInstance.auth.admin.updateUserById(id, { password: 'ELITE2026' });
+                if (error) throw error;
+                alert(`✅ Contraseña reseteada para ${name}. Nueva clave: ELITE2026`);
+            });
+        }
+
+        async function cancelClassAction() {
+            if (!selectedReservationId) return;
+            const res = currentReservations.find(r => r.id === selectedReservationId);
+            const targetName = res ? res.alumnos.nombre : 'Clase Desconocida';
+
+            runSecureAction('CANCEL_CLASS', targetName, async () => {
+                const { error } = await window.supabaseInstance
+                    .from('reservas_clases')
+                    .update({ estado: 'CANCELADA_INSTRUCTOR' })
+                    .eq('id', selectedReservationId);
+
+                if (error) throw error;
+                alert("✅ Clase cancelada.");
+                closeModal();
+                refreshSchedule();
+            });
+        }
+
+        async function finalizeProcessAction(id, name) {
+            runSecureAction('CLOSE_PROCESS', name, async () => {
+                const { error } = await window.supabaseInstance
+                    .from('alumnos')
+                    .update({ activo: false, categoria: 'Proceso Finalizado' })
+                    .eq('id', id);
+
+                if (error) throw error;
+                alert(`✅ Proceso Finalizado para ${name}.`);
+                loadStudents();
+                loadAdminStudents();
+            });
+        }
+
+        // Update existing loadAdminStudents to use new action
         async function loadAdminStudents() {
             const listContainer = document.getElementById('adminStudentList');
-            // Filter only ACTIVE students for closure candidates
-            // Assuming we want to close active students
             const candidates = currentStudents.filter(s => s.activo);
-
             listContainer.innerHTML = '';
             candidates.forEach(s => {
                 const item = `
@@ -853,120 +897,13 @@
                         <strong style="color:white;">${s.nombre}</strong><br>
                         <small style="color:#aaa;">${s.email}</small>
                     </div>
-                    <button class="glass-btn danger" onclick="requestSecureAction('CLOSE_PROCESS', '${s.id}', '${s.nombre}')" style="padding: 5px 12px; font-size: 0.8rem;">
+                    <button class="glass-btn danger" onclick="finalizeProcessAction('${s.id}', '${s.nombre}')" style="padding: 5px 12px; font-size: 0.8rem;">
                         <i class="fa-solid fa-ban"></i> Finalizar Proceso
                     </button>
                 </div>
                 `;
                 listContainer.insertAdjacentHTML('beforeend', item);
             });
-        }
-
-        function filterAdminStudents() {
-            // Re-implement client side filter logic if list is long
-            // For now, loadAdminStudents is enough if re-called or refined
-            // Or simple DOM filter:
-            const term = document.getElementById('adminStudentSearch').value.toLowerCase();
-            const rows = document.querySelectorAll('#adminStudentList .admin-action-row');
-            rows.forEach(row => {
-                const text = row.innerText.toLowerCase();
-                row.style.display = text.includes(term) ? 'flex' : 'none';
-            });
-        }
-
-        // 4. Security Flow
-        function requestSecureAction(type, targetId, targetName) {
-            // STEP 1: Verify Identity (Already done by visibility, but double check)
-            const user = sessionStorage.getItem("instructorActivo");
-            if (!user || (user.toUpperCase() !== 'CAMILO' && user.toUpperCase() !== 'LILIANA')) {
-                alert("⛔ ACCESO DENEGADO: Solo administradores autorizados.");
-                return;
-            }
-
-            // Prepare Payload
-            pendingSecurityAction = { type, targetId, targetName, user };
-
-            // STEP 2: Request PIN
-            pinBuffer = "";
-            updatePinDots();
-            document.getElementById('securityModal').style.display = 'flex';
-        }
-
-        function closeSecurityModal() {
-            document.getElementById('securityModal').style.display = 'none';
-            pinBuffer = "";
-            pendingSecurityAction = null;
-        }
-
-        function enterPin(num) {
-            if (pinBuffer.length < 4) {
-                pinBuffer += num;
-                updatePinDots();
-                if (pinBuffer.length === 4) {
-                    setTimeout(validatePinAction, 300);
-                }
-            }
-        }
-
-        function clearPin() {
-            pinBuffer = "";
-            updatePinDots();
-        }
-
-        function updatePinDots() {
-            const dots = document.querySelectorAll('.pin-dot');
-            dots.forEach((dot, index) => {
-                if (index < pinBuffer.length) dot.classList.add('filled');
-                else dot.classList.remove('filled');
-            });
-        }
-
-        async function validatePinAction() {
-            // Validate Hash (Browser JS native SHA-256)
-            const encoder = new TextEncoder();
-            const data = encoder.encode(pinBuffer);
-            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-
-            if (hashHex === ADMIN_PIN_HASH) {
-                // PIN OK
-                // STEP 3: WhatsApp Alert
-                const msg = `⚠️ *ALERTA DE SEGURIDAD - ÉLITE DRIVE* ⚠️%0A%0ASe ha autorizado una acción administrativa crítica en la plataforma.%0A%0A👤 *Usuario:* ${pendingSecurityAction.user}%0A🛠️ *Acción:* ${pendingSecurityAction.type}%0A🎯 *Objetivo:* ${pendingSecurityAction.targetName} (ID: ${pendingSecurityAction.targetId})%0A🕒 *Hora:* ${new Date().toLocaleTimeString()}%0A%0ASi no reconoces esta acción, revoca accesos inmediatamente.`;
-
-                // Open WA in background tab (simulated alert) or inform user
-                window.open(`https://wa.me/573000000000?text=${msg}`, '_blank');
-
-                // STEP 4: Execution
-                executeAction();
-                closeSecurityModal();
-            } else {
-                alert("❌ PIN INCORRECTO. Intento registrado.");
-                clearPin();
-                // Log failed attempt here
-            }
-        }
-
-        async function executeAction() {
-            if (!pendingSecurityAction) return;
-            const { type, targetId } = pendingSecurityAction;
-
-            if (type === 'CLOSE_PROCESS') {
-                // Supabase Logic: Set active = false, maybe add log
-                const { error } = await window.supabaseInstance
-                    .from('alumnos')
-                    .update({ activo: false, categoria: 'Proceso Finalizado' }) // Update category to reflect status
-                    .eq('id', targetId);
-
-                if (error) {
-                    alert("Error ejecutando acción: " + error.message);
-                } else {
-                    alert("✅ Proceso Finalizado. El alumno ha sido desactivado y archivado.");
-                    // Refresh all lists
-                    loadStudents();       // Refresh main table (removed from there if filtered?)
-                    loadAdminStudents();  // Refresh admin list
-                }
-            }
         }
 
         // --- UTILS ---

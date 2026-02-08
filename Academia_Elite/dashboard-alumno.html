@@ -11,32 +11,35 @@
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/biblioteca-vial-elite.css">
 </head>
 
 <body>
 
     <body>
 
-        <!-- OVERLAY & MOBILE HEADER ADDED FOR RESPONSIVE MENU -->
-        <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
-
-        <div class="mobile-header">
-            <div class="logo-text-mobile">ÉLITE DRIVE</div>
-            <div class="dashboard-toggle" onclick="toggleSidebar()">
+        <!-- STICKY HEADER DASHBOARD -->
+        <nav class="dashboard-navbar">
+            <div class="logo-text">ÉLITE <span style="color:var(--elite-gold)">DRIVE</span></div>
+            <div class="dashboard-toggle" onclick="toggleDashboardMenu()">
                 <span></span>
                 <span></span>
                 <span></span>
             </div>
-        </div>
+        </nav>
 
-        <div class="sidebar" id="sidebar">
-            <h2 class="logo-text">ÉLITE DRIVE</h2>
+        <!-- MENÚ COMPACTO DESPLEGABLE -->
+        <div class="dashboard-compact-menu" id="compactMenu">
             <button class="nav-btn active" onclick="nav('perfil')">👤 Mi Perfil</button>
             <button class="nav-btn" onclick="nav('lecciones')">📚 Mis Lecciones</button>
             <button class="nav-btn" onclick="nav('clases')">🗓️ Calendario Práctico</button>
-
+            <a href="videos-informativos.html" class="nav-btn" style="text-decoration: none;">📚 Biblioteca</a>
+            <hr style="border:0; border-top:1px solid var(--elite-border); margin:10px 0;">
             <a href="index.html" class="logout">CERRAR SESIÓN</a>
         </div>
+
+        <!-- OVERLAY -->
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleDashboardMenu()"></div>
 
         <div class="content">
             <!-- PANEL DE BIENVENIDA (RESUMEN ÉLITE) -->
@@ -156,161 +159,30 @@
 
             <!-- SECCIÓN LECCIONES -->
             <div id="lecciones" class="section">
-                <h1><i class="fa-solid fa-layer-group text-gold"></i> Material de Estudio</h1>
-                <p class="section-desc">Videoteca y documentación exclusiva para tu formación.</p>
+                <div id="biblioteca-vial-elite">
+                    <h2 class="section-title" style="text-align: left; font-size: 1.8rem; margin-bottom: 20px;">
+                        Masterclass Élite: Domina la Vía con Expertos</h2>
 
-                <!-- CATEGORÍA 1: NORMAS DE TRÁNSITO -->
-                <div class="netflix-category">
-                    <h3>🚗 Normas de Tránsito</h3>
-                    <div class="netflix-scroll">
-                        <!-- Carta 1 -->
-                        <div class="netflix-card no-hover-scale">
-                            <div class="thumb-wrapper" onclick="toggleVideo(this)"
-                                style="cursor: pointer; position: relative;">
-                                <!-- Removed 'controls' initially to force use of our big button, cleaner look -->
-                                <video playsinline preload="metadata" width="100%" height="100%" class="video-elite"
-                                    style="object-fit: cover;">
-                                    <source src="videos-informativos/El_lenguaje_de_la_carretera1.mp4" type="video/mp4">
-                                    Tu navegador no soporta video HTML5.
-                                </video>
-                                <div class="custom-play-btn"
-                                    style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #c5a059; font-size: 50px; z-index: 100; text-shadow: 0 0 10px rgba(0,0,0,0.8); pointer-events: none;">
-                                    <i class="fa-solid fa-circle-play"></i>
-                                </div>
-                            </div>
-                            <div class="card-info">
-                                <h4>Señales Reglamentarias</h4>
-                                <div class="meta-row">
-                                    <span class="duration">12 min</span>
-                                    <label class="custom-checkbox">
-                                        <input type="checkbox" class="progress-check" onchange="recalcProgress()">
-                                        <span class="checkmark"></span>
-                                        Visto
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Carta 2 -->
-                        <div class="netflix-card">
-                            <div class="thumb-wrapper">
-                                <img src="data/2.jpeg" alt="Vía">
-                                <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-                            </div>
-                            <div class="card-info">
-                                <h4>Prioridad en Vías</h4>
-                                <div class="meta-row">
-                                    <span class="duration">15 min</span>
-                                    <label class="custom-checkbox">
-                                        <input type="checkbox" class="progress-check" onchange="recalcProgress()">
-                                        <span class="checkmark"></span>
-                                        Visto
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Carta 3 -->
-                        <div class="netflix-card">
-                            <div class="thumb-wrapper">
-                                <img src="data/3.jpeg" alt="Velocidad">
-                                <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-                            </div>
-                            <div class="card-info">
-                                <h4>Límites de Velocidad</h4>
-                                <div class="meta-row">
-                                    <span class="duration">08 min</span>
-                                    <label class="custom-checkbox">
-                                        <input type="checkbox" class="progress-check" onchange="recalcProgress()">
-                                        <span class="checkmark"></span>
-                                        Visto
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- CATEGORÍA 2: MECÁNICA BÁSICA -->
-                <div class="netflix-category">
-                    <h3>🔧 Mecánica Básica</h3>
-                    <div class="netflix-scroll">
-                        <div class="netflix-card">
-                            <div class="thumb-wrapper">
-                                <img src="data/4.jpeg" alt="Motor">
-                                <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-                            </div>
-                            <div class="card-info">
-                                <h4>Revisión de Fluidos</h4>
-                                <div class="meta-row">
-                                    <span class="duration">20 min</span>
-                                    <label class="custom-checkbox">
-                                        <input type="checkbox" class="progress-check" onchange="recalcProgress()">
-                                        <span class="checkmark"></span>
-                                        Visto
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="netflix-card">
-                            <div class="thumb-wrapper">
-                                <img src="data/5.jpeg" alt="Llantas">
-                                <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-                            </div>
-                            <div class="card-info">
-                                <h4>Cambio de Llanta</h4>
-                                <div class="meta-row">
-                                    <span class="duration">25 min</span>
-                                    <label class="custom-checkbox">
-                                        <input type="checkbox" class="progress-check" onchange="recalcProgress()">
-                                        <span class="checkmark"></span>
-                                        Visto
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- CATEGORÍA 3: PRIMEROS AUXILIOS -->
-                <div class="netflix-category">
-                    <h3>🚑 Primeros Auxilios</h3>
-                    <div class="netflix-scroll">
-                        <div class="netflix-card">
-                            <div class="thumb-wrapper">
-                                <img src="data/6.jpeg" alt="PAS">
-                                <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-                            </div>
-                            <div class="card-info">
-                                <h4>Protocolo P.A.S.</h4>
-                                <div class="meta-row">
-                                    <span class="duration">10 min</span>
-                                    <label class="custom-checkbox">
-                                        <input type="checkbox" class="progress-check" onchange="recalcProgress()">
-                                        <span class="checkmark"></span>
-                                        Visto
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="netflix-card">
-                            <div class="thumb-wrapper">
-                                <img src="data/7.jpeg" alt="Botiquín">
-                                <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-                            </div>
-                            <div class="card-info">
-                                <h4>El Botiquín Ideal</h4>
-                                <div class="meta-row">
-                                    <span class="duration">05 min</span>
-                                    <label class="custom-checkbox">
-                                        <input type="checkbox" class="progress-check" onchange="recalcProgress()">
-                                        <span class="checkmark"></span>
-                                        Visto
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="netflix-row" id="dashboard-video-grid">
+                        <!-- Los videos se cargarán por JS al final del archivo -->
                     </div>
                 </div>
             </div>
+
+            <!-- MODAL PARA DASHBOARD -->
+            <div class="elite-modal" id="dashboardModal">
+                <div class="modal-content">
+                    <button class="modal-close" id="closeDashboardModal">&times;</button>
+                    <div class="modal-video-wrapper" id="dashboardModalVideoContainer"></div>
+                    <div class="modal-body">
+                        <span class="modal-tag">Lección Élite</span>
+                        <h3 class="modal-title" id="dashboardModalTitle">Título</h3>
+                        <p class="modal-description" id="dashboardModalDesc">Descripción</p>
+                    </div>
+                </div>
+            </div>
+
+
 
             <div id="clases" class="section">
                 <h1 class="mb-xs">📅 Mis Clases Prácticas</h1>
@@ -678,6 +550,10 @@
                         const onclickAttr = btn.getAttribute('onclick');
                         if (onclickAttr && onclickAttr.includes(`'${id}'`)) btn.classList.add('active');
                     });
+
+                    // Cerrar el menú si está abierto
+                    const menu = document.getElementById('compactMenu');
+                    if (menu && menu.classList.contains('active')) toggleDashboardMenu();
                 }
 
                 // --- AVATAR & PERFIL ---
@@ -815,12 +691,12 @@
                 }
 
                 // --- RESPONSIVE MENU TOGGLE ---
-                function toggleSidebar() {
-                    const sidebar = document.getElementById('sidebar');
+                function toggleDashboardMenu() {
+                    const menu = document.getElementById('compactMenu');
                     const overlay = document.getElementById('sidebarOverlay');
                     const btn = document.querySelector('.dashboard-toggle');
 
-                    if (sidebar) sidebar.classList.toggle('active');
+                    if (menu) menu.classList.toggle('active');
                     if (overlay) overlay.classList.toggle('active');
                     if (btn) btn.classList.toggle('active');
                 }
@@ -933,6 +809,72 @@
                     const percent = Math.round((checked / total) * 100);
                     updateCircularProgress(percent);
                 }
+
+                // --- SISTEMA DE VIDEOTECA ÉLITE (NUEVO) ---
+                const DASHBOARD_VIDEOS = [
+                    { id: "-LsosggkbjE", title: "Arrancar en Cuesta", category: "Técnica Maestra", desc: "Domina el arte del punto de fricción. En esta Masterclass, aprenderás a coordinar embrague, acelerador y freno de mano para salidas impecables en pendientes pronunciadas sin retrocesos.", premium: false },
+                    { id: "XEjvE7ABmfo", title: "Control de Embrague", category: "Dominio Total", desc: "El secreto de un conductor experto reside en su pierna izquierda. Descubre cómo manejar la transición de potencia con suavidad quirúrgica para evitar tirones y proteger la vida útil de tu vehículo.", premium: true },
+                    { id: "k5-gdSK1PIs", title: "Maniobras de Reversa", category: "Precisión Élite", desc: "La visión periférica y el cálculo espacial son clave. Aprende el método de los 3 puntos para parquear en paralelo y reversar con la precisión de un piloto profesional.", premium: true },
+                    { id: "__A2IMF091U", title: "Seguridad Vial", category: "Normativa 2024", desc: "Actualización integral sobre la Ley 2251 de 2022 (Ley Julián Esteban). Repasamos límites de velocidad, prioridades en rotondas y las nuevas normativas que todo conductor Élite debe conocer.", premium: true },
+                    { id: "MyQKbmiVESo", title: "Mecánica de Emergencia", category: "Tips Rápidos", desc: "No permitas que un imprevisto te detenga. Aprende a identificar ruidos críticos, revisar niveles de fluidos esenciales y cambiar una llanta en tiempo récord bajo condiciones adversas.", premium: true }
+                ];
+
+                function initDashboardVideos() {
+                    const grid = document.getElementById('dashboard-video-grid');
+                    if (!grid) return;
+                    DASHBOARD_VIDEOS.forEach(vid => {
+                        const item = document.createElement('div');
+                        item.className = 'video-item';
+                        item.innerHTML = `
+                            <div class="video-thumb-container">
+                                <img src="https://img.youtube.com/vi/${vid.id}/maxresdefault.jpg" alt="${vid.title}">
+                                ${vid.premium ? '<div class="coming-soon-banner">PRÓXIMAMENTE</div>' : ''}
+                                <button class="info-btn-floating">(+) Ver Clase</button>
+                            </div>
+                            <div class="video-info">
+                                <h4>${vid.title}</h4>
+                                <div class="meta-row" style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                                    <span class="duration" style="color: #c5a059; font-size: 0.8rem;">VIDEO ÉLITE</span>
+                                    <label class="custom-checkbox">
+                                        <input type="checkbox" class="progress-check" onchange="recalcProgress()">
+                                        <span class="checkmark"></span>
+                                        Visto
+                                    </label>
+                                </div>
+                            </div>
+                        `;
+                        item.onclick = () => openDashboardModal(vid);
+                        grid.appendChild(item);
+                    });
+                }
+
+                function openDashboardModal(vid) {
+                    const modal = document.getElementById('dashboardModal');
+                    const container = document.getElementById('dashboardModalVideoContainer');
+                    const title = document.getElementById('dashboardModalTitle');
+                    const desc = document.getElementById('dashboardModalDesc');
+
+                    title.innerText = vid.title;
+                    desc.innerText = vid.desc;
+
+                    // BLINDAJE TOTAL (Error 153 FIX)
+                    const videoUrl = `https://www.youtube-nocookie.com/embed/${vid.id}?rel=0&modestbranding=1&enablejsapi=1&origin=https://academia-elite.onrender.com&autoplay=1`;
+                    container.innerHTML = `<iframe src="${videoUrl}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
+
+                    modal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+
+                document.getElementById('closeDashboardModal').onclick = () => {
+                    const modal = document.getElementById('dashboardModal');
+                    const container = document.getElementById('dashboardModalVideoContainer');
+                    modal.classList.remove('active');
+                    container.innerHTML = '';
+                    document.body.style.overflow = '';
+                };
+
+                // Inicializar al cargar
+                initDashboardVideos();
             </script>
     </body>
 

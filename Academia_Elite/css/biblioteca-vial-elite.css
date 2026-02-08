@@ -1,0 +1,301 @@
+/* 
+   BIBLIOTECA VIAL ÉLITE - ESTILO NETFLIX (MODAL & RESPONSIVE)
+   Encapsulado bajo el ID #biblioteca-vial-elite para evitar conflictos.
+*/
+
+#biblioteca-vial-elite {
+    padding: 40px 15px;
+    background: radial-gradient(circle at center, #1a1a1a 0%, #0a0a0a 100%);
+    background-attachment: fixed;
+    position: relative;
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+}
+
+#biblioteca-vial-elite::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
+    opacity: 0.1;
+    pointer-events: none;
+}
+
+#biblioteca-vial-elite h2.section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: #c5a059;
+    text-align: center;
+    margin-bottom: 40px;
+    letter-spacing: 2px;
+}
+
+/* Contenedor de Cuadrícula (3 columnas en PC) */
+.netflix-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 20px 10px;
+    scroll-behavior: smooth;
+}
+
+/* Cada Item de Video (Thumbnail version) */
+.video-item {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    background: rgba(10, 10, 10, 0.8);
+    backdrop-filter: blur(12px);
+    border: 2px solid transparent;
+    background-image: linear-gradient(rgba(10, 10, 10, 0.8), rgba(10, 10, 10, 0.8)),
+        linear-gradient(45deg, #c5a059, #fff2ad, #c5a059);
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.video-item:hover {
+    transform: scale(1.05);
+    z-index: 10;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+}
+
+.video-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 10px;
+    padding: 2px;
+    background: linear-gradient(45deg, #c5a059, #fff2ad, #c5a059);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+}
+
+/* Aspect Ratio Thumbnail */
+.video-thumb-container {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.video-thumb-container img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Banner Próximamente */
+.coming-soon-banner {
+    position: absolute;
+    top: 20px;
+    right: -35px;
+    background: linear-gradient(45deg, #c5a059, #fff2ad, #c5a059);
+    color: #000;
+    padding: 5px 40px;
+    font-weight: 800;
+    font-size: 0.7rem;
+    transform: rotate(45deg);
+    z-index: 5;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    letter-spacing: 1px;
+}
+
+/* Botón flotante (+) Más información */
+.info-btn-floating {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    background: rgba(183, 28, 28, 0.9);
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 8px 15px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    backdrop-filter: blur(5px);
+    transition: 0.3s;
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+.video-item:hover .info-btn-floating {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.video-info {
+    padding: 15px;
+}
+
+.video-info h4 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #fff;
+    font-weight: 600;
+}
+
+/* --- SISTEMA MODAL ÉLITE --- */
+.elite-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(15px);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.elite-modal.active {
+    display: flex;
+    opacity: 1;
+}
+
+.modal-content {
+    background: rgba(10, 10, 10, 0.98);
+    width: 90%;
+    max-width: 600px;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid rgba(197, 160, 89, 0.4);
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.9);
+    transform: scale(0.9);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.elite-modal.active .modal-content {
+    transform: scale(1);
+}
+
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.5rem;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+}
+
+.modal-close:hover {
+    background: #b71c1c;
+    transform: rotate(90deg);
+}
+
+.modal-video-wrapper {
+    width: 100%;
+    padding-top: 56.25%;
+    position: relative;
+    background: #000;
+}
+
+.modal-video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.modal-body {
+    padding: 25px;
+}
+
+.modal-tag {
+    background: #b71c1c;
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    display: inline-block;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+}
+
+.modal-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    color: #c5a059;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.modal-description {
+    color: #bbb;
+    line-height: 1.5;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+}
+
+/* --- RESPONSIVE ADJUSTMENTS --- */
+@media (max-width: 768px) {
+    #biblioteca-vial-elite {
+        padding: 20px 10px;
+    }
+
+    .netflix-row {
+        grid-template-columns: 1fr;
+        padding: 0;
+        gap: 20px;
+    }
+
+    .video-item {
+        flex: 1 0 100%;
+        margin-bottom: 10px;
+        width: 100%;
+    }
+
+    #biblioteca-vial-elite h2.section-title {
+        font-size: 1.5rem;
+    }
+
+    .modal-content {
+        width: 92%;
+        max-height: 85vh;
+        overflow-y: auto;
+    }
+
+    .modal-title {
+        font-size: 1.3rem;
+    }
+
+    .modal-body {
+        padding: 20px;
+    }
+}
